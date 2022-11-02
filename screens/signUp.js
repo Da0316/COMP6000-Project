@@ -8,27 +8,7 @@ import { StyleSheet, Text, ScrollView, ImageBackground, View, SafeAreaView, Text
 //export default function App() {
 const signUp = () =>{ 
   return (
-    // <SafeAreaView style={{paddingHorizontal:20, flex: 1, backgroundColor:'#ffffff'}}>
-    //   <ScrollView 
-    //     style={{flex: 1, backgroundColor: 'orange'}}
-    //     showsVerticalScrollIndicator={false}
-        
-          
-
-
-    //     >
-          
-    //     <View style={styles.buttonsView}>
-          
-    //       {/* <View style={{padding:150}}>
-    //         <Text> welcome</Text>
-    //       </View> */}
-    //     </View>
-
-          
-    //   </ScrollView>
-    // </SafeAreaView>
-    //end
+    
     <View style={styles.mainView}>
       <View style={styles.TopView}></View>
       <ScrollView style={styles.bottomView}>
@@ -80,7 +60,7 @@ const styles = StyleSheet.create({
   bottomView:{
     width:'100%',
     height:'80%',
-    backgroundColor:'#000',
+    backgroundColor:'purple',
     borderTopLeftRadius:40,
     borderTopRightRadius:40
   },
