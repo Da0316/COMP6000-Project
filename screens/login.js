@@ -53,6 +53,7 @@ const Login = ({navigation}) =>{
           placeholder="Password"
           placeholderTextColor={'#3c3744'}
           onChangeText={(password) => setpassword(password)}
+          secureTextEntry
         />
       </View>
 
