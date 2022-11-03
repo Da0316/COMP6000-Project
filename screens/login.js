@@ -41,7 +41,7 @@ const Login = ({navigation}) =>{
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="userName"
+          placeholder="Username"
           placeholderTextColor={'#3c3744'}
           onChangeText={(userName) => setuserName(userName)}
         />
