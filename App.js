@@ -16,11 +16,6 @@ export default function App() {
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="signUp" component={signUp}/>
 
-        getData(){
-        fetch('http://localhost:3001/user')
-        .then(response => response.json())
-        .then(users => console.log(users))}
-
         <Stack.Screen name="HomeScreen" component={HomeScreen}/>
       </Stack.Navigator>  
     </NavigationContainer>
