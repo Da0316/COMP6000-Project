@@ -4,11 +4,11 @@ import signUp from './screens/signUp';
 import { createStackNavigator} from "@react-navigation/stack";
 import HomeScreen from './screens/homeScreen';
 import Login from './screens/login';
+import ChatApp from './chatroom_testing/ChatApp';
 
 //will need to import any new screens 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCZonqQoeCQB8l_Cze3DRmCoZgeKMNvl10",
@@ -22,8 +22,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+initializeApp(firebaseConfig);
+
+
+
 
 
 const Stack = createStackNavigator();
@@ -38,12 +40,19 @@ export default function App() {
         <Stack.Screen name="HomeScreen" component={HomeScreen}/>
       </Stack.Navigator>  
     </NavigationContainer>
-    
-  );
-
-  
-  
+  );  
 }
+
+//this is to test the chat functionality, DONT DELETE
+/*export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name = "Chat" component ={ChatApp}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}*/
 
 
 
