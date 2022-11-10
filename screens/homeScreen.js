@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {View,StyleSheet,Text, ScrollView} from "react-native";
+import {View,StyleSheet,Text, ScrollView, Button} from "react-native";
 import SearchBar from "../components/SearchBar";
 import TaskOne from "../components/TaskOne";
 import TaskTwo from "../components/TaskTwo";
@@ -8,6 +8,9 @@ function HomeScreen() {
     const [searchText, setSearchText] = useState("");
     return (
         <View style={styles.container}>
+            <View style ={styles.Button}>
+            <Button title="post task"></Button>
+            </View>
             <Text style={styles.header}>Home Screen</Text>
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
             <Text>{searchText}</Text>
@@ -17,6 +20,7 @@ function HomeScreen() {
             <TaskTwo/>
             </ScrollView>
         </View>
+        
     );
 }
 
@@ -36,6 +40,11 @@ const styles = StyleSheet.create({
 
     title:{
         fontWeight: "bold",
+    },
+    Button:{
+        paddingLeft: 100,
+        paddingRight: 100,
+
     }
     
 })
