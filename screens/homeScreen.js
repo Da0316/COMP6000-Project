@@ -1,15 +1,23 @@
 import React, { useState } from "react";
-import {View,StyleSheet,Text, ScrollView, Button} from "react-native";
+import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert} from "react-native";
 import SearchBar from "../components/SearchBar";
 import TaskOne from "../components/TaskOne";
 import TaskTwo from "../components/TaskTwo";
+import Post from "./Post";
+//import{ StackNavigator } from "react-navigation";
+import Login from "./login";
 
-function HomeScreen() {
+
+
+function HomeScreen({ navigation }) {
     const [searchText, setSearchText] = useState("");
+    const addTask = () => navigation.navigate('Post');
     return (
         <View style={styles.container}>
             <View style ={styles.Button}>
-            <Button title="post task"></Button>
+            <TouchableOpacity style={styles.Button} onPress={addTask}>
+                <Text style={styles.addTask}>Post Task</Text>
+            </TouchableOpacity>
             </View>
             <Text style={styles.header}>Home Screen</Text>
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
@@ -42,9 +50,20 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     Button:{
-        paddingLeft: 100,
-        paddingRight: 100,
+        backgroundColor: "green",
+        borderRadius: 25,
+        width: 80,
+        //paddingHorizontal :10,
+        marginLeft: 10,
+        mardinRight: 10,
+        justifyContent: "center",
+        alignContent: "center"
+
+    },
+    addTask:{
 
     }
     
-})
+});
+
+

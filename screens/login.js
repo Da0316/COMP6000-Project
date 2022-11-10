@@ -12,7 +12,6 @@ import {
 
 
 
-
 const Login = ({navigation}) =>{
   const [userName,setuserName] =useState('');
   const [password,setpassword] =useState('');
