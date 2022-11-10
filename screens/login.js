@@ -11,7 +11,6 @@ import {
 } from "react-native";
 
 
-
 const Login = ({navigation}) =>{
   const [userName,setuserName] =useState('');
   const [password,setpassword] =useState('');
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
   title:{
     padding:20,
     fontSize: 25,
-    fontFamily:"Cochin",
+    //fontFamily:"Cochin",
     marginBottom:50
   },
   inputView:{
