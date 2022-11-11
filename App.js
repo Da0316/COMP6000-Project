@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import signUp from './screens/signUp';
+import SignUp from './screens/SignUp';
 import { createStackNavigator} from "@react-navigation/stack";
 import HomeScreen from './screens/homeScreen';
 import Login from './screens/login';
@@ -14,7 +14,7 @@ export default function App() {
     <NavigationContainer>
      <Stack.Navigator>
         <Stack.Screen name="Login" component={Login}/>
-        <Stack.Screen name="signUp" component={signUp}/>
+        <Stack.Screen name="SignUp" component={SignUp}/>
         <Stack.Screen name="HomeScreen" component={HomeScreen}/>
       </Stack.Navigator>  
     </NavigationContainer>

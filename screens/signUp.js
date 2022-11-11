@@ -1,12 +1,58 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { useState } from "react";
 import { StyleSheet, Text, ScrollView, ImageBackground, View, SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
 //import an images file with pictures in for images 
 
 
-
+//date field to be changed 
 //export default function App() {
-const signUp = () =>{ 
+const SignUp = ({navigation}) =>{ 
+    const [userName,setuserName] =useState('');
+    const [firstName,setFirstName] =useState('');
+    const [lastName,setLastName] =useState('');
+    const [DOB,setDOB] =useState('');
+    const [email,setEmail] =useState('');
+    const [pNumber,setPNumber] =useState('');
+    const [address,setAddress] =useState(''); //need to discuss with group what address we are taking
+    const [password,setPassword] =useState('');
+    const [conPasswrod,setConPassword] =useState('');
+
+    
+  handelSubmit = () =>{
+    //onChangeText={(userName) => setuserName(userName)}
+    if(password != conPasswrod){
+      alert("Passwords must match!");
+    } else{
+
+      fetch('http://192.168.1.138/signUp.php', {
+        method: 'post',
+        header:{
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          
+          username: userName,
+          fname: firstName,
+          lname: lastName,
+          dob: DOB,
+          address: address,
+          email: email,
+          phone: pNumber,
+          password: password,
+        }),
+      })
+        .then((response) => response.text())
+        .then((responseJson) =>{
+          alert("Successfully signed in");
+        })
+        .catch((error)=>{
+          console.error(error);
+        });
+    };
+
+  }
   return (
     
     <View style={styles.mainView}>
@@ -16,12 +62,16 @@ const signUp = () =>{
           Create Account
         </Text>
         <SafeAreaView style={styles.formView}>
-          <TextInput placeholder={"Full name*"} placeholderTextColor='#fff' style={styles.TextInput}/>
-          <TextInput placeholder={"Email address*"} placeholderTextColor='#fff' style={styles.TextInput}/>
-          <TextInput placeholder={"Phone Number*"} placeholderTextColor='#fff' style={styles.TextInput}/>
-          <TextInput placeholder={"Password*"} placeholderTextColor='#fff' secureTextEntry={true} style={styles.TextInput}/>
-          <TextInput placeholder={"Confirm password*"} placeholderTextColor='#fff' secureTextEntry={true} style={styles.TextInput}/>
-          <TouchableOpacity style={styles.buttonsView}>
+          <TextInput placeholder={"First name*"} placeholderTextColor='#fff' onChangeText={(firstName) => setFirstName(firstName)} style={styles.TextInput}/>
+          <TextInput placeholder={"Last name*"} placeholderTextColor='#fff' onChangeText={(lastName) => setLastName(lastName)} style={styles.TextInput}/>
+          <TextInput placeholder={"Set Username*"} placeholderTextColor='#fff' onChangeText={(userName) => setuserName(userName)} style={styles.TextInput}/>
+          <TextInput placeholder={"DOB:yyyy-mm-dd*"} placeholderTextColor='#fff' onChangeText={(DOB) => setDOB(DOB)} style={styles.TextInput}/> 
+          <TextInput placeholder={"Email address*"} placeholderTextColor='#fff' onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>
+          <TextInput placeholder={"Phone Number*"} keyboardType='numeric' placeholderTextColor='#fff' maxLength={11} onChangeText={(pNumber) => setPNumber(pNumber)}  style={styles.TextInput}/>
+          <TextInput placeholder={"address*"} placeholderTextColor='#fff' onChangeText={(address) => setAddress(address)} style={styles.TextInput}/>
+          <TextInput placeholder={"Password*"} placeholderTextColor='#fff' onChangeText={(password) => setPassword(password)} secureTextEntry={true} style={styles.TextInput}/>
+          <TextInput placeholder={"Confirm password*"} placeholderTextColor='#fff' onChangeText={(conPasswrod) => setConPassword(conPasswrod)} secureTextEntry={true} style={styles.TextInput}/>
+          <TouchableOpacity style={styles.buttonsView} onPress={()=>handelSubmit()}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
         </SafeAreaView>
@@ -31,7 +81,7 @@ const signUp = () =>{
     </View>
   );
 }
-export default signUp; 
+export default SignUp; 
 
 //container for styles 
 const styles = StyleSheet.create({

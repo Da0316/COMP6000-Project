@@ -2,3 +2,6 @@ For the Php backend you needs to set up XAMP to get the server to
 run without having to port forwarding (this is way easier for development,
 especially as we all live in uni homes where we probably don't have access 
 to open the ports).
+
+You also have to change the API address to: http://yourownip/file.php.
+You can find your ip by running ipconfig in cmd
