@@ -30,7 +30,7 @@ con.connect(function(error){
   else console.log("connected");
 });
 
-app.get('/user', function(req, res){
+app.post('', function(req, res){
   con.query('select * from user', function(error, rows, fields){
         if(error) console.log(error);
 
