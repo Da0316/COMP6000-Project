@@ -5,8 +5,40 @@ import { StyleSheet, Text, ScrollView, ImageBackground, View, SafeAreaView, Text
 
 
 
+<<<<<<< Updated upstream
 //export default function App() {
 const signUp = () =>{ 
+=======
+      fetch('http://192.168.1.138/signUp.php', {
+        method: 'post',
+        header:{
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          
+          username: userName,
+          fname: firstName,
+          lname: lastName,
+          dob: DOB,
+          address: address,
+          email: email,
+          phone: pNumber,
+          password: password,
+        }),
+      })
+        .then((response) => response.text())
+        .then((responseJson) =>{
+          alert(responseJson);
+          navigation.navigate('Login');
+        })
+        .catch((error)=>{
+          console.error(error);
+        });
+    };
+
+  }
+>>>>>>> Stashed changes
   return (
     
     <View style={styles.mainView}>
@@ -16,12 +48,25 @@ const signUp = () =>{
           Create Account
         </Text>
         <SafeAreaView style={styles.formView}>
+<<<<<<< Updated upstream
           <TextInput placeholder={"Full name*"} placeholderTextColor='#fff' style={styles.TextInput}/>
           <TextInput placeholder={"Email address*"} placeholderTextColor='#fff' style={styles.TextInput}/>
           <TextInput placeholder={"Phone Number*"} placeholderTextColor='#fff' style={styles.TextInput}/>
           <TextInput placeholder={"Password*"} placeholderTextColor='#fff' secureTextEntry={true} style={styles.TextInput}/>
           <TextInput placeholder={"Confirm password*"} placeholderTextColor='#fff' secureTextEntry={true} style={styles.TextInput}/>
           <TouchableOpacity style={styles.buttonsView}>
+=======
+          <TextInput placeholder={"First name*"} placeholderTextColor='#fff' onChangeText={(firstName) => setFirstName(firstName)} style={styles.TextInput}/>
+          <TextInput placeholder={"Last name*"} placeholderTextColor='#fff' onChangeText={(lastName) => setLastName(lastName)} style={styles.TextInput}/>
+          <TextInput placeholder={"Set Username*"} placeholderTextColor='#fff' onChangeText={(userName) => setuserName(userName)} style={styles.TextInput}/>
+          <TextInput placeholder={"DOB:yyyy-mm-dd*"} placeholderTextColor='#fff' onChangeText={(DOB) => setDOB(DOB)} style={styles.TextInput}/> 
+          <TextInput placeholder={"Email address*"} placeholderTextColor='#fff' onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>
+          <TextInput placeholder={"Phone Number*"} keyboardType='numeric' placeholderTextColor='#fff' maxLength={11} onChangeText={(pNumber) => setPNumber(pNumber)}  style={styles.TextInput}/>
+          <TextInput placeholder={"Postcode*"} placeholderTextColor='#fff' onChangeText={(address) => setAddress(address)} style={styles.TextInput}/>
+          <TextInput placeholder={"Password*"} placeholderTextColor='#fff' onChangeText={(password) => setPassword(password)} secureTextEntry={true} style={styles.TextInput}/>
+          <TextInput placeholder={"Confirm password*"} placeholderTextColor='#fff' onChangeText={(conPasswrod) => setConPassword(conPasswrod)} secureTextEntry={true} style={styles.TextInput}/>
+          <TouchableOpacity style={styles.buttonsView} onPress={()=>handelSubmit()}>
+>>>>>>> Stashed changes
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
         </SafeAreaView>
