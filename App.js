@@ -36,12 +36,8 @@ export default function App() {
     <NavigationContainer>
      <Stack.Navigator>
         <Stack.Screen name="Login" component={Login}/>
-<<<<<<< HEAD
         <Stack.Screen name="SignUp" component={SignUp}/>
-=======
-        <Stack.Screen name="Signup" component={signUp}/>
         <Stack.Screen name="Post" component={Post}/>
->>>>>>> workingproject
         <Stack.Screen name="HomeScreen" component={HomeScreen}/>
       </Stack.Navigator>  
     </NavigationContainer>
