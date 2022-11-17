@@ -11,14 +11,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 function HomeScreen({ navigation }) {
     const [searchText, setSearchText] = useState("");
     const addTask = () => navigation.navigate('Post');
-    const chatScreen = () => navigation.navigate('ChatApp')
-    const [getValue, setGetValue] = useState('');
+    const chatScreen = () => navigation.navigate('Chat')
     const getUserID = async () => {
       try {
         let user = await AsyncStorage.getItem("userID");
         alert(user);
       } catch (error) {
-        alert(error)
+        alert(error);
       }
     } 
     return (
