@@ -42,14 +42,12 @@ const Login = ({navigation}) =>{
         })
           .then((response) => response.text())
           .then((responseJson) => {
-            console.log(responseJson);
-            if (responseJson = -1) {
+            if (responseJson == -1) {
               alert('Wrong Login Details');
             } else {
               // redirect to profile page
               alert('Successfully Login');
               AsyncStorage.setItem("userID", responseJson);
-
               navigation.navigate('HomeScreen');
             }
           })

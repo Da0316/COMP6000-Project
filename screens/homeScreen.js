@@ -6,11 +6,21 @@ import TaskTwo from "../components/TaskTwo";
 import Post from "./Post";
 //import{ StackNavigator } from "react-navigation";
 import Login from "./login";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function HomeScreen({ navigation }) {
     const [searchText, setSearchText] = useState("");
     const addTask = () => navigation.navigate('Post');
+    const chatScreen = () => navigation.navigate('ChatApp')
+    const [getValue, setGetValue] = useState('');
+    const getUserID = async () => {
+      try {
+        let user = await AsyncStorage.getItem("userID");
+        alert(user);
+      } catch (error) {
+        alert(error)
+      }
+    } 
     return (
         <View style={styles.container}>
             <View style ={styles.Button}>
@@ -18,6 +28,13 @@ function HomeScreen({ navigation }) {
                 <Text style={styles.addTask}>Post Task</Text>
             </TouchableOpacity>
             </View>
+            <TouchableOpacity onPress={getUserID}>
+                <Text>Test</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={chatScreen}>
+                <Text>Chat</Text>
+            </TouchableOpacity>
+
             <Text style={styles.header}>Home Screen</Text>
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
             <Text>{searchText}</Text>
