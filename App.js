@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import SignUp from './screens/SignUp';
+import SignUp from './screens/signUp';
 import { createStackNavigator} from "@react-navigation/stack";
 import HomeScreen from './screens/homeScreen';
 import Login from './screens/login';
@@ -24,10 +24,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 initializeApp(firebaseConfig);
-
-
-
-
 
 const Stack = createStackNavigator();
 
@@ -54,6 +50,5 @@ export default function App() {
     </NavigationContainer>
   );
 }*/
-
 
 
