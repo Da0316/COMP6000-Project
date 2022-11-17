@@ -6,8 +6,7 @@ import TaskTwo from "../components/TaskTwo";
 import Post from "./Post";
 //import{ StackNavigator } from "react-navigation";
 import Login from "./login";
-
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function HomeScreen({ navigation }) {
     const [searchText, setSearchText] = useState("");

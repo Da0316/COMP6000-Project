@@ -9,8 +9,8 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
-  AsyncStorage,
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Login = ({navigation}) =>{
@@ -18,22 +18,17 @@ const Login = ({navigation}) =>{
   const [password,setpassword] =useState('');
 
   const [message, setMessage] =useState('');
-
-    
-
     signIn = () => {
       
       if (userName == '') {
         alert("Please enter username");
         
-      } 
-        
-       else if (password == '') {
+      } else if (password == '') {
         alert("Please enter a password");
       } else {
         //when on campus 
         //fetch('http://129.12.212.41/login.php', {
-        fetch('http://192.168.1.138/login.php', { //needs to be changed to your own ip
+        fetch('http://192.168.1.123/login.php', { //needs to be changed to your own ip
           method: 'post',
           header: {
             Accept: 'application/json',
@@ -45,16 +40,17 @@ const Login = ({navigation}) =>{
             password: password,
           }),
         })
-          .then((response) => response.json())
+          .then((response) => response.text())
           .then((responseJson) => {
-            if (responseJson === "ok") {
+            console.log(responseJson);
+            if (responseJson = -1) {
+              alert('Wrong Login Details');
+            } else {
               // redirect to profile page
               alert('Successfully Login');
-              console.log(responseJson);
+              AsyncStorage.setItem("userID", responseJson);
+
               navigation.navigate('HomeScreen');
-            } else {
-              alert('Wrong Login Details');
-              console.log(responseJson);
             }
           })
           .catch((error) => {
