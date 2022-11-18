@@ -50,11 +50,11 @@ const Login = ({navigation}) =>{
             if (responseJson === "ok") {
               // redirect to profile page
               alert('Successfully Login');
-              console.log(responseJson);
+              //console.log(responseJson);
               navigation.navigate('HomeScreen');
             } else {
               alert('Wrong Login Details');
-              console.log(responseJson);
+              //console.log(responseJson);
             }
           })
           .catch((error) => {

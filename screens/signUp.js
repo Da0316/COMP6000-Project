@@ -45,7 +45,8 @@ const SignUp = ({navigation}) =>{
       })
         .then((response) => response.text())
         .then((responseJson) =>{
-          alert("Successfully signed in");
+          alert("Successfully signed up");
+          navigation.navigate('Login');
         })
         .catch((error)=>{
           console.error(error);

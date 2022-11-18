@@ -6,6 +6,7 @@ import TaskTwo from "../components/TaskTwo";
 import Post from "./Post";
 //import{ StackNavigator } from "react-navigation";
 import Login from "./login";
+//import NavContainer from '../navigation/NavContainter';
 
 
 
@@ -13,6 +14,8 @@ function HomeScreen({ navigation }) {
     const [searchText, setSearchText] = useState("");
     const addTask = () => navigation.navigate('Post');
     return (
+        
+        
         <View style={styles.container}>
             <View style ={styles.Button}>
             <TouchableOpacity style={styles.Button} onPress={addTask}>
@@ -28,6 +31,7 @@ function HomeScreen({ navigation }) {
             <TaskTwo/>
             </ScrollView>
         </View>
+        
         
     );
 }
