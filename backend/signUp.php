@@ -1,4 +1,5 @@
-<?php include 'config.php';
+<?php 
+include 'config.php';
 
 $json = file_get_contents('php://input');
 
@@ -55,3 +56,4 @@ if ($obj['email'] != "") {
 } else {
 	echo json_encode('try again');
 }
+?>
