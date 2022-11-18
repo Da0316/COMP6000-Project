@@ -21,6 +21,8 @@ function HomeScreen({ navigation }) {
       }
     } 
     return (
+        
+        
         <View style={styles.container}>
             <View style ={styles.Button}>
             <TouchableOpacity style={styles.Button} onPress={addTask}>
@@ -43,6 +45,7 @@ function HomeScreen({ navigation }) {
             <TaskTwo/>
             </ScrollView>
         </View>
+        
         
     );
 }
