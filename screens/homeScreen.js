@@ -14,8 +14,8 @@ function HomeScreen({ navigation }) {
     const addTask = () => navigation.navigate('Post');
     return (
         <View style={styles.container}>
-            <View style ={styles.Button}>
-            <TouchableOpacity style={styles.Button} onPress={addTask}>
+            <View >
+            <TouchableOpacity style ={styles.Button} onPress={addTask}>
                 <Text style={styles.addTask}>Post Task</Text>
             </TouchableOpacity>
             </View>
@@ -50,10 +50,11 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     Button:{
-        backgroundColor: "green",
+        backgroundColor: "#E1F1E0",
         borderRadius: 25,
         width: 80,
         //paddingHorizontal :10,
+    
         marginLeft: 10,
         mardinRight: 10,
         justifyContent: "center",
