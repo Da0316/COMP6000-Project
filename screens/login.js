@@ -28,7 +28,7 @@ const Login = ({navigation}) =>{
       } else {
         //when on campus 
         //fetch('http://129.12.212.41/login.php', {
-        fetch('http://192.168.1.123/login.php', { //needs to be changed to your own ip
+        fetch('http://192.168.1.138/login.php', { //needs to be changed to your own ip
           method: 'post',
           header: {
             Accept: 'application/json',
