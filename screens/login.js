@@ -18,6 +18,13 @@ const Login = ({navigation}) =>{
   const [password,setpassword] =useState('');
 
   const [message, setMessage] =useState('');
+  setObjectValue = async (value) => {
+    try {
+      await AsyncStorage.setItem('userID', value);
+    } catch(e) {
+      console.error(e);
+    }
+  }
     signIn = () => {
       
       if (userName == '') {
@@ -47,7 +54,7 @@ const Login = ({navigation}) =>{
             } else {
               // redirect to profile page
               alert('Successfully Login');
-              AsyncStorage.setItem("userID", responseJson);
+              setObjectValue(responseJson)
               navigation.navigate('HomeScreen');
             }
           })
@@ -93,8 +100,6 @@ const Login = ({navigation}) =>{
       <TouchableOpacity style={styles.LoginBtn} onPress={()=>navigation.navigate('SignUp')}>
         <Text style={styles.LoginText}>signUp</Text>
       </TouchableOpacity>
-      
-
     </View>
   );
 }

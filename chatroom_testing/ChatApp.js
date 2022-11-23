@@ -3,6 +3,7 @@ import Chat from './Chat';
 import Login from './Login';
 import Users from './Users';
 import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/database'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ChatApp(){
     const [currentPage, setCurrentPage] = useState('login');
@@ -11,10 +12,38 @@ export default function ChatApp(){
     const [userToAdd, setUserToAdd] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [myData, setMyData] = useState(null);
+    const [userID, setUserID] = useState(null);
+    const getUserID  = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('@userID')
+            return jsonValue != null ? JSON.parse(jsonValue) : null
+        } catch (error) {
+          alert(error);
+        }
+      }
 
     const onLogin = async () => {
+        console.log(getUserID());
         try {
             const database = getDatabase();
+            /*fetch('http://192.168.1.123/chat.php', { //needs to be changed to your own ip
+          method: 'post',
+          header: {
+            Accept: 'application/json',
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            // we will pass our input data to server
+            userID: getUserID(),
+          }),
+        })
+          .then((response) => response.text())
+          .then((responseJson) => {
+            alert(responseJson)
+          })
+          .catch((error) => {
+            console.error(error);
+          });*/
             const user  = await findUser(username);
 
             if (user){
