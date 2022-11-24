@@ -1,6 +1,6 @@
 <?php
 
-$mysqli = mysqli_connect("localhost", "root", "", "groupapp");
+$mysqli = mysqli_connect("dragon.kent.ac.uk", "comp6000_08", "0inbell", "comp6000_08");
 
 //if($mysqli){
 	//echo "hooo";

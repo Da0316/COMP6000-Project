@@ -35,7 +35,8 @@ const Login = ({navigation}) =>{
       } else {
         //when on campus 
         //fetch('http://129.12.212.41/login.php', {
-        fetch('http://192.168.1.123/login.php', { //needs to be changed to your own ip
+        //https://raptor.kent.ac.uk/proj/comp6000/project/08/login.php
+        fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/login.php', { //needs to be changed to your own ip
           method: 'post',
           header: {
             Accept: 'application/json',

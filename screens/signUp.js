@@ -25,7 +25,7 @@ const SignUp = ({navigation}) =>{
       alert("Passwords must match!");
     } else{
 
-      fetch('http://192.168.1.138/signUp.php', {
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/signUp.php', {
         method: 'post',
         header:{
           Accept: 'application/json',
