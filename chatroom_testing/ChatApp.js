@@ -12,26 +12,12 @@ export default function ChatApp(){
     const [userToAdd, setUserToAdd] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [myData, setMyData] = useState(null);
-    const [userID, setUserID] = useState(null);
-    const getUserID  = () => {
-        try {
-            let userID =  AsyncStorage.getItem('userID');
-            if (userID !== null){
-                console.log("hello");
-                setUserID(userID);
-                return userID;
-            }
-        } catch (error) {
-          alert(error);
-        }
-      }
 
     const onLogin = async () => {
-        //console.log(await getUserID());
-        console.log(userID);
+        console.log(global.userID);
         try {
             const database = getDatabase();
-            /*fetch('http://192.168.1.123/chat.php', { //needs to be changed to your own ip
+            fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/chat.php', { //needs to be changed to your own ip
           method: 'post',
           header: {
             Accept: 'application/json',
@@ -39,23 +25,17 @@ export default function ChatApp(){
           },
           body: JSON.stringify({
             // we will pass our input data to server
-            userID: getUserID(),
+            userID: global.userID,
           }),
         })
-          .then((response) => response.text())
-          .then((responseJson) => {
-            alert(responseJson)
-          })
-          .catch((error) => {
-            console.error(error);
-          });*/
+          .then((response) => response.json())
+          .then(async (username) => {
             const user  = await findUser(username);
-
             if (user){
                 setMyData(user);
             } else {
                 const newUserObj = {
-                    username: username, 
+                    username: String(username), 
                     avatar: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fnobita.me%2Fresources%2Favatar-from-url.86%2F&psig=AOvVaw1HkgvX6GHC1E4KWum1aYA8&ust=1667929212435000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCJDj19POnPsCFQAAAAAdAAAAABAO'
                 };
 
@@ -72,6 +52,10 @@ export default function ChatApp(){
                 }));
             });
             setCurrentPage('users');
+          })
+          .catch((error) => {
+            console.error(error);
+          });
         } catch (error) {
             console.error(error);
         }
