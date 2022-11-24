@@ -12,14 +12,6 @@ function HomeScreen({ navigation }) {
     const [searchText, setSearchText] = useState("");
     const addTask = () => navigation.navigate('Post');
     const chatScreen = () => navigation.navigate('Chat')
-    const getUserID = async () => {
-      try {
-        let user = await AsyncStorage.getItem("userID");
-        alert(user);
-      } catch (error) {
-        alert(error);
-      }
-    } 
     return (
         <View style={styles.container}>
             <View style ={styles.Button}>
@@ -27,9 +19,6 @@ function HomeScreen({ navigation }) {
                 <Text style={styles.addTask}>Post Task</Text>
             </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={getUserID}>
-                <Text>Test</Text>
-            </TouchableOpacity>
             <TouchableOpacity onPress={chatScreen}>
                 <Text>Chat</Text>
             </TouchableOpacity>
