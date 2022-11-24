@@ -13,17 +13,22 @@ export default function ChatApp(){
     const [selectedUser, setSelectedUser] = useState(null);
     const [myData, setMyData] = useState(null);
     const [userID, setUserID] = useState(null);
-    const getUserID  = async () => {
+    const getUserID  = () => {
         try {
-            const jsonValue = await AsyncStorage.getItem('@userID')
-            return jsonValue != null ? JSON.parse(jsonValue) : null
+            let userID =  AsyncStorage.getItem('userID');
+            if (userID !== null){
+                console.log("hello");
+                setUserID(userID);
+                return userID;
+            }
         } catch (error) {
           alert(error);
         }
       }
 
     const onLogin = async () => {
-        console.log(getUserID());
+        //console.log(await getUserID());
+        console.log(userID);
         try {
             const database = getDatabase();
             /*fetch('http://192.168.1.123/chat.php', { //needs to be changed to your own ip

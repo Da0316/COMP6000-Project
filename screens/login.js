@@ -18,9 +18,9 @@ const Login = ({navigation}) =>{
   const [password,setpassword] =useState('');
 
   const [message, setMessage] =useState('');
-  setObjectValue = async (value) => {
+  const setUserID =  (value) => {
     try {
-      await AsyncStorage.setItem('userID', value);
+       AsyncStorage.setItem('userID', value);
     } catch(e) {
       console.error(e);
     }
@@ -55,7 +55,10 @@ const Login = ({navigation}) =>{
             } else {
               // redirect to profile page
               alert('Successfully Login');
-              setObjectValue(responseJson)
+              console.log(responseJson);
+              if (responseJson != null){
+                setUserID(responseJson);
+              }
               navigation.navigate('HomeScreen');
             }
           })
