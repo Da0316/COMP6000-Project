@@ -1,10 +1,12 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from "react";
-import { StyleSheet, Text, ScrollView, ImageBackground, View, SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, ScrollView, ImageBackground, View, SafeAreaView, TextInput, TouchableOpacity, Button } from 'react-native';
+
+//package for calander picker 
 //import an images file with pictures in for images 
-
-
+0
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 //date field to be changed 
 //export default function App() {
 const SignUp = ({navigation}) =>{ 
@@ -12,15 +14,20 @@ const SignUp = ({navigation}) =>{
     const [firstName,setFirstName] =useState('');
     const [lastName,setLastName] =useState('');
     const [DOB,setDOB] =useState('');
+    const [date, setDate]=useState(new Date);
+    const [show, setShow] = useState(false);
     const [email,setEmail] =useState('');
     const [pNumber,setPNumber] =useState('');
     const [address,setAddress] =useState(''); //need to discuss with group what address we are taking
     const [password,setPassword] =useState('');
     const [conPasswrod,setConPassword] =useState('');
 
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
     
   handelSubmit = () =>{
     //onChangeText={(userName) => setuserName(userName)}
+    
     if(password != conPasswrod){
       alert("Passwords must match!");
     } else{
@@ -36,7 +43,7 @@ const SignUp = ({navigation}) =>{
           username: userName,
           fname: firstName,
           lname: lastName,
-          dob: DOB,
+          dob: date,
           address: address,
           email: email,
           phone: pNumber,
@@ -54,6 +61,22 @@ const SignUp = ({navigation}) =>{
     };
 
   }
+  0
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    let tempDate = date;
+    let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
+    date = fDate;
+    hideDatePicker();
+  };
+  
   return (
     
     <View style={styles.mainView}>
@@ -66,7 +89,16 @@ const SignUp = ({navigation}) =>{
           <TextInput placeholder={"First name*"} placeholderTextColor='#fff' onChangeText={(firstName) => setFirstName(firstName)} style={styles.TextInput}/>
           <TextInput placeholder={"Last name*"} placeholderTextColor='#fff' onChangeText={(lastName) => setLastName(lastName)} style={styles.TextInput}/>
           <TextInput placeholder={"Set Username*"} placeholderTextColor='#fff' onChangeText={(userName) => setuserName(userName)} style={styles.TextInput}/>
-          <TextInput placeholder={"DOB:yyyy-mm-dd*"} placeholderTextColor='#fff' onChangeText={(DOB) => setDOB(DOB)} style={styles.TextInput}/> 
+          
+          <View>
+            <Button title="Show Date Picker" onPress={showDatePicker} />
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+            />
+          </View>
           <TextInput placeholder={"Email address*"} placeholderTextColor='#fff' onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>
           <TextInput placeholder={"Phone Number*"} keyboardType='numeric' placeholderTextColor='#fff' maxLength={11} onChangeText={(pNumber) => setPNumber(pNumber)}  style={styles.TextInput}/>
           <TextInput placeholder={"address*"} placeholderTextColor='#fff' onChangeText={(address) => setAddress(address)} style={styles.TextInput}/>

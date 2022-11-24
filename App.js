@@ -8,6 +8,7 @@ import ChatApp from './chatroom_testing/ChatApp';
 import Post from './screens/Post';
 import nav from './navigation/NavContainter';
 
+
 //will need to import any new screens 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";

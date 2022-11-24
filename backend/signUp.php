@@ -25,8 +25,14 @@ if ($obj['email'] != "") {
 	);
 
 	$result = $mysqli->query($query);
+	
+	$query = sprintf(
+		"SELECT * FROM user WHERE username= '%s' limit 1",
+		$mysqli->real_escape_string($username)
+	);
+	$result1 = $mysqli->query($query);
 
-	if ($result->num_rows > 0) {
+	if ($result->num_rows > 0 && $result->num_rows > 0) {
 		echo json_encode('email already exist');  // alert msg in react native		 		
 	} else {
 		//    $add = $mysqli->query("insert into users (name,email,password) values('$name','$email','$password')");
