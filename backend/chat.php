@@ -6,7 +6,6 @@ $obj = json_decode($json, true);
 $userID = $obj['userID'];
 
 if (isset($obj['userID']) != ""){
-    echo $userID;
     $query = "SELECT username FROM user WHERE userID = " . $userID;
 	$result = $mysqli->query($query);
 	if ($result->num_rows > 0){
