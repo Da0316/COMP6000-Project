@@ -14,7 +14,6 @@ export default function ChatApp(){
     const [myData, setMyData] = useState(null);
 
     const onLogin = async () => {
-        console.log(global.userID);
         try {
             const database = getDatabase();
             fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/chat.php', { //needs to be changed to your own ip

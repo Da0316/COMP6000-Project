@@ -18,15 +18,12 @@ const Post =({ navigation }) =>{
             <Text style={styles.title}>post Task</Text>
             <View style={styles.task}>
                 <Text>Tell us more about what are you looking for.</Text>
-
                     <TextInput
                     style={styles.taskDetails}
                     placeholder="  taskDetails"
                     placeholderTextColor={'#3c3744'}
                     onChangeText={(taskDetails) => setuserName(setTaskDetails)}
                     />
-                
-        
             </View>
         </View>
 
