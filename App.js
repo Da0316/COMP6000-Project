@@ -49,7 +49,7 @@ function StackScreen(){
       <Tab.Screen name="Home" component={HomeScreen}/>
       <Tab.Screen name="Post" component={Post}/>
       <Tab.Screen name="Chat" component={ChatApp}/>
-      <Tab.Screen name="Chat" component={Profile}/>
+      <Tab.Screen name="Profile" component={Profile}/>
     </Tab.Navigator>
   );
 }
