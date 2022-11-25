@@ -6,6 +6,7 @@ import HomeScreen from './screens/homeScreen';
 import Login from './screens/login';
 import ChatApp from './chatroom_testing/ChatApp';
 import Post from './screens/Post';
+import Profile from './screens/profile';
 import nav from './navigation/NavContainter';
 
 
@@ -48,6 +49,7 @@ function StackScreen(){
       <Tab.Screen name="Home" component={HomeScreen}/>
       <Tab.Screen name="Post" component={Post}/>
       <Tab.Screen name="Chat" component={ChatApp}/>
+      <Tab.Screen name="Chat" component={Profile}/>
     </Tab.Navigator>
   );
 }
