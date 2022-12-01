@@ -35,6 +35,7 @@
     "react-native-async-storage": "^0.0.1",
     "react-native-date-picker": "^4.2.6",
     "react-native-datepicker": "^1.7.2",
+    "react-native-dropdown-select-list": "^2.0.2",
     "react-native-gifted-chat": "^1.0.4",
     "react-native-modal-datetime-picker": "^14.0.0",
     "react-native-paper": "^5.0.0-rc.10",
