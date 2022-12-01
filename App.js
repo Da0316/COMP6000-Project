@@ -8,6 +8,7 @@ import ChatApp from './chatroom_testing/ChatApp';
 import Post from './screens/Post';
 import Profile from './screens/profile';
 import nav from './navigation/NavContainter';
+import Job from './screens/Job'
 
 
 //will need to import any new screens 
@@ -50,6 +51,7 @@ function StackScreen(){
       <Tab.Screen name="Post" component={Post}/>
       <Tab.Screen name="Chat" component={ChatApp}/>
       <Tab.Screen name="Profile" component={Profile}/>
+      <Tab.Screen name="Job" component={Job}/>
     </Tab.Navigator>
   );
 }

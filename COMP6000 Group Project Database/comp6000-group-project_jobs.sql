@@ -26,6 +26,7 @@ CREATE TABLE `jobs` (
   `jobID` int NOT NULL AUTO_INCREMENT,
   `userID` int NOT NULL,
   `specialityID` int NOT NULL,
+  `job_title` varchar(1000) NOT NULL,
   `job_description` longtext NOT NULL,
   `posted_date` datetime NOT NULL,
   `job_accepted` tinyint NOT NULL,
