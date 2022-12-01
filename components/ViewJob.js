@@ -1,6 +1,7 @@
 import React from "react";
 import { View,StyleSheet,Text,Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const ViewJob = ({navigation}) => {
     const [jobID,setjobID] =useState('');
@@ -35,10 +36,9 @@ const ViewJob = ({navigation}) => {
           .catch((error) => {
             console.error(error);
           });
+        const nav = useNavigation();
+        const showJob = () => nav.navigate('Job');
         
-        const showJob = () => {
-            navigation.navigate();
-        }
 
 
     return(

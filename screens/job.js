@@ -1,4 +1,3 @@
-import { response } from 'express';
 import React, {useState} from 'react';
 import {Button, StyleSheet, View, Title, Text} from 'react-native';
 
@@ -27,7 +26,7 @@ function Job(){
         .then((responseJson) => {
             setUserPostedID(responseJson[0]);
             setSpecialityID(responseJson[1]);
-            console.log(response);
+            console.log(responseJson);
         })
         .catch((error) => {
             console.log(error);

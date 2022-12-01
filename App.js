@@ -8,7 +8,7 @@ import ChatApp from './chatroom_testing/ChatApp';
 import Post from './screens/Post';
 import Profile from './screens/profile';
 import nav from './navigation/NavContainter';
-import Job from './screens/Job'
+import job from './screens/job'
 
 
 //will need to import any new screens 
@@ -51,14 +51,14 @@ function StackScreen(){
       <Tab.Screen name="Post" component={Post}/>
       <Tab.Screen name="Chat" component={ChatApp}/>
       <Tab.Screen name="Profile" component={Profile}/>
-      <Tab.Screen name="Job" component={Job}/>
+      
     </Tab.Navigator>
   );
 }
 
 const Stack = createStackNavigator();
 //<NavContainter/>
-export default function App() {
+export default function App(navigation) {
   
   return (
     
@@ -67,7 +67,7 @@ export default function App() {
       
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="SignUp" component={SignUp}/>
-
+        <Stack.Screen name="Job" component={job}/>
         <Stack.Screen name="HomeScreen" component={StackScreen} options={{ headerShown: false }}/>
       </Stack.Navigator>
      
