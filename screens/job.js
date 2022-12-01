@@ -8,6 +8,7 @@ function Job(){
     const [jobID, setJobID] = useState(1);
     const [userPostedID, setUserPostedID] = useState(null);
     const [specialityID, setSpecialityID] = useState(null);
+    const [jobTitle, setJobTitle] = useState(null);
     const [jobDescription, setJobDescription] = useState(null);
     const [postedDate, setPostedDate] = useState(null);
     const [accepted, setAccepted] = useState(null);
@@ -29,7 +30,12 @@ function Job(){
         .then((responseJson) => {
             setUserPostedID(responseJson[0]);
             setSpecialityID(responseJson[1]);
-            console.log(responseJson);
+            setJobTitle(responseJson[2]);
+            setJobDescription(responseJson[3]);
+            setPostedDate(responseJson[4]);
+            setAccepted(responseJson[5]);
+            setCompleted(responseJson[6]);
+            setPrice(responseJson[7]);
         })
         .catch((error) => {
             console.log(error);
@@ -39,7 +45,7 @@ function Job(){
     }
 
     return (
-        <Text>hello</Text>
+        <Text>{jobDescription}</Text>
     );
 };
 
