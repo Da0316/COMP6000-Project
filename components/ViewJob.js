@@ -37,7 +37,7 @@ const ViewJob = ({navigation}) => {
             console.error(error);
           });
         const nav = useNavigation();
-        const showJob = () => nav.navigate('Job');
+        const showJob = () => nav.navigate('Job', {jobID});
         
 
 

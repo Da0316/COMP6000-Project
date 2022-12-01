@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 import {Button, StyleSheet, View, Title, Text} from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
 function Job(){
+    const route = useRoute();
+    console.log(route.params.jobID);    
     const [jobID, setJobID] = useState(1);
     const [userPostedID, setUserPostedID] = useState(null);
     const [specialityID, setSpecialityID] = useState(null);
