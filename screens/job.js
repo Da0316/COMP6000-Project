@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Button, StyleSheet, View, Title, Text} from 'react-native';
+import {Button, StyleSheet, View, Title, Text, TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
 function Job({route}){
-    
+    const { jobID } = route.params;
     const [userPostedID, setUserPostedID] = useState(null);
     const [specialityID, setSpecialityID] = useState(null);
     const [jobTitle, setJobTitle] = useState(null);
@@ -12,9 +12,6 @@ function Job({route}){
     const [accepted, setAccepted] = useState(null);
     const [completed, setCompleted] = useState(null);
     const [price, setPrice] = useState(null);
-
-    const { jobID } = route.params;
-    console.log(jobID);
 
     try {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php', {
@@ -46,7 +43,21 @@ function Job({route}){
     }
 
     return (
-        <Text>{jobDescription}</Text>
+        <View>
+            <Text>
+                {userPostedID},
+                {specialityID},
+                {jobTitle},
+                {jobDescription},
+                {postedDate},
+                {accepted},
+                {completed},
+                {price}
+            </Text>
+            <TouchableOpacity>
+
+            </TouchableOpacity>
+        </View>
     );
 };
 
