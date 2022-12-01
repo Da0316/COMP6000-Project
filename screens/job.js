@@ -2,10 +2,8 @@ import React, {useState} from 'react';
 import {Button, StyleSheet, View, Title, Text} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
-function Job(){
-    const route = useRoute();
-    console.log(route.params.jobID);    
-    const [jobID, setJobID] = useState(1);
+function Job({route}){
+    
     const [userPostedID, setUserPostedID] = useState(null);
     const [specialityID, setSpecialityID] = useState(null);
     const [jobTitle, setJobTitle] = useState(null);
@@ -14,6 +12,9 @@ function Job(){
     const [accepted, setAccepted] = useState(null);
     const [completed, setCompleted] = useState(null);
     const [price, setPrice] = useState(null);
+
+    const { jobID } = route.params;
+    console.log(jobID);
 
     try {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php', {
