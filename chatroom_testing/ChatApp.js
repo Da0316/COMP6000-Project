@@ -6,14 +6,15 @@ import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/databa
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ChatApp(){
-    const [currentPage, setCurrentPage] = useState('login');
+    const [currentPage, setCurrentPage] = useState(null);
     const [username, setUsername] = useState(null);
     const [users, setUsers] = useState([]);
     const [userToAdd, setUserToAdd] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [myData, setMyData] = useState(null);
 
-    const onLogin = async () => {
+    //const onLogin = async () => {
+    if (currentPage == null){
         try {
             const database = getDatabase();
             fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/chat.php', { //needs to be changed to your own ip
@@ -58,7 +59,8 @@ export default function ChatApp(){
         } catch (error) {
             console.error(error);
         }
-    };
+    }
+    //};
 
     const onBack = () => {
         setCurrentPage('users');
