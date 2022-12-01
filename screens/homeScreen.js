@@ -13,9 +13,17 @@ function HomeScreen({ navigation }) {
     const [searchText, setSearchText] = useState("");
     const addTask = () => navigation.navigate('Post');
     const chatScreen = () => navigation.navigate('Chat')
+    const job = () => navigation.navigate('Job')
     return (
         <View style={styles.container}>
-            
+            <View style ={styles.Button}>
+            <TouchableOpacity style={styles.Button} onPress={addTask}>
+                <Text style={styles.addTask}>Post Task</Text>
+            </TouchableOpacity>
+            </View>
+            <TouchableOpacity onPress={job}>
+                <Text>Job</Text>
+            </TouchableOpacity>
 
             <Text style={styles.header}>Home Screen</Text>
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
