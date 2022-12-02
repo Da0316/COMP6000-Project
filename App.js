@@ -7,7 +7,7 @@ import Login from './screens/login';
 import ChatApp from './chatroom_testing/ChatApp';
 import Post from './screens/Post';
 import Profile from './screens/profile';
-import EditProfile from './screens/editScreen';
+import EditProfile from './screens/editProfile';
 import nav from './navigation/NavContainter';
 import job from './screens/job'
 
