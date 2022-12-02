@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Button, StyleSheet, View, Title, Text, TouchableOpacity} from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 function Job({route}){
     const { jobID } = route.params;
@@ -42,6 +43,8 @@ function Job({route}){
         console.log(error);
     }
 
+    //const createApplication = () => useNavigation().navigate('CreateApplication')
+
     return (
         <View>
             <Text>
@@ -54,8 +57,8 @@ function Job({route}){
                 {completed},
                 {price}
             </Text>
-            <TouchableOpacity>
-
+            <TouchableOpacity styles={styles.applicationButton} onPress={console.log("redirect")}>
+                <Text>Create Appication</Text>
             </TouchableOpacity>
         </View>
     );
@@ -68,4 +71,13 @@ const styles = StyleSheet.create({
         fontSize: 24, 
         fontWeight: 'bold',
     },
+    applicationButton: {
+        width: "70%",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+    backgroundColor: "#FE5F55"
+    }
 });

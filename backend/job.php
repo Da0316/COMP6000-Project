@@ -16,6 +16,4 @@ if (isset($obj["jobID"]) != ""){
 } else {
     echo "error";
 }
-
-
 ?>
