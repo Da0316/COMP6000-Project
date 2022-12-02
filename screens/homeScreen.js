@@ -8,7 +8,7 @@ import Post from "./Post";
 import Login from "./login";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function HomeScreen({ navigation }) {
+const HomeScreen =({ navigation })=> {
     const [searchText, setSearchText] = useState("");
     const addTask = () => navigation.navigate('Post');
     const chatScreen = () => navigation.navigate('Chat')

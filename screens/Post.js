@@ -1,8 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import React, {Component} from 'react';
-import { SelectList , MultipleSelectList } from 'react-native-dropdown-select-list';
-//import CurrencyFormat from 'react-currency-format';
+import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {
   StyleSheet,

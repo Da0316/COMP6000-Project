@@ -3,14 +3,14 @@ import { View,SafeAreaView,StyleSheet, TextInput} from 'react-native';
 import { Avatar,Title,Caption,Text, TouchableRipple } from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-function Profile() {
+const Profile=({navigation}) =>{
   return (
       <SafeAreaView style={styles.container}>
           <View style={styles.userInfoSection}>
               <View style={{flexDirection:'row', marginTop: 15}}>
                   <Avatar.Image
                       source={{
-                          uri: '',
+                          uri: 'https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YmFja2dyb3VuZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60',
                       }}
                       size={90} />
                   <View style= {{marginLeft:20}}>
@@ -42,10 +42,10 @@ function Profile() {
               </View>
 
               <View style={styles.userBtnWrapper}>
-                <TouchableRipple style={styles.userBtn} onPress={() =>{}}>
-                  <Text style={styles.userBtnTxt}> Message</Text>
+              <TouchableRipple style={styles.userBtn} onPress={()=> logout()}>
+                  <Text style={styles.userBtnTxt}> Logout</Text>
                 </TouchableRipple>
-                <TouchableRipple style={styles.userBtn} onPress={() =>{}}>
+                <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('EditProfile')}>
                   <Text style={styles.userBtnTxt}> Edit Profile</Text>
                 </TouchableRipple>
               </View>

@@ -7,6 +7,7 @@ import Login from './screens/login';
 import ChatApp from './chatroom_testing/ChatApp';
 import Post from './screens/Post';
 import Profile from './screens/profile';
+import EditProfile from './screens/editScreen';
 import nav from './navigation/NavContainter';
 
 
@@ -42,6 +43,7 @@ initializeApp(firebaseConfig);
 //     </NavigationContainer> */}
 
 const Tab = createBottomTabNavigator();
+
 function StackScreen(){
   //const Tab = createBottomTabNavigator
   return(
@@ -49,8 +51,17 @@ function StackScreen(){
       <Tab.Screen name="Home" component={HomeScreen}/>
       <Tab.Screen name="Post" component={Post}/>
       <Tab.Screen name="Chat" component={ChatApp}/>
-      <Tab.Screen name="Profile" component={Profile}/>
+      <Tab.Screen name="Profile" component={ProfileStack}/>
     </Tab.Navigator>
+  );
+}
+
+function ProfileStack() {
+  return(
+    <Stack.Navigator>
+    <Stack.Screen name="Profile"  component={Profile} options={{headerShown: false }}/>
+    <Stack.Screen name="EditProfile"  component={EditProfile} />
+    </Stack.Navigator>
   );
 }
 
