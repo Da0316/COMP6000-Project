@@ -3,6 +3,7 @@ import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert} from 
 import SearchBar from "../components/SearchBar";
 import TaskOne from "../components/TaskOne";
 import TaskTwo from "../components/TaskTwo";
+import ViewJob from "../components/ViewJob";
 import Post from "./Post";
 //import{ StackNavigator } from "react-navigation";
 import Login from "./login";
@@ -12,6 +13,7 @@ const HomeScreen =({ navigation })=> {
     const [searchText, setSearchText] = useState("");
     const addTask = () => navigation.navigate('Post');
     const chatScreen = () => navigation.navigate('Chat')
+    const job = () => navigation.navigate('Job')
     return (
         <View style={styles.container}>
             <View style ={styles.Button}>
@@ -19,8 +21,8 @@ const HomeScreen =({ navigation })=> {
                 <Text style={styles.addTask}>Post Task</Text>
             </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={chatScreen}>
-                <Text>Chat</Text>
+            <TouchableOpacity onPress={job}>
+                <Text>Job</Text>
             </TouchableOpacity>
 
             <Text style={styles.header}>Home Screen</Text>
@@ -28,7 +30,7 @@ const HomeScreen =({ navigation })=> {
             <Text>{searchText}</Text>
             <Text style={styles.title}> Recent Tasks </Text>
            <ScrollView>
-            <TaskOne />
+            <ViewJob/>
             <TaskTwo/>
             </ScrollView>
         </View>

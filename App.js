@@ -9,6 +9,7 @@ import Post from './screens/Post';
 import Profile from './screens/profile';
 import EditProfile from './screens/editScreen';
 import nav from './navigation/NavContainter';
+import job from './screens/job'
 
 
 //will need to import any new screens 
@@ -51,7 +52,7 @@ function StackScreen(){
       <Tab.Screen name="Home" component={HomeScreen}/>
       <Tab.Screen name="Post" component={Post}/>
       <Tab.Screen name="Chat" component={ChatApp}/>
-      <Tab.Screen name="Profile" component={ProfileStack}/>
+      <Tab.Screen name="Profile" component={Profile}/>
     </Tab.Navigator>
   );
 }
@@ -67,7 +68,7 @@ function ProfileStack() {
 
 const Stack = createStackNavigator();
 //<NavContainter/>
-export default function App() {
+export default function App(navigation) {
   
   return (
     
@@ -76,7 +77,7 @@ export default function App() {
       
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="SignUp" component={SignUp}/>
-
+        <Stack.Screen name="Job" component={job}/>
         <Stack.Screen name="HomeScreen" component={StackScreen} options={{ headerShown: false }}/>
       </Stack.Navigator>
      
