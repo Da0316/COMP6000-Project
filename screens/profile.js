@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Login from '../chatroom_testing/Login';
 
 const Profile=({navigation}) =>{
-      const {userID, setUserID} = useState(null);
+      const {userID, setUserID} = useState('');
       const {firstname, setFirstname} = useState(null);
       const {lastname, setLastname} = useState(null);
       const {date_of_birth, setDate_of_birth} = useState(null);
@@ -15,24 +15,25 @@ const Profile=({navigation}) =>{
 
       try {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
-            method: 'post',
-            header: {
-                Accept: 'application/json',
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify({
-                userID: userID
-            }),
+          method: 'post', 
+          header: {
+            Accept: 'application/json',
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            userID: 1
+          }),
         })
-        .then((response) => response.text())
+        .then((response) => response.json())
         .then((responseJson) => {
-          setUserID(responseJson[0])
-          setFirstname(responseJson[1]);
-          setLastname(responseJson[2]);
-          setDate_of_birth(responseJson[3]);
-          setAddress(responseJson[4]);
-          setEmail(responseJson[5]);
-          setPhone_number(responseJson[6]);
+          console.log(responseJson);
+          // setUserID(responseJson[0])
+          // setFirstname(responseJson[1]);
+          // setLastname(responseJson[2]);
+          // setDate_of_birth(responseJson[3]);
+          // setAddress(responseJson[4]);
+          // setEmail(responseJson[5]);
+          // setPhone_number(responseJson[6]);
         })
         .catch((error) => {
             console.log(error);
@@ -41,13 +42,13 @@ const Profile=({navigation}) =>{
         console.log(error);
         
     }
-    console.log(userID);
-    console.log(firstname);
-    console.log(lastname);
-    console.log(address);
-    console.log(phone_number);
-    console.log(email);
-    console.log(date_of_birth);
+    // console.log(userID);
+    // console.log(firstname);
+    // console.log(lastname);
+    // console.log(address);
+    // console.log(phone_number);
+    // console.log(email);
+    // console.log(date_of_birth);
   return (
       <SafeAreaView style={styles.container}>
           <View style={styles.userInfoSection}>
