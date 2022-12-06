@@ -3,7 +3,9 @@ import { View,StyleSheet,Text,Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const ViewJob = ({navigation}) => {
+
+//data can be passed between react screens and components using props or routes
+const ViewJob = (props) => {
     const [jobID,setjobID] =useState('');
     const [jobTitle,setjobTilte] =useState('');
     const [jobDescription,setjobDescription] =useState('');
@@ -37,7 +39,7 @@ const ViewJob = ({navigation}) => {
             console.error(error);
           });
         const nav = useNavigation();
-        const showJob = () => nav.navigate('Job', {jobID});
+        const showJob = () => nav.navigate('Job', {jobID}); //passes data to the job page using a route
         
 
 
@@ -46,7 +48,8 @@ const ViewJob = ({navigation}) => {
         <View style={styles.container}>
             {/* image */}
             <Image source={{
-                uri: "https://images.unsplash.com/photo-1531617494862-4e322fb560c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9nJTIwd2Fsa2luZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60"
+              
+                //uri: "https://images.unsplash.com/photo-1531617494862-4e322fb560c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9nJTIwd2Fsa2luZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60"
             }}
             style={styles.image}
             />
