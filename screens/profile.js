@@ -1,9 +1,53 @@
-import React from 'react';
+import  React, {useState} from 'react';
 import { View,SafeAreaView,StyleSheet} from 'react-native';
 import { Avatar,Title,Caption,Text, TouchableRipple, TextInput } from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Login from '../chatroom_testing/Login';
 
 const Profile=({navigation}) =>{
+      const {userID, setUserID} = useState(null);
+      const {firstname, setFirstname} = useState(null);
+      const {lastname, setLastname} = useState(null);
+      const {date_of_birth, setDate_of_birth} = useState(null);
+      const {address, setAddress} = useState(null);
+      const {email, setEmail} = useState(null);
+      const {phone_number, setPhone_number} = useState(null);
+
+      try {
+        fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
+            method: 'post',
+            header: {
+                Accept: 'application/json',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                userID: userID
+            }),
+        })
+        .then((response) => response.text())
+        .then((responseJson) => {
+          setUserID(responseJson[0])
+          setFirstname(responseJson[1]);
+          setLastname(responseJson[2]);
+          setDate_of_birth(responseJson[3]);
+          setAddress(responseJson[4]);
+          setEmail(responseJson[5]);
+          setPhone_number(responseJson[6]);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    } catch (error) {
+        console.log(error);
+        
+    }
+    console.log(userID);
+    console.log(firstname);
+    console.log(lastname);
+    console.log(address);
+    console.log(phone_number);
+    console.log(email);
+    console.log(date_of_birth);
   return (
       <SafeAreaView style={styles.container}>
           <View style={styles.userInfoSection}>
@@ -17,32 +61,32 @@ const Profile=({navigation}) =>{
                       <Title style={[styles.title,{
                           marginTop:15,
                           marginBottom:5,
-                      }]}>David Addo</Title>
-                      <Caption style={styles.caption}>dadd03</Caption>
+                      }]}>{firstname} {lastname}</Title>
+                      <Caption style={styles.caption}>{userID}</Caption>
                   </View>
-              </View>
+              </View> 
           </View>
 
           <View style={styles.userInfoSection}>
               <View style={styles.row}>
               <Icon name="map-marker-radius"color="#777777" size={20}/>
-              <Text style={{color:"#777777", marginLeft:20}}>Canterbury, Kent</Text>
+              <Text style={{color:"#777777", marginLeft:20}}>{address}</Text>
               </View>
               <View style={styles.row}>
               <Icon name="phone"color="#777777" size={20}/>
-              <Text style={{color:"#777777", marginLeft:20}}>07392533283</Text>
+              <Text style={{color:"#777777", marginLeft:20}}>{phone_number}</Text>
               </View>
               <View style={styles.row}>
               <Icon name="email"color="#777777" size={20}/>
-              <Text style={{color:"#777777", marginLeft:20}}>addo003.da@gmail.com</Text>
+              <Text style={{color:"#777777", marginLeft:20}}>{email}</Text>
               </View>
               <View style={styles.row}>
               <Icon name="calendar"color="#777777" size={20}/>
-              <Text style={{color:"#777777", marginLeft:20}}>16/03/2000</Text>
+              <Text style={{color:"#777777", marginLeft:20}}>{date_of_birth}</Text>
               </View>
 
               <View style={styles.userBtnWrapper}>
-              <TouchableRipple style={styles.userBtn} onPress={()=> logout()}>
+              <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Login')}>
                   <Text style={styles.userBtnTxt}> Logout</Text>
                 </TouchableRipple>
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('EditProfile')}>
