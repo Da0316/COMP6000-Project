@@ -62,7 +62,7 @@ const SignUp = ({navigation}) =>{
     };
 
   }
-  0
+  
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };

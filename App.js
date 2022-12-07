@@ -10,6 +10,7 @@ import Profile from './screens/profile';
 import EditProfile from './screens/editProfile';
 import nav from './navigation/NavContainter';
 import job from './screens/job'
+import createApplication from './screens/createApplication'
 
 
 //will need to import any new screens 
@@ -74,14 +75,12 @@ export default function App(navigation) {
     
     <NavigationContainer>
       <Stack.Navigator>
-      
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="SignUp" component={SignUp}/>
         <Stack.Screen name="Job" component={job}/>
+        <Stack.Screen name="CreateApplication" component={createApplication}/>
         <Stack.Screen name="HomeScreen" component={StackScreen} options={{ headerShown: false }}/>
       </Stack.Navigator>
-     
-       
     </NavigationContainer>
   );  
 }

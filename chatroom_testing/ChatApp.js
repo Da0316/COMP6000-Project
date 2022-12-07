@@ -12,7 +12,6 @@ export default function ChatApp(){
     const [userToAdd, setUserToAdd] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [myData, setMyData] = useState(null);
-
     //const onLogin = async () => {
     if (currentPage == null){
         try {
@@ -31,6 +30,7 @@ export default function ChatApp(){
           .then((response) => response.json())
           .then(async (username) => {
             const user  = await findUser(username);
+            console.log(user);
             if (user){
                 setMyData(user);
             } else {

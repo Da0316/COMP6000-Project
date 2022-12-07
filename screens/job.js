@@ -3,7 +3,7 @@ import {Button, StyleSheet, View, Title, Text, TouchableOpacity} from 'react-nat
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from "@react-navigation/native";
 
-function Job({route}){
+function Job({route, navigation}){
     const { jobID } = route.params;
     const [userPostedID, setUserPostedID] = useState(null);
     const [specialityID, setSpecialityID] = useState(null);
@@ -57,8 +57,8 @@ function Job({route}){
                 {completed},
                 {price}
             </Text>
-            <TouchableOpacity styles={styles.applicationButton} onPress={console.log("redirect")}>
-                <Text>Create Appication</Text>
+            <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('CreateApplication')}>
+                <Text>Create Application</Text>
             </TouchableOpacity>
         </View>
     );
