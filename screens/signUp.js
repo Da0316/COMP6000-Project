@@ -43,7 +43,7 @@ const SignUp = ({navigation}) =>{
           username: userName,
           fname: firstName,
           lname: lastName,
-          dob: DOB,
+          dob: date,
           address: address,
           email: email,
           phone: pNumber,
@@ -52,7 +52,6 @@ const SignUp = ({navigation}) =>{
       })
         .then((response) => response.text())
         .then((responseJson) =>{
-          //console.log(responseJson);
           alert("Successfully signed up");
           navigation.navigate('Login');
         })
@@ -74,9 +73,7 @@ const SignUp = ({navigation}) =>{
   const handleConfirm = (date) => {
     let tempDate = date;
     let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
-    //date = fDate;
-    setDOB(fDate);
-    
+    date = fDate;
     hideDatePicker();
   };
   
