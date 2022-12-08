@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'config.php';
 
 $json = file_get_contents('php://input');
@@ -9,23 +9,30 @@ $obj = json_decode($json, true);
 //storing the data from js
 $taskTitle = $obj['taskTitle'];
 $taskDetails = $obj['taskDetails'];
-$price= $obj['price'];
-
+$price = $obj['price'];
+$userID = $obj['userID'];
+$currentDate = $SYSDATETIME;
+$notCompleted = $obj['0'];
+$notAccepted = $obj['0'];
+//$One = $obj['1'];
+//(jobID,userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price)
+//datetime for the posted date
 //$query = "INSERT INTO jobs (jobID, userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price) VALUES ('" . $jobID . "', '" . $userID . "', '" . $application_date . "', '" . $price_offer . "')";
 //$query = "INSERT INTO jobs (job_title,job_description ,price) values ('" . $taskTitle . "','" . $taskDetails . "','" . $price . "')";
-$query ="INSERT INTO jobs (job_title,job_description,price) VALUES('" . $taskTitle . "','" . $taskDetails . "','" . $price . "')";
+$query = "INSERT INTO jobs(userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price)
+ 		VALUES('1','1','" . $taskTitle . "','" . $taskDetails . "','" . $currentDate . "' , '" . $notAccepted . "'', '" . $notCompleted . "' ,'" . $price . "')";
 //= sprintf(
-	 			// "INSERT INTO jobs (jobID, userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price)
-				//  values (NULL,NULL,NULL,'%s','%s',NULL, NULL,NULL,'%s')",
-				//"INSERT INTO jobs (job_title,job_description,price) VALUES('" . $taskTitle . "','" . $taskDetails . "','" . $price . "')";
-	 			//$mysqli->real_escape_string($taskTitle),
-	 			//$mysqli->real_escape_string($taskDetails),
-	 			//$mysqli->real_escape_string($price),
-				
-			//);
+// "INSERT INTO jobs (jobID, userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price)
+//  values (NULL,NULL,NULL,'%s','%s',NULL, NULL,NULL,'%s')",
+//"INSERT INTO jobs (job_title,job_description,price) VALUES('" . $taskTitle . "','" . $taskDetails . "','" . $price . "')";
+//$mysqli->real_escape_string($taskTitle),
+//$mysqli->real_escape_string($taskDetails),
+//$mysqli->real_escape_string($price),
+
+//);
 $result = $mysqli->query($query);
 
-if ($result){
+if ($result) {
 	echo json_encode('success');
 } else {
 	echo json_encode('error');
@@ -38,7 +45,7 @@ if ($result){
 // 	);
 
 // 	$result = $mysqli->query($query);
-	
+
 // 	$query = sprintf(
 // 		"SELECT * FROM jobs WHERE jobD= '%s' limit 1",
 // 		$mysqli->real_escape_string($jobD)
@@ -53,7 +60,7 @@ if ($result){
 // 			$mysqli->real_escape_string($jobT),
 // 			$mysqli->real_escape_string($jobD),
 // 			$mysqli->real_escape_string($p),
-			
+
 // 		);
 
 // 		$result = $mysqli->query($query);

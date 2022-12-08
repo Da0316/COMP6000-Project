@@ -24,7 +24,7 @@ const Post = ({ navigation }) => {
   const [prefDate,setPrefDate] = useState(new Date);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
+  const [Specialities,setSpecialities] = React.useState([]);
   const data = [
     { key: "1", value: "Cleaning" },
     { key: "2", value: "Gardening" },
@@ -48,6 +48,7 @@ const Post = ({ navigation }) => {
             taskTitle: taskTitle,
             taskDetails: taskDetails,
             price: price,
+            userID: global.userID
         }),
       })
         .then((response) => response.text())
@@ -70,13 +71,13 @@ const Post = ({ navigation }) => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (date) => {
-    let temp = date;
-    let fDate = temp.getFullYear() + '-' + (temp.getMonth() + 1) + '-' + temp.getDate();
-    //date = fDate;
-    setPrefDate(fDate);
-    hideDatePicker();
-  };
+//   const handleConfirm = (date) => {
+//     let temp = date;
+//     let fDate = temp.getFullYear() + '-' + (temp.getMonth() + 1) + '-' + temp.getDate();
+//     //date = fDate;
+//     setPrefDate(fDate);
+//     hideDatePicker();
+//   };
 
   return (
     <View style={styles.container}>
@@ -119,7 +120,7 @@ const Post = ({ navigation }) => {
           />
         </View>
 
-        <View style={styles.dateContainer}>
+        {/* <View style={styles.dateContainer}>
           <Text>This job should be done before:</Text>
           <Button title="Show Prefared date" onPress={showDatePicker} />
           <DateTimePickerModal
@@ -128,7 +129,7 @@ const Post = ({ navigation }) => {
             //onConfirm={handleConfirm}
             onCancel={hideDatePicker}
           />
-        </View>
+        </View> */}
         <TouchableOpacity
           style={styles.buttonsView}
           onPress={() => handelSubmit()}
