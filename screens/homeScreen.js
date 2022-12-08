@@ -30,8 +30,9 @@ const HomeScreen =({ navigation })=> {
             <Text>{searchText}</Text>
             <Text style={styles.title}> Recent Tasks </Text>
            <ScrollView>
-            <ViewJob/>
-            <TaskTwo/>
+            <ViewJob ID={1}/>
+            <ViewJob ID={2}/>
+            <ViewJob ID={3}/>
             </ScrollView>
         </View>
         

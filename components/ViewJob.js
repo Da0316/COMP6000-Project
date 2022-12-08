@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 
 //data can be passed between react screens and components using props or routes
-const ViewJob = (props) => {
+const ViewJob = ({ID}) => {
     const [jobID,setjobID] =useState('');
     const [jobTitle,setjobTilte] =useState('');
     const [jobDescription,setjobDescription] =useState('');
@@ -21,7 +21,7 @@ const ViewJob = (props) => {
             'Content-type': 'application/json',
           },
           body: JSON.stringify({
-            jobID: 1,
+            jobID: ID,
             job_Description: ""
           }),
         })
