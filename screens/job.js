@@ -10,8 +10,8 @@ function Job({route, navigation}){
     const [jobTitle, setJobTitle] = useState(null);
     const [jobDescription, setJobDescription] = useState(null);
     const [postedDate, setPostedDate] = useState(null);
-    const [accepted, setAccepted] = useState(null);
-    const [completed, setCompleted] = useState(null);
+    const [accepted, setAccepted] = useState("");
+    const [completed, setCompleted] = useState("");
     const [price, setPrice] = useState(null);
 
     try {
@@ -32,8 +32,16 @@ function Job({route, navigation}){
             setJobTitle(responseJson[2]);
             setJobDescription(responseJson[3]);
             setPostedDate(responseJson[4]);
-            setAccepted(responseJson[5]);
-            setCompleted(responseJson[6]);
+            if (responseJson[5] == "0"){
+                setAccepted("No");
+            } else {
+                setAccepted("Yes");
+            }
+            if (responseJson[6] == "0"){
+                setCompleted("No");
+            } else {
+                setCompleted("Yes");
+            }
             setPrice(responseJson[7]);
         })
         .catch((error) => {
@@ -46,17 +54,33 @@ function Job({route, navigation}){
     //const createApplication = () => useNavigation().navigate('CreateApplication')
 
     return (
-        <View>
-            <Text>
-                {userPostedID},
-                {specialityID},
-                {jobTitle},
-                {jobDescription},
-                {postedDate},
-                {accepted},
-                {completed},
-                {price}
-            </Text>
+        <View styles={styles.container}>
+            <View styles={styles.information}>
+                <View styles={styles.row}>
+                    <Text>{userPostedID}</Text>
+                </View>
+                <View styles={styles.row}>
+                    <Text>{specialityID}</Text>
+                </View>
+                <View styles={styles.row}>
+                    <Text>{jobTitle}</Text>
+                </View>
+                <View styles={styles.row}>
+                    <Text>{jobDescription}</Text>
+                </View>
+                <View styles={styles.row}>
+                    <Text>{postedDate}</Text>
+                </View>
+                <View styles={styles.row}>
+                    <Text>{accepted}</Text>
+                </View>
+                <View styles={styles.row}>
+                    <Text>{completed}</Text>
+                </View>
+                <View styles={styles.row}>
+                    <Text>{price}</Text>
+                </View>
+            </View>
             <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('CreateApplication', {jobID})}>
                 <Text>Create Application</Text>
             </TouchableOpacity>
@@ -72,12 +96,24 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     applicationButton: {
-        width: "70%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
-    backgroundColor: "#FE5F55"
-    }
+        borderColor: '#2e64e5',
+        borderWidth: 2,
+        borderRadius: 3,
+        paddingVertical: 10,
+        paddingHorizontal: 50,
+        marginHorizontal: 5,
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#EEF5DB',
+    },
+    information: {
+        paddingHorizontal: 30,
+        marginBottom: 25,
+    },
+    row: {
+        flexDirection: 'row',
+        marginBottom: 10,
+        alignItems: 'center',
+      },
 });

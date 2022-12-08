@@ -21,10 +21,6 @@ const HomeScreen =({ navigation })=> {
                 <Text style={styles.addTask}>Post Task</Text>
             </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={job}>
-                <Text>Job</Text>
-            </TouchableOpacity>
-
             <Text style={styles.header}>Home Screen</Text>
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
             <Text>{searchText}</Text>

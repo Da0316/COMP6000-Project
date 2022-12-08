@@ -30,7 +30,6 @@ export default function ChatApp(){
           .then((response) => response.json())
           .then(async (username) => {
             const user  = await findUser(username);
-            console.log(user);
             if (user){
                 setMyData(user);
             } else {
