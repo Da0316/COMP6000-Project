@@ -34,6 +34,32 @@ const Post = ({ navigation }) => {
     { key: "6", value: "Beauty" },
   ];
 
+//   React.useEffect(() => 
+//   //Get Values from database
+//   fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/Specialities.php', {
+//             method: 'post',
+//             header: {
+//                 Accept: 'application/json',
+//                 'Content-type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 specialityID: specialityID,
+//                 speciality : speciality
+//             }),
+//         })
+//     .then((response) => {
+//       // Store Values in Temporary Array
+//       let newArray = response.data.map((item) => {
+//         return {key: item.specialityID, value: item.speciality}
+//       })
+//       //Set Data Variable
+//       setData(newArray)
+//     })
+//     .catch((e) => {
+//       console.log(e)
+//     })
+// ,[])
+
   handelSubmit = () => {
     if (price == 0) {
       alert("You have to set a price");
@@ -102,7 +128,7 @@ const Post = ({ navigation }) => {
         />
         <View>
           <Text>task Speciality</Text>
-          <MultipleSelectList
+          <SelectList
             setSelected={(val) => setSelected(val)}
             data={data}
             save="value"
