@@ -1,4 +1,3 @@
-import { application } from "express";
 import {useState} from "react";
 import {StyleSheet, Text, ScrollView, View, SafeAreaView, TextInput, TouchableOpacity, Button} from "react-native";
 
