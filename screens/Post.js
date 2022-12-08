@@ -21,6 +21,7 @@ const Post = ({ navigation }) => {
   const [selected, setSelected] = React.useState([]);
   const [price, setPrice] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
+  const [prefDate,setPrefDate] = useState(new Date);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -44,15 +45,15 @@ const Post = ({ navigation }) => {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          taskTitle: taskTitle,
-          taskDetails: taskDetails,
-          price: price,
+            taskTitle: taskTitle,
+            taskDetails: taskDetails,
+            price: price,
         }),
       })
         .then((response) => response.text())
         .then((responseJson) => {
           //console.log(responseJson);
-          alert("Successfully added the task");
+          alert("Successfully added the job");
           navigation.navigate("HomeScreen");
         })
         .catch((error) => {
@@ -67,6 +68,14 @@ const Post = ({ navigation }) => {
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    let temp = date;
+    let fDate = temp.getFullYear() + '-' + (temp.getMonth() + 1) + '-' + temp.getDate();
+    //date = fDate;
+    setPrefDate(fDate);
+    hideDatePicker();
   };
 
   return (
