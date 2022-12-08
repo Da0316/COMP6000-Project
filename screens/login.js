@@ -41,7 +41,7 @@ const Login = ({navigation}) =>{
             password: password,
           }),
         })
-          .then((response) => response.text())
+          .then((response) => response.json())
           .then((responseJson) => {
             if (responseJson == -1) {
               alert('Wrong Login Details');
@@ -55,7 +55,8 @@ const Login = ({navigation}) =>{
             }
           })
           .catch((error) => {
-            console.error(error);
+            //console.error(error);
+            alert("incorrect details");
           });
       }}
   

@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Login from '../chatroom_testing/Login';
 
 const Profile=({navigation}) =>{
-      const {userID, setUserID} = useState(null);
+      //const {userID, setUserID} = useState(null);
       const {firstname, setFirstname} = useState(null);
       const {lastname, setLastname} = useState(null);
       const {date_of_birth, setDate_of_birth} = useState(null);
@@ -21,12 +21,13 @@ const Profile=({navigation}) =>{
                 'Content-type': 'application/json',
             },
             body: JSON.stringify({
-                userID: userID
+                //userID: 1
+                userID: 1
             }),
         })
         .then((response) => response.text())
         .then((responseJson) => {
-          setUserID(responseJson[0])
+          //setUserID(responseJson[0])
           setFirstname(responseJson[1]);
           setLastname(responseJson[2]);
           setDate_of_birth(responseJson[3]);
