@@ -6,12 +6,12 @@ import Login from '../chatroom_testing/Login';
 
 const Profile=({navigation}) =>{
       //const {userID, setUserID} = useState(null);
-      const {firstname, setFirstname} = useState(null);
-      const {lastname, setLastname} = useState(null);
-      const {date_of_birth, setDate_of_birth} = useState(null);
-      const {address, setAddress} = useState(null);
-      const {email, setEmail} = useState(null);
-      const {phone_number, setPhone_number} = useState(null);
+      const [firstname, setFirstName] = useState('');
+      const [lastname, setLastname] = useState(null);
+      const [date_of_birth, setDate_of_birth] = useState(null);
+      const [address, setAddress] = useState(null);
+      const[email, setEmail] = useState(null);
+      const [phone_number, setPhone_number] = useState(null);
 
       try {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
@@ -22,13 +22,14 @@ const Profile=({navigation}) =>{
             },
             body: JSON.stringify({
                 //userID: 1
-                userID: 1
+                userID: userID
             }),
         })
-        .then((response) => response.text())
+        .then((response) => response.json())
         .then((responseJson) => {
+          //console.log(responseJson[0]);
           //setUserID(responseJson[0])
-          setFirstname(responseJson[1]);
+          setFirstName(responseJson[1]);
           setLastname(responseJson[2]);
           setDate_of_birth(responseJson[3]);
           setAddress(responseJson[4]);
@@ -42,13 +43,13 @@ const Profile=({navigation}) =>{
         console.log(error);
         
     }
-    console.log(userID);
-    console.log(firstname);
-    console.log(lastname);
-    console.log(address);
-    console.log(phone_number);
-    console.log(email);
-    console.log(date_of_birth);
+    // console.log(userID);
+    // console.log(firstname);
+    // console.log(lastname);
+    // console.log(address);
+    // console.log(phone_number);
+    // console.log(email);
+    // console.log(date_of_birth);
   return (
       <SafeAreaView style={styles.container}>
           <View style={styles.userInfoSection}>
