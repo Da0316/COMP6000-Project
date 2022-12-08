@@ -1,20 +1,23 @@
 import {useState} from "react";
 import {StyleSheet, Text, ScrollView, View, SafeAreaView, TextInput, TouchableOpacity, Button} from "react-native";
 
-function CreateApplication(navigation){
+function CreateApplication({route, navigation}){
+    const { jobID } = route.params;
     const [applicationDate, setApplicationDate] = useState(new Date);
+    const [transformedDate, setTransformedDate] = useState('');
     const [priceOffer, setPriceOffer] = useState('');
     
     const submit = () => {
+      console.log(jobID);
         if (priceOffer != ''){
-            fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/signUp.php', {
+            fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/createApplication.php', {
                 method: 'post',
                 header: {
                     Accept: 'application/json',
                     'Content-type': 'application/json',
                 },
                 body: JSON.stringify({
-                    jobID: 1,
+                    jobID: jobID,
                     userID: global.userID,
                     application_date: applicationDate,
                     price_offer: priceOffer,    
@@ -22,7 +25,8 @@ function CreateApplication(navigation){
             })
             .then((response) => response.text())
             .then((responseJson) => {
-                alert("Application Sent!")
+                alert("Application Sent!");
+                navigation.navigate('HomeScreen')
             })
             .catch((error)=> {
                 console.error(error);
@@ -40,7 +44,7 @@ function CreateApplication(navigation){
             Create Application
           </Text>
           <SafeAreaView style={styles.formView}>
-            <TextInput placeholder={"Price Offer*"} placeholderTextColor='#fff' onChangeText={(price) => setPriceOffer(price)} style={styles.TextInput}/>
+            <TextInput placeholder={"Price Offer*"} placeholderTextColor='#fff' onChangeText={(price_offer) => setPriceOffer(price_offer)} style={styles.TextInput}/>
             <TouchableOpacity style={styles.buttonsView} onPress={()=>submit()}>
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
