@@ -57,7 +57,7 @@ function Job({route, navigation}){
                 {completed},
                 {price}
             </Text>
-            <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('CreateApplication')}>
+            <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('CreateApplication', {jobID})}>
                 <Text>Create Application</Text>
             </TouchableOpacity>
         </View>
