@@ -20,7 +20,7 @@ $notAccepted = $obj['0'];
 //$query = "INSERT INTO jobs (jobID, userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price) VALUES ('" . $jobID . "', '" . $userID . "', '" . $application_date . "', '" . $price_offer . "')";
 //$query = "INSERT INTO jobs (job_title,job_description ,price) values ('" . $taskTitle . "','" . $taskDetails . "','" . $price . "')";
 $query = "INSERT INTO jobs(userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price)
- 		VALUES('1','1','" . $taskTitle . "','" . $taskDetails . "','" . $currentDate . "' , '" . $notAccepted . "'', '" . $notCompleted . "' ,'" . $price . "')";
+ 		VALUES('" . $userID . "','1','" . $taskTitle . "','" . $taskDetails . "','" . $currentDate . "' , '" . $notAccepted . "'', '" . $notCompleted . "' ,'" . $price . "')";
 //= sprintf(
 // "INSERT INTO jobs (jobID, userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price)
 //  values (NULL,NULL,NULL,'%s','%s',NULL, NULL,NULL,'%s')",
