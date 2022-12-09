@@ -17,10 +17,10 @@ import {
 } from "react-native";
 
 const Post = ({ navigation }) => {
-  const [taskDetails, setTaskDetails] = useState("");
+  const [taskDetails, setTaskDetails] = useState('');
   const [selected, setSelected] = React.useState([]);
-  const [price, setPrice] = useState("");
-  const [taskTitle, setTaskTitle] = useState("");
+  const [price, setPrice] = useState('');
+  const [taskTitle, setTaskTitle] = useState('');
   const [prefDate,setPrefDate] = useState(new Date);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -34,6 +34,7 @@ const Post = ({ navigation }) => {
     { key: "6", value: "Beauty" },
   ];
 
+  //try to fetch data from sql
 //   React.useEffect(() => 
 //   //Get Values from database
 //   fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/Specialities.php', {
@@ -71,10 +72,10 @@ const Post = ({ navigation }) => {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-            taskTitle: taskTitle,
-            taskDetails: taskDetails,
-            price: price,
-            userID: global.userID
+            taskT: taskTitle,
+            taskD: taskDetails,
+            p: price,
+            ID: global.userID
         }),
       })
         .then((response) => response.text())

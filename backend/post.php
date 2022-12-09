@@ -7,20 +7,21 @@ $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
 
 //storing the data from js
-$taskTitle = $obj['taskTitle'];
-$taskDetails = $obj['taskDetails'];
-$price = $obj['price'];
-$userID = $obj['userID'];
-$currentDate = $SYSDATETIME;
-$notCompleted = $obj['0'];
-$notAccepted = $obj['0'];
+$taskT = $obj['taskT'];
+$taskD = $obj['taskD'];
+$p = $obj['p'];
+$ID = $obj['ID'];
+$date = date('Y-m-d H:i:s');
+//$currentDate = $SYSDATETIME;
+//$notCompleted = $obj['0'];
+//$notAccepted = $obj['0'];
 //$One = $obj['1'];
 //(jobID,userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price)
 //datetime for the posted date
 //$query = "INSERT INTO jobs (jobID, userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price) VALUES ('" . $jobID . "', '" . $userID . "', '" . $application_date . "', '" . $price_offer . "')";
 //$query = "INSERT INTO jobs (job_title,job_description ,price) values ('" . $taskTitle . "','" . $taskDetails . "','" . $price . "')";
-$query = "INSERT INTO jobs(userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price)
- 		VALUES('" . $userID . "','1','" . $taskTitle . "','" . $taskDetails . "','" . $currentDate . "' , '" . $notAccepted . "'', '" . $notCompleted . "' ,'" . $price . "')";
+$query = "INSERT INTO jobs (userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price)
+ 		VALUES('" . $ID . "', 1 ,'" . $taskT . "','" . $taskD . "','" . $date . "','0','0','" . $p . "')";
 //= sprintf(
 // "INSERT INTO jobs (jobID, userID, specialityID, job_title, job_description, posted_date,job_accepted,job_completed, price)
 //  values (NULL,NULL,NULL,'%s','%s',NULL, NULL,NULL,'%s')",
