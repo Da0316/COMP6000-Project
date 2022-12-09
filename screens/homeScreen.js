@@ -11,9 +11,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen =({ navigation })=> {
     const [searchText, setSearchText] = useState("");
+    const [jobsID, setJobsID] = useState([]);
     const addTask = () => navigation.navigate('Post');
     const chatScreen = () => navigation.navigate('Chat')
     const job = () => navigation.navigate('Job')
+
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobsDate.php', { //needs to be changed to your own ip
+          method: 'post', 
+          header: {
+            Accept: 'application/json',
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            
+          }),
+        })
+          .then((response) =>  response.json())
+          .then((responseJson) => {
+            setJobsID(responseJson);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+
+        
+          
+
+
     return (
         <View style={styles.container}>
             <View style ={styles.Button}>
@@ -21,18 +45,14 @@ const HomeScreen =({ navigation })=> {
                 <Text style={styles.addTask}>Post Task</Text>
             </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={job}>
-                <Text>Job</Text>
-            </TouchableOpacity>
-
             <Text style={styles.header}>Home Screen</Text>
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
             <Text>{searchText}</Text>
             <Text style={styles.title}> Recent Tasks </Text>
            <ScrollView>
-            <ViewJob ID={1}/>
-            <ViewJob ID={2}/>
-            <ViewJob ID={3}/>
+            <ViewJob ID={jobsID[0]}/>
+            <ViewJob ID={jobsID[1]}/>
+            <ViewJob ID={jobsID[2]}/>
             </ScrollView>
         </View>
         
