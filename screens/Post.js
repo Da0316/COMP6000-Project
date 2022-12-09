@@ -22,7 +22,6 @@ const Post = ({ navigation }) => {
   const [price, setPrice] = useState('');
   const [taskTitle, setTaskTitle] = useState('');
   const [prefDate,setPrefDate] = useState(new Date);
-
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [Specialities,setSpecialities] = React.useState([]);
   const data = [
@@ -64,7 +63,11 @@ const Post = ({ navigation }) => {
   handelSubmit = () => {
     if (price == 0) {
       alert("You have to set a price");
-    } else {
+    }else if(taskTitle ==''){
+      alert("YOu need to add a title");
+    }else if(taskDetails == ''){
+      alert("YOu need to add Job details");
+    }else {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/post.php", {
         method: "post",
         header: {
@@ -81,7 +84,7 @@ const Post = ({ navigation }) => {
         .then((response) => response.text())
         .then((responseJson) => {
           //console.log(responseJson);
-          alert("Successfully added the job");
+          alert("job added Successfully");
           navigation.navigate("HomeScreen");
         })
         .catch((error) => {
