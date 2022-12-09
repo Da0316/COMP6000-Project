@@ -31,7 +31,7 @@ const EditProfile = () => {
                                 uri:'https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YmFja2dyb3VuZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60',
                                 }}
                                 style={{height:100, width:100}}
-                                imageStyle={{borderRadius:15}}
+                                imageStyle={{borderRadius:100/2}}
                                 >
                                      <View style={{
                                          flex: 1,
@@ -68,6 +68,15 @@ const EditProfile = () => {
                     <FontAwesome name="user-o" size={20} />
                     <TextInput 
                     placeholder="Last Name"
+                    placeholderTextColor="#666666"
+                    autoCorrect={false}
+                    style={styles.textInput}
+                    />
+                </View>
+                <View style={styles.action}>
+                    <FontAwesome name="user-o" size={20} />
+                    <TextInput 
+                    placeholder="Username"
                     placeholderTextColor="#666666"
                     autoCorrect={false}
                     style={styles.textInput}

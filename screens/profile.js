@@ -1,12 +1,13 @@
 import  React, {useState} from 'react';
-import { View,SafeAreaView,StyleSheet} from 'react-native';
+import { View,SafeAreaView,StyleSheet,} from 'react-native';
 import { Avatar,Title,Caption,Text, TouchableRipple, TextInput } from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Login from '../chatroom_testing/Login';
 
 const Profile=({navigation}) =>{
       //const {userID, setUserID} = useState(null);
-      const [firstname, setFirstName] = useState('');
+      const [username, setUsername] = useState('');
+      const [firstname, setFirstname] = useState(null);
       const [lastname, setLastname] = useState(null);
       const [date_of_birth, setDate_of_birth] = useState(null);
       const [address, setAddress] = useState(null);
@@ -29,12 +30,13 @@ const Profile=({navigation}) =>{
         .then((responseJson) => {
           //console.log(responseJson[0]);
           //setUserID(responseJson[0])
-          setFirstName(responseJson[1]);
-          setLastname(responseJson[2]);
-          setDate_of_birth(responseJson[3]);
-          setAddress(responseJson[4]);
-          setEmail(responseJson[5]);
-          setPhone_number(responseJson[6]);
+          setUsername(responseJson[1])
+          setFirstname(responseJson[2]);
+          setLastname(responseJson[3]);
+          setDate_of_birth(responseJson[4]);
+          setAddress(responseJson[5]);
+          setEmail(responseJson[6]);
+          setPhone_number(responseJson[7]);
         })
         .catch((error) => {
             console.log(error);
@@ -64,7 +66,7 @@ const Profile=({navigation}) =>{
                           marginTop:15,
                           marginBottom:5,
                       }]}>{firstname} {lastname}</Title>
-                      <Caption style={styles.caption}>{userID}</Caption>
+                      <Caption style={styles.caption}>{username}</Caption>
                   </View>
               </View> 
           </View>
@@ -118,8 +120,6 @@ const Profile=({navigation}) =>{
           placeholder="Write Review"
           placeholderTextColor={'#777777'}
           />
-              
-
           </View >
       </SafeAreaView>
   );

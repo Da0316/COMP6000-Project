@@ -9,7 +9,7 @@ if (isset($obj["userID"]) != ""){
     $result = $mysqli->query($query);
     if ($result->num_rows > 0){
         $row = mysqli_fetch_assoc($result);
-		echo json_encode(array($row['userID'], $row['firstname'], $row['lastname'], $row['date_of_birth'], $row['address'], $row['email'], $row['phone_number']));
+		echo json_encode(array($row['userID'], $row['username'],$row['firstname'], $row['lastname'], $row['date_of_birth'], $row['address'], $row['email'], $row['phone_number']));
     } else {
         echo "user doesn't exist";
     }
