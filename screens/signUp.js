@@ -52,8 +52,15 @@ const SignUp = ({navigation}) =>{
       })
         .then((response) => response.text())
         .then((responseJson) =>{
-          alert("Successfully signed up");
-          navigation.navigate('Login');
+          console.log(responseJson)
+          if (responseJson === "try again"){
+            alert("Please fill in details ")
+          } else if (responseJson === "email already exists"){
+            alert("Account already signed up with this email")
+          } else {
+            alert("Signup Successful!");
+            navigation.navigate('SelectSpecialities', {responseJson});
+          }
         })
         .catch((error)=>{
           console.error(error);

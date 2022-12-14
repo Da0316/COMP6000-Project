@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import {Button, StyleSheet, View, Title, Text, TouchableOpacity} from 'react-native';
-import { useRoute } from '@react-navigation/native';
-import { useNavigation } from "@react-navigation/native";
 
 function Job({route, navigation}){
     const { jobID } = route.params;
