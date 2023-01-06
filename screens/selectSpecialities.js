@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, FlatList} from 'react-native';
+import {Text, View, StyleSheet, FlatList, Button} from 'react-native';
 import Constants from 'expo-constants';
 //import CheckBox from '@react-native-community/checkbox';
 import {Card, Checkbox} from 'react-native-paper';
@@ -7,7 +7,6 @@ import {Card, Checkbox} from 'react-native-paper';
 export default SelectSpecialities = ({route, navigation}) => {
   const [options, setOptions] = useState([]);
   const {userID} = route.params;
-
   useEffect(() => {
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php', {
       method: 'post',
@@ -32,7 +31,7 @@ export default SelectSpecialities = ({route, navigation}) => {
         setOptions(newOptions);
       })
       .catch((error) => {
-        // alert(error);
+        alert(error);
       });
   }, []);
 
@@ -77,11 +76,44 @@ export default SelectSpecialities = ({route, navigation}) => {
     );
   };
 
+  const handleSubmit = () => {
+    let idArray = []
+    selected.forEach(function (arrayItem) {
+      idArray.push(arrayItem.id);
+    });
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/insertSpecialities.php', {
+      method: 'post',
+      headers: {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+      }, 
+      body: JSON.stringify({
+        id: userID,
+        array: idArray,
+      }),
+    }).then(response => response.json())
+    .then(responseJson => {
+      if (responseJson == 1) {
+        alert("Successfully inputted Specialities");
+        setTimeout(function(){
+          navigation.navigate('Login');
+        }, 3000)
+      } else if (responseJson == -1) {
+        alert("Error has occurred");
+      }
+    })
+    .catch(error => {
+      alert(error);
+    });
+  }
+  
+
   return (
     <View style={styles.container}>
       <View style={{flex: 1}}>{renderList(options)}</View>
       <Text style={styles.text}>Selected</Text>
       <View style={{flex: 1}}>{renderList(selected)}</View>
+      <Button onPress={handleSubmit} title="Submit"/> 
     </View>
   );
 };
