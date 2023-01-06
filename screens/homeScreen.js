@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useEffect} from "react";
 import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert} from "react-native";
 import SearchBar from "../components/SearchBar";
 import TaskOne from "../components/TaskOne";
@@ -17,7 +18,12 @@ const HomeScreen =({ navigation })=> {
     const chatScreen = () => navigation.navigate('Chat')
     const job = () => navigation.navigate('Job')
 
-    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobsDate.php', { //needs to be changed to your own ip
+    const [loading, setLoading] = useState(true);
+    
+  
+    useEffect(() => {
+    
+     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobsDate.php', { //needs to be changed to your own ip
           method: 'post', 
           header: {
             Accept: 'application/json',
@@ -27,20 +33,25 @@ const HomeScreen =({ navigation })=> {
             
           }),
         })
-          .then((response) => {return response.json()})
-          .then((responseJson) => {
-            //console.log(responseJson);
-            setJobsID(responseJson);
-          })
-          .catch((error) => {
-            console.error(error);
+          .then((response) => response.json())
+          .then(jobsID => {
+            setJobsID(jobsID)
+            setLoading(false);
           });
-          //console.log(jobsID[0]);
+          
+          // .catch((error) => {
+          //   console.error(error);
+          // });
+          
+        }, []);
 
         
-          //setId1(jobsID[0]);
-
-
+        if(loading){
+          return <Text>Loading....</Text>;
+        }
+        
+    
+    //console.log(jobsID[0]);
     return (
         <View style={styles.container}>
             <View style ={styles.Button}>
@@ -51,14 +62,15 @@ const HomeScreen =({ navigation })=> {
             <Text>{searchText}</Text>
             <Text style={styles.title}> Recent Tasks </Text>
            <ScrollView>
-            <ViewJob ID={1}/>
-            <ViewJob ID={2}/>
+            <ViewJob ID={jobsID[0]}/>
+            <ViewJob ID={jobsID[2]}/>
             <ViewJob ID={3}/>
             <ViewJob ID={6}/>
             </ScrollView>
         </View>
         
     );
+  
 }
 
 export default HomeScreen;
