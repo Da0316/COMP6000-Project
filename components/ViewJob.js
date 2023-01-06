@@ -49,7 +49,7 @@ const ViewJob = ({ID}) => {
             {/* image */}
             <Image source={{
               
-                //uri: "https://images.unsplash.com/photo-1531617494862-4e322fb560c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9nJTIwd2Fsa2luZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60"
+                uri: "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg"
             }}
             style={styles.image}
             />

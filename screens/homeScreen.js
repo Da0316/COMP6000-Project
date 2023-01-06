@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const HomeScreen =({ navigation })=> {
     const [searchText, setSearchText] = useState("");
     const [jobsID, setJobsID] = useState([]);
+    const [id1, setId1] = useState('');
     const addTask = () => navigation.navigate('Post');
     const chatScreen = () => navigation.navigate('Chat')
     const job = () => navigation.navigate('Job')
@@ -26,33 +27,34 @@ const HomeScreen =({ navigation })=> {
             
           }),
         })
-          .then((response) =>  response.json())
+          .then((response) => {return response.json()})
           .then((responseJson) => {
+            //console.log(responseJson);
             setJobsID(responseJson);
           })
           .catch((error) => {
             console.error(error);
           });
+          //console.log(jobsID[0]);
 
         
-          
+          //setId1(jobsID[0]);
 
 
     return (
         <View style={styles.container}>
             <View style ={styles.Button}>
-            <TouchableOpacity style={styles.Button} onPress={addTask}>
-                <Text style={styles.addTask}>Post Task</Text>
-            </TouchableOpacity>
+            
             </View>
             <Text style={styles.header}>Home Screen</Text>
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
             <Text>{searchText}</Text>
             <Text style={styles.title}> Recent Tasks </Text>
            <ScrollView>
-            <ViewJob ID={jobsID[0]}/>
-            <ViewJob ID={jobsID[1]}/>
-            <ViewJob ID={jobsID[2]}/>
+            <ViewJob ID={1}/>
+            <ViewJob ID={2}/>
+            <ViewJob ID={3}/>
+            <ViewJob ID={6}/>
             </ScrollView>
         </View>
         
