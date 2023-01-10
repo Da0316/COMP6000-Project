@@ -1,6 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
-import React, { Component } from "react";
+import { useState, useEffect } from "react";
+import React from "react";
 import {
   SelectList,
   MultipleSelectList,
@@ -14,51 +13,42 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  ScrollView
 } from "react-native";
 
 const Post = ({ navigation }) => {
   const [taskDetails, setTaskDetails] = useState('');
-  const [selected, setSelected] = React.useState([]);
   const [price, setPrice] = useState('');
   const [taskTitle, setTaskTitle] = useState('');
-  const [prefDate,setPrefDate] = useState(new Date);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [Specialities,setSpecialities] = React.useState([]);
-  const data = [
-    { key: "1", value: "Cleaning" },
-    { key: "2", value: "Gardening" },
-    { key: "3", value: "repairments" },
-    { key: "4", value: "Craft" },
-    { key: "5", value: "Chores" },
-    { key: "6", value: "Beauty" },
-  ];
+  const [specialities, setSpecialities] = useState([]);
 
-  //try to fetch data from sql
-//   React.useEffect(() => 
-//   //Get Values from database
-//   fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/Specialities.php', {
-//             method: 'post',
-//             header: {
-//                 Accept: 'application/json',
-//                 'Content-type': 'application/json',
-//             },
-//             body: JSON.stringify({
-//                 specialityID: specialityID,
-//                 speciality : speciality
-//             }),
-//         })
-//     .then((response) => {
-//       // Store Values in Temporary Array
-//       let newArray = response.data.map((item) => {
-//         return {key: item.specialityID, value: item.speciality}
-//       })
-//       //Set Data Variable
-//       setData(newArray)
-//     })
-//     .catch((e) => {
-//       console.log(e)
-//     })
-// ,[])
+  useEffect(() => {
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php', {
+      method: 'post',
+      header: {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        let counter = 0;
+        const newOptions = [];
+        for (let i = 0; i < responseJson.length / 2; i++) {
+          let object = {
+            key: Number(responseJson[counter]),
+            value: responseJson[counter + 1],
+          };
+          newOptions.push(object);
+          counter = counter + 2;
+        }
+        setSpecialities(newOptions);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    }, []);
+
 
   handelSubmit = () => {
     if (price == 0) {
@@ -83,7 +73,6 @@ const Post = ({ navigation }) => {
       })
         .then((response) => response.text())
         .then((responseJson) => {
-          //console.log(responseJson);
           alert("job added Successfully");
           navigation.navigate("HomeScreen");
         })
@@ -101,73 +90,56 @@ const Post = ({ navigation }) => {
     setDatePickerVisibility(false);
   };
 
-//   const handleConfirm = (date) => {
-//     let temp = date;
-//     let fDate = temp.getFullYear() + '-' + (temp.getMonth() + 1) + '-' + temp.getDate();
-//     //date = fDate;
-//     setPrefDate(fDate);
-//     hideDatePicker();
-//   };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>post Task</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>post Task</Text>
 
-      <View style={styles.task}>
-        <Text>Task title</Text>
+        <View style={styles.task}>
+          <Text>Task title</Text>
 
-        <TextInput
-          style={styles.tasktitleBox}
-          placeholder="  task Title"
-          placeholderTextColor={"#3c3744"}
-          onChangeText={(taskTitle) => setTaskTitle(taskTitle)}
-        />
-        <Text>Tell us more about what are you looking for.</Text>
-
-        <TextInput
-          style={styles.taskDetails}
-          placeholder="  taskDetails"
-          placeholderTextColor={"#3c3744"}
-          onChangeText={(taskDetails) => setTaskDetails(taskDetails)}
-        />
-        <View>
-          <Text>task Speciality</Text>
-          <SelectList
-            setSelected={(val) => setSelected(val)}
-            data={data}
-            save="value"
-            //onSelect={() => alert(selected)}
-            label="Categories"
-          />
-        </View>
-
-        <View style={styles.PriceContainer}>
-          <Text style={styles.price}>Price:</Text>
           <TextInput
-            style={styles.priceTxt}
-            placeholder="£"
-            onChangeText={(price) => setPrice(price)}
+            style={styles.tasktitleBox}
+            placeholder="  task Title"
+            placeholderTextColor={"#3c3744"}
+            onChangeText={(taskTitle) => setTaskTitle(taskTitle)}
           />
-        </View>
+          <Text>Tell us more about what are you looking for.</Text>
 
-        {/* <View style={styles.dateContainer}>
-          <Text>This job should be done before:</Text>
-          <Button title="Show Prefared date" onPress={showDatePicker} />
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            //onConfirm={handleConfirm}
-            onCancel={hideDatePicker}
+          <TextInput
+            style={styles.taskDetails}
+            placeholder="  taskDetails"
+            placeholderTextColor={"#3c3744"}
+            onChangeText={(taskDetails) => setTaskDetails(taskDetails)}
           />
-        </View> */}
-        <TouchableOpacity
-          style={styles.buttonsView}
-          onPress={() => handelSubmit()}
-        >
-          <Text style={styles.buttonText}>Post</Text>
-        </TouchableOpacity>
+          <View>
+            <Text>task Speciality</Text>
+            <SelectList
+              setSelected={(val) => setSelected(val)}
+              data={specialities}
+              save="value"
+              label="Categories"
+              boxStyles={{marginTop:25}}
+            />
+          </View>
+
+          <View style={styles.PriceContainer}>
+            <Text style={styles.price}>Price:</Text>
+            <TextInput
+              style={styles.priceTxt}
+              placeholder="£"
+              onChangeText={(price) => setPrice(price)}
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.buttonsView}
+            onPress={() => handelSubmit()}
+          >
+            <Text style={styles.buttonText}>Post</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
