@@ -96,6 +96,9 @@ const Profile=({navigation}) =>{
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('EditProfile')}>
                   <Text style={styles.userBtnTxt}> Edit Profile</Text>
                 </TouchableRipple>
+                <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('ViewJobsAndApps')}>
+                  <Text style={styles.userBtnTxt}>View Jobs/Applications</Text>
+                </TouchableRipple>
               </View>
 
           <View style={styles.infoBoxWrapper}>
@@ -175,7 +178,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 3,
     paddingVertical: 10,
-    paddingHorizontal: 50,
+    paddingHorizontal: 10,
     marginHorizontal: 5,
   },
   userBtnTxt: {

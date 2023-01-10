@@ -12,6 +12,7 @@ function Job({route, navigation}){
     const [completed, setCompleted] = useState("");
     const [price, setPrice] = useState(null);
     const [username, setUsername] = useState(null);
+    const [sameUser, setSameUser] = useState(null);
     try {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php', {
             method: 'post',

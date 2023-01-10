@@ -50,11 +50,11 @@ const Post = ({ navigation }) => {
     }, []);
 
 
-  handelSubmit = () => {
+  handleSubmit = () => {
     if (price == 0) {
       alert("You have to set a price");
     }else if(taskTitle ==''){
-      alert("YOu need to add a title");
+      alert("You need to add a title");
     }else if(taskDetails == ''){
       alert("YOu need to add Job details");
     }else {
@@ -133,7 +133,7 @@ const Post = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={styles.buttonsView}
-            onPress={() => handelSubmit()}
+            onPress={() => handleSubmit()}
           >
             <Text style={styles.buttonText}>Post</Text>
           </TouchableOpacity>
