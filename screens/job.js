@@ -43,6 +43,11 @@ function Job({route, navigation}){
             }
             setPrice(responseJson[7]);
             setUsername(responseJson[8]);
+            if (userPostedID == global.userID){
+                setSameUser(true);
+            } else {
+                setSameUser(false);
+            }
         })
         .catch((error) => {
             console.log(error);
@@ -50,6 +55,22 @@ function Job({route, navigation}){
     } catch (error) {
         console.log(error);
     }
+
+    const renderButton = () => {
+        if (sameUser == false){
+            return (
+                <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('CreateApplication', {jobID})}>
+                    <Text>Create Application</Text>
+                </TouchableOpacity>
+            )
+        } else if (sameUser == true) {
+            return (
+                <TouchableOpacity styles={styles.applicationButton}>
+                    <Text>View Applications</Text>
+                </TouchableOpacity>        
+            );  
+        }
+    };
 
     return (
         <View styles={styles.container}>
@@ -78,10 +99,9 @@ function Job({route, navigation}){
                 <View styles={styles.row}>
                     <Text>Price: ${price}</Text>
                 </View>
+                <View>{renderButton()}</View>
             </View>
-            <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('CreateApplication', {jobID})}>
-                <Text>Create Application</Text>
-            </TouchableOpacity>
+            
         </View>
     );
 };
