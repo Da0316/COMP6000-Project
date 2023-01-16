@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import {View, useWindowDimensions, ScrollView} from 'react-native';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import ViewJob from "../components/ViewJob";
+import ViewApplication from "../components/ViewApplication";
 
 
 
@@ -30,7 +31,7 @@ export default ViewJobsAndApps = ({navigation}) => {
     const ApplicationView = () => (
         <ScrollView>
             {applicationID.map(object => {
-                return <ViewJob ID={object.id}/>
+                return <ViewApplication ID={object.id}/>
             })}
         </ScrollView>
     );
@@ -87,8 +88,6 @@ export default ViewJobsAndApps = ({navigation}) => {
             alert(error);
         });
     }, []);
-    console.log(jobID);
-    console.log(applicationID);
 
     return (
         <TabView

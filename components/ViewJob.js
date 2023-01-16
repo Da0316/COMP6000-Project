@@ -45,26 +45,26 @@ const ViewJob = ({ID}) => {
 
     return(
         <TouchableOpacity onPress={showJob}>
-        <View style={styles.container}>
-            {/* image */}
-            <Image source={{
-              
-                uri: "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg"
-            }}
-            style={styles.image}
-            />
-            <View style={{padding: 20}}>
+          <View style={styles.container}>
+              {/* image */}
+              <Image source={{
+                
+                  uri: "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg"
+              }}
+              style={styles.image}
+              />
+              <View style={{padding: 20}}>
 
-            {/* title */}
-            <Text style={styles.title}>{jobTitle}</Text>
+                {/* title */}
+                <Text style={styles.title}>{jobTitle}</Text>
 
-            {/* description*/}
-            <Text style={styles.description}>{jobDescription}</Text>
-       
-            {/* amount */}
-            <Text style={styles.amount}>£{price}/h </Text>
-            </View>
-        </View>
+                {/* description*/}
+                <Text style={styles.description}>{jobDescription}</Text>
+          
+                {/* amount */}
+                <Text style={styles.amount}>£{price}/h </Text>
+              </View>
+          </View>
         </TouchableOpacity>
     )
         }
