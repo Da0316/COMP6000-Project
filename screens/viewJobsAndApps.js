@@ -4,12 +4,8 @@ import {TabView, SceneMap} from 'react-native-tab-view';
 import ViewJob from "../components/ViewJob";
 import ViewApplication from "../components/ViewApplication";
 
-
-
 export default ViewJobsAndApps = ({navigation}) => {
     const layout = useWindowDimensions();
-
-    
 
     const [index, setIndex] = useState(0);
     const [routes] = useState([
@@ -35,6 +31,7 @@ export default ViewJobsAndApps = ({navigation}) => {
             })}
         </ScrollView>
     );
+    
     useEffect(() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/getJobs.php', {
         method: 'post',
