@@ -4,22 +4,21 @@ import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 const ViewApplication = ({ID}) => {
-    const applicationID = ID;
     const [jobID, setJobID] = useState('');
     const [price, setPrice] = useState('');
     const [date, setDate] = useState('');
     const [userApplicationID, setUserApplicationID] = useState('');
+    const [status, setStatus] = useState('');
     const [jobTitle, setJobTitle] = useState('');
 
-    useEffect(() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/applicationThumbnail.php', { //needs to be changed to your own ip
             method: 'post', 
             header: {
                 Accept: 'application/json',
-                'Content-type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                ID: applicationID
+                applicationID: ID
             }),
         })
         .then((response) => response.json())
@@ -28,35 +27,34 @@ const ViewApplication = ({ID}) => {
             setDate(responseJson[1]);
             setUserApplicationID(responseJson[2]);
             setPrice(responseJson[3]);
+            setStatus(responseJson[4])
         })
         .catch((error) => {
             console.error(error);
         });
-    }, []);
 
-    useEffect(() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php', { //needs to be changed to your own ip
             method: 'post', 
-            header: {
+            headers: {
                 Accept: 'application/json',
-                'Content-type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 jobID: jobID
             }),
         })
         .then((response) => response.json())
-        .then((responseJson) => {  
+        .then((responseJson) => { 
+            console.log(responseJson);
             setJobTitle(responseJson[2]);
         })
         .catch((error) => {
             console.error(error);
         });
-    }, []);
 
     return (
         <TouchableOpacity>
-            <View styles={styles.container}>
+            <View style={styles.container}>
                 <Image source={{
                     
                     uri: "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg"

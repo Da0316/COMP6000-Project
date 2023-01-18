@@ -28,6 +28,7 @@ CREATE TABLE `applications` (
   `userID` int NOT NULL,
   `application_date` date NOT NULL,
   `price_offer` int NOT NULL,
+  `status` int NOT NULL,
   PRIMARY KEY (`applicationID`),
   KEY `jobID_idx` (`jobID`),
   KEY `userID_idx` (`userID`)

@@ -18,7 +18,7 @@ const ViewJob = ({ID}) => {
           method: 'post', 
           header: {
             Accept: 'application/json',
-            'Content-type': 'application/json',
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             jobID: ID,
@@ -67,8 +67,7 @@ const ViewJob = ({ID}) => {
           </View>
         </TouchableOpacity>
     )
-        }
-
+}
 
 export default ViewJob;
 

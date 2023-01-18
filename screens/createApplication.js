@@ -8,7 +8,6 @@ function CreateApplication({route, navigation}){
     const [priceOffer, setPriceOffer] = useState('');
     
     const submit = () => {
-      console.log(jobID);
         if (priceOffer != ''){
             fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/createApplication.php', {
                 method: 'post',
@@ -25,8 +24,9 @@ function CreateApplication({route, navigation}){
             })
             .then((response) => response.text())
             .then((responseJson) => {
-                alert("Application Sent!");
-                navigation.navigate('HomeScreen')
+              console.log(responseJson);
+              alert("Application Sent!");
+              navigation.navigate('HomeScreen')
             })
             .catch((error)=> {
                 console.error(error);

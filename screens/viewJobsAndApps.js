@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {View, useWindowDimensions, ScrollView} from 'react-native';
+import {Text, View, useWindowDimensions, ScrollView} from 'react-native';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import ViewJob from "../components/ViewJob";
 import ViewApplication from "../components/ViewApplication";
@@ -16,10 +16,12 @@ export default ViewJobsAndApps = ({navigation}) => {
     const [jobID, setJobID] = useState([]);
     const [applicationID, setApplicationID] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(true);
+
     const JobView = () => (
         <ScrollView>
             {jobID.map(object => {
-                return <ViewJob ID={object.id}/>
+                return <ViewJob key={object.id} ID={object.id}/>
             })}
         </ScrollView>
     );
@@ -27,17 +29,17 @@ export default ViewJobsAndApps = ({navigation}) => {
     const ApplicationView = () => (
         <ScrollView>
             {applicationID.map(object => {
-                return <ViewApplication ID={object.id}/>
+                return <ViewApplication key={object.id} ID={object.id} />
             })}
         </ScrollView>
     );
     
-    useEffect(() => {
+   useEffect(() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/getJobs.php', {
         method: 'post',
         header: {
             Accept: 'application/json',
-            'Content-type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             id: global.userID,
@@ -53,6 +55,7 @@ export default ViewJobsAndApps = ({navigation}) => {
                 ids.push(object)
             };
             setJobID(ids);
+            setIsLoading(false);
         })
         .catch((error) => {
             alert(error);
@@ -64,7 +67,7 @@ export default ViewJobsAndApps = ({navigation}) => {
         method: 'post',
         header: {
             Accept: 'application/json',
-            'Content-type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             id: global.userID,
@@ -80,12 +83,12 @@ export default ViewJobsAndApps = ({navigation}) => {
                 ids.push(object)
             };
             setApplicationID(ids);
+            setIsLoading(false);
         })
         .catch((error) => {
             alert(error);
         });
-    }, []);
-
+   }, []);
     return (
         <TabView
             navigationState={{index, routes}}
@@ -95,6 +98,8 @@ export default ViewJobsAndApps = ({navigation}) => {
                 })}
             onIndexChange={setIndex}
             initialLayout={{width: layout.width}}
-        />
+        >
+            {isLoading && <Text>Loading...</Text>}
+        </TabView>
     );
 }
