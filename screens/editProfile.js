@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { View,
         Text,
         Button,
@@ -13,18 +13,24 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
 
+
+
+
 const EditProfile = ({navigation}) => {
-    const [username, setUsername] =useState('');
-    const [firstname, setFirstname] =useState('');
-    const [lastname, setLastname] =useState('');
-    const [email,setEmail] =useState('');
+    const [username, setUsername] = useState('');
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [email,setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [phone_number, setPhone_number] = useState('');
 
+
+
     useEffect(() => {
-      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/get-profile-data.php')
-      .then((response) =>
-      response.json())
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php')
+      .then(response => {
+        return response.json();
+      })
       .then((data) => {
         setUsername(data.username);
         setFirstname(data.firstname);
@@ -32,11 +38,14 @@ const EditProfile = ({navigation}) => {
         setEmail(data.email);
         setAddress(data.address);
         setPhone_number(data.phone_number);
+    })
+    .catch((error) => {
+      console.error(error);
     });
     }, []);
 
     const handelSubmit = () => {
-      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/update-profile-data.php',
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php',
     {
       method: 'POST',
       body: JSON.stringify({
@@ -95,7 +104,7 @@ const EditProfile = ({navigation}) => {
                 <View style={styles.action}>
                     <FontAwesome name="user-o" size={20} />
                     <TextInput 
-                    placeholder="First Name"
+                    placeholder= {firstname}
                     placeholderTextColor="#666666"
                     autoCorrect={false}
                     style={styles.textInput}
