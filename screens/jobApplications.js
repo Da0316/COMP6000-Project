@@ -38,7 +38,7 @@ function JobApplications ({route, navigation}) {
             alert(error);
         });
     }, []);
-    console.log(isApplicationEmpty);
+    
     if (isApplicationEmpty == false){
         return (
             <ScrollView>

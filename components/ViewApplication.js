@@ -50,7 +50,7 @@ const ViewApplication = ({ID}) => {
                 />
                 <View style={{padding: 20}}>
                     <Text style={styles.title}>{jobTitle}</Text>
-                    <Text style={styles.description}>{status}</Text>
+                    <Text style={styles.description}>Status: {status}</Text>
                     <Text style={styles.amount}>Price offer: £{price}/h</Text>
                 </View>
             </View>
