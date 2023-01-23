@@ -27,7 +27,13 @@ const ViewApplication = ({ID}) => {
             setDate(responseJson[1]);
             setUserApplicationID(responseJson[2]);
             setPrice(responseJson[3]);
-            setStatus(responseJson[4])
+            if (responseJson[4] == -1){
+                setStatus("Rejected");
+            } else if (responseJson[4] == 0){
+                setStatus("Pending");
+            } else if (responseJson[4] == 1){
+                setStatus("Accepted");
+            }
         })
         .catch((error) => {
             console.error(error);
@@ -45,7 +51,6 @@ const ViewApplication = ({ID}) => {
         })
         .then((response) => response.json())
         .then((responseJson) => { 
-            console.log(responseJson);
             setJobTitle(responseJson[2]);
         })
         .catch((error) => {
@@ -56,13 +61,13 @@ const ViewApplication = ({ID}) => {
         <TouchableOpacity>
             <View style={styles.container}>
                 <Image source={{
-                    
                     uri: "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg"
                 }}
                 style={styles.image}
                 />
                 <View style={{padding: 20}}>
                     <Text style={styles.title}>{jobTitle}</Text>
+                    <Text style={styles.description}>{status}</Text>
                     <Text style={styles.amount}>Price offer: £{price}/h</Text>
                 </View>
             </View>

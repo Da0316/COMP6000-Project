@@ -21,6 +21,7 @@ const Post = ({ navigation }) => {
   const [price, setPrice] = useState('');
   const [taskTitle, setTaskTitle] = useState('');
   const [specialities, setSpecialities] = useState([]);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php', {
@@ -51,12 +52,13 @@ const Post = ({ navigation }) => {
 
 
   handleSubmit = () => {
+    console.log(selected);
     if (price == 0) {
       alert("You have to set a price");
     }else if(taskTitle ==''){
       alert("You need to add a title");
     }else if(taskDetails == ''){
-      alert("YOu need to add Job details");
+      alert("You need to add Job details");
     }else {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/post.php", {
         method: "post",
@@ -68,13 +70,22 @@ const Post = ({ navigation }) => {
             taskT: taskTitle,
             taskD: taskDetails,
             p: price,
-            ID: global.userID
+            ID: global.userID,
+            speciality: selected,
         }),
       })
         .then((response) => response.text())
         .then((responseJson) => {
-          alert("job added Successfully");
-          navigation.navigate("HomeScreen");
+          if (responseJson == 1){
+            alert("Job Added Successfully");
+            setTaskDetails('');
+            setPrice('');
+            setSelected(null);
+            setTaskTitle('');
+            navigation.navigate("HomeScreen");
+          } else if (responseJson == -1){
+            alert("An error has occured")
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -113,7 +124,7 @@ const Post = ({ navigation }) => {
             onChangeText={(taskDetails) => setTaskDetails(taskDetails)}
           />
           <View>
-            <Text>task Speciality</Text>
+            <Text>Task speciality</Text>
             <SelectList
               setSelected={(val) => setSelected(val)}
               data={specialities}

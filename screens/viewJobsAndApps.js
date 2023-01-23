@@ -17,6 +17,8 @@ export default ViewJobsAndApps = ({navigation}) => {
     const [applicationID, setApplicationID] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
+    const [isApplicationEmpty, setIsApplicationEmpty] = useState(false);
+    const [isJobEmpty, setIsJobEmpty] = useState(false);
 
     const JobView = () => (
         <ScrollView>
@@ -34,6 +36,18 @@ export default ViewJobsAndApps = ({navigation}) => {
         </ScrollView>
     );
     
+    const emptyJobView = () => (
+        <View>
+            <Text>No Jobs Posted</Text>
+        </View>
+    )
+
+    const emptyApplicationView = () => (
+        <View>
+            <Text>No Applications Posted</Text>
+        </View>
+    )
+    
    useEffect(() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/getJobs.php', {
         method: 'post',
@@ -47,14 +61,18 @@ export default ViewJobsAndApps = ({navigation}) => {
         })
         .then((response) => response.json())
         .then((responseJson) => {
-            const ids = [];
-            for (let i = 0; i < responseJson.length; i++){
-                let object = {
-                    id: responseJson[i],
+            if (responseJson == -1){
+                setIsJobEmpty(true)
+            } else {
+                const ids = [];
+                for (let i = 0; i < responseJson.length; i++){
+                    let object = {
+                        id: responseJson[i],
+                    };
+                    ids.push(object)
                 };
-                ids.push(object)
-            };
-            setJobID(ids);
+                setJobID(ids);  
+            }
             setIsLoading(false);
         })
         .catch((error) => {
@@ -75,31 +93,80 @@ export default ViewJobsAndApps = ({navigation}) => {
         })
         .then((response) => response.json())
         .then((responseJson) => {
-            const ids = [];
-            for (let i = 0; i < responseJson.length; i++){
-                let object = {
-                    id: responseJson[i],
+            if (responseJson == -1){
+                setIsApplicationEmpty(true);
+            } else {
+                const ids = [];
+                for (let i = 0; i < responseJson.length; i++){
+                    let object = {
+                        id: responseJson[i],
+                    };
+                    ids.push(object)
                 };
-                ids.push(object)
-            };
-            setApplicationID(ids);
-            setIsLoading(false);
+                setApplicationID(ids);
+            }
+            setIsLoading(false);        
         })
         .catch((error) => {
             alert(error);
         });
-   }, []);
-    return (
-        <TabView
-            navigationState={{index, routes}}
-            renderScene={SceneMap({
-                first: JobView,
-                second: ApplicationView,
-                })}
-            onIndexChange={setIndex}
-            initialLayout={{width: layout.width}}
-        >
-            {isLoading && <Text>Loading...</Text>}
-        </TabView>
-    );
+    }, []); 
+
+    if (isApplicationEmpty == true && isJobEmpty == true){
+        return (
+            <TabView
+                navigationState={{index, routes}}
+                renderScene={SceneMap({
+                    first: emptyJobView,
+                    second: emptyApplicationView,
+                    })}
+                onIndexChange={setIndex}
+                initialLayout={{width: layout.width}}
+            >
+                {isLoading && <Text>Loading...</Text>}
+            </TabView>
+        );
+    } else if (isApplicationEmpty == false && isJobEmpty == true){
+        return (
+            <TabView
+                navigationState={{index, routes}}
+                renderScene={SceneMap({
+                    first: emptyJobView,
+                    second: ApplicationView,
+                    })}
+                onIndexChange={setIndex}
+                initialLayout={{width: layout.width}}
+            >
+                {isLoading && <Text>Loading...</Text>}
+            </TabView>
+        );
+    } else if (isApplicationEmpty == true && isJobEmpty == false){
+        return (
+            <TabView
+                navigationState={{index, routes}}
+                renderScene={SceneMap({
+                    first: JobView,
+                    second: emptyApplicationView,
+                    })}
+                onIndexChange={setIndex}
+                initialLayout={{width: layout.width}}
+            >
+                {isLoading && <Text>Loading...</Text>}
+            </TabView>
+        );
+    } else if (isApplicationEmpty == false && isJobEmpty == false){
+        return (
+            <TabView
+                navigationState={{index, routes}}
+                renderScene={SceneMap({
+                    first: JobView,
+                    second: ApplicationView,
+                    })}
+                onIndexChange={setIndex}
+                initialLayout={{width: layout.width}}
+            >
+                {isLoading && <Text>Loading...</Text>}
+            </TabView>
+        );
+    };   
 }
