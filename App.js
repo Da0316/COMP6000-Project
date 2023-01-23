@@ -12,7 +12,8 @@ import nav from './navigation/NavContainter';
 import job from './screens/job'
 import createApplication from './screens/createApplication'
 import selectSpecialities from './screens/selectSpecialities'
-import viewJobsAndApps from './screens/viewJobsAndApps';
+import ViewJobsAndApps from './screens/viewJobsAndApps';
+import jobApplications from './screens/jobApplications';
 
 
 //will need to import any new screens 
@@ -82,6 +83,7 @@ export default function App(navigation) {
         <Stack.Screen name="SelectSpecialities" component={selectSpecialities}/>
         <Stack.Screen name="Job" component={job}/>
         <Stack.Screen name="CreateApplication" component={createApplication}/>
+        <Stack.Screen name="JobApplications" component={jobApplications}/>
         <Stack.Screen name="ViewJobsAndApps" component={ViewJobsAndApps}/>
         <Stack.Screen name="HomeScreen" component={StackScreen} options={{ headerShown: false }}/>
       </Stack.Navigator>
