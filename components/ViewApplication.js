@@ -39,9 +39,11 @@ const ViewApplication = ({ID}) => {
     .catch((error) => {
         console.error(error);
     });
+    const nav = useNavigation();
+    const showApplication = () =>nav.navigate('Application', {ID});
 
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={showApplication}>
             <View style={styles.container}>
                 <Image source={{
                     uri: "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg"

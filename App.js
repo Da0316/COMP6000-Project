@@ -14,6 +14,7 @@ import createApplication from './screens/createApplication'
 import selectSpecialities from './screens/selectSpecialities'
 import ViewJobsAndApps from './screens/viewJobsAndApps';
 import jobApplications from './screens/jobApplications';
+import application from './screens/application';
 
 
 //will need to import any new screens 
@@ -84,6 +85,7 @@ export default function App(navigation) {
         <Stack.Screen name="Job" component={job}/>
         <Stack.Screen name="CreateApplication" component={createApplication}/>
         <Stack.Screen name="JobApplications" component={jobApplications}/>
+        <Stack.Screen name="Application" component={application}/>
         <Stack.Screen name="ViewJobsAndApps" component={ViewJobsAndApps}/>
         <Stack.Screen name="HomeScreen" component={StackScreen} options={{ headerShown: false }}/>
       </Stack.Navigator>
