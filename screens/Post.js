@@ -5,6 +5,7 @@ import {
   MultipleSelectList,
 } from "react-native-dropdown-select-list";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import * as ImagePicker from 'expo-image-picker';
 import {
   StyleSheet,
   Text,
@@ -21,6 +22,8 @@ const Post = ({ navigation }) => {
   const [price, setPrice] = useState('');
   const [taskTitle, setTaskTitle] = useState('');
   const [specialities, setSpecialities] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php', {
@@ -51,12 +54,13 @@ const Post = ({ navigation }) => {
 
 
   handleSubmit = () => {
+    console.log(selected);
     if (price == 0) {
       alert("You have to set a price");
     }else if(taskTitle ==''){
       alert("You need to add a title");
     }else if(taskDetails == ''){
-      alert("YOu need to add Job details");
+      alert("You need to add Job details");
     }else {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/post.php", {
         method: "post",
@@ -68,13 +72,22 @@ const Post = ({ navigation }) => {
             taskT: taskTitle,
             taskD: taskDetails,
             p: price,
-            ID: global.userID
+            ID: global.userID,
+            speciality: selected,
         }),
       })
         .then((response) => response.text())
         .then((responseJson) => {
-          alert("job added Successfully");
+          if (responseJson == 1){
+            alert("Job Added Successfully");
+            setTaskDetails('');
+            setPrice('');
+            setSelected(null);
+            setTaskTitle('');
           navigation.navigate("HomeScreen");
+          } else if (responseJson == -1){
+            alert("An error has occured")
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -90,6 +103,20 @@ const Post = ({ navigation }) => {
     setDatePickerVisibility(false);
   };
 
+  //image picker added 
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      //setSelectedImage(result.assets[0].uri);
+      console.log(result);
+    } else {
+      alert('You did not select any image.');
+    }
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -113,7 +140,7 @@ const Post = ({ navigation }) => {
             onChangeText={(taskDetails) => setTaskDetails(taskDetails)}
           />
           <View>
-            <Text>task Speciality</Text>
+            <Text>Task speciality</Text>
             <SelectList
               setSelected={(val) => setSelected(val)}
               data={specialities}
@@ -137,6 +164,13 @@ const Post = ({ navigation }) => {
           >
             <Text style={styles.buttonText}>Post</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonsView}
+            onPress={() => pickImageAsync()}
+          >
+            <Text style={styles.buttonText}>Upload Image</Text>
+          </TouchableOpacity>
+          
         </View>
       </View>
     </ScrollView>
