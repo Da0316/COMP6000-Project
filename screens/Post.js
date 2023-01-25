@@ -5,6 +5,7 @@ import {
   MultipleSelectList,
 } from "react-native-dropdown-select-list";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import * as ImagePicker from 'expo-image-picker';
 import {
   StyleSheet,
   Text,
@@ -22,6 +23,7 @@ const Post = ({ navigation }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [specialities, setSpecialities] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php', {
@@ -82,7 +84,7 @@ const Post = ({ navigation }) => {
             setPrice('');
             setSelected(null);
             setTaskTitle('');
-            navigation.navigate("HomeScreen");
+          navigation.navigate("HomeScreen");
           } else if (responseJson == -1){
             alert("An error has occured")
           }
@@ -101,6 +103,20 @@ const Post = ({ navigation }) => {
     setDatePickerVisibility(false);
   };
 
+  //image picker added 
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      //setSelectedImage(result.assets[0].uri);
+      console.log(result);
+    } else {
+      alert('You did not select any image.');
+    }
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -148,6 +164,13 @@ const Post = ({ navigation }) => {
           >
             <Text style={styles.buttonText}>Post</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonsView}
+            onPress={() => pickImageAsync()}
+          >
+            <Text style={styles.buttonText}>Upload Image</Text>
+          </TouchableOpacity>
+          
         </View>
       </View>
     </ScrollView>
