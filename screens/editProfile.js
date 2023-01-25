@@ -27,36 +27,50 @@ const EditProfile = ({navigation}) => {
 
 
     useEffect(() => {
-      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php')
-      .then(response => {
-        return response.json();
-      })
-      .then((data) => {
-        setUsername(data.username);
-        setFirstname(data.firstname);
-        setLastname(data.lastname);
-        setEmail(data.email);
-        setAddress(data.address);
-        setPhone_number(data.phone_number);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
+            method: 'post',
+            header: {
+                Accept: 'application/json',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                //userID: 1
+                userID: userID
+            }),
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          //console.log(responseJson[0]);
+          //setUserID(responseJson[0])
+          setUsername(responseJson[1])
+          setFirstname(responseJson[2]);
+          setLastname(responseJson[3]);
+          setAddress(responseJson[5]);
+          setEmail(responseJson[6]);
+          setPhone_number(responseJson[7]);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }, []);
 
     const handelSubmit = () => {
-      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php',
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        username,
-        firstname,
-        lastname,
-        email,
-        address,
-        phone_number
-      }),
-    });
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php', {
+        method: 'post',
+        header:{
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          
+          username: username,
+          firstname: firstname,
+          lastname: lastname,
+          email: email,
+          address: address,
+          phone: phone_number,
+        }),
+      })
 
     };
         
