@@ -31,12 +31,41 @@ function Application({route, navigation}){
         console.log(error);
     }
     
+    const handleAction = (choice) => {
+        fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/acceptReject.php', {
+        method: 'post',
+        header: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            applicationID: applicationID,
+            choice: choice
+        })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+              if (responseJson == 1 && choice == "Accept") {
+                alert("Application Accepted, Chatroom opened!");
+                navigation.navigate("HomeScreen");
+              } else if (responseJson == 1 && choice == "Reject") {
+                alert("Application Rejected");
+              } else if (responseJson == -1) {
+                alert("error");
+              }
+        })
+        .catch((error) => {
+            alert(error);
+        });
+    }
+
+    let status;
     if (applicationStatus == -1){
-        const status = "Rejected";
+        status = "Rejected";
     } else if (applicationStatus == 0){
-        const status = "Pending";
+        status = "Pending";
     } else if (applicationStatus == 1){
-        const status = "Accepted";
+        status = "Accepted";
     }
 
     if (userAppID == global.userID){
@@ -54,12 +83,20 @@ function Application({route, navigation}){
                     <Text>Price Offered: ${priceOffer}</Text>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.acceptButton}>
-                        <Button title="Accept"></Button>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.rejectButton}>
-                        <Button title="Reject"></Button>
-                    </TouchableOpacity>
+                    <View style={styles.button}>
+                        <Button
+                            title="Accept"
+                            color="green"
+                            onPress={() => handleAction("Accept")}
+                        />
+                    </View>
+                    <View style={styles.button}>
+                        <Button
+                            title="Reject"
+                            color="red"
+                            onPress={() => handleAction("Reject")}
+                        />
+                </View>
                 </View>
             </View>
         );
@@ -75,20 +112,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        bottom:0,
-        left:0,
+        bottom: 0,
+        left: 0,
     },
-    acceptButton: {
+    button: {
         flex: 1,
-        backgroundColor: 'green',
-    },
-    rejectButton: {
-        flex: 1,
-        backgroundColor: 'red',
     },
     mainView: {
-        martinTop:40,
+        marginTop: 40,
         flex: 1,
-        flexDirection:'column',
+        flexDirection: 'column',
     }
 });
