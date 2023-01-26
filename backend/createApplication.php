@@ -7,8 +7,9 @@ $jobID = $obj['jobID'];
 $userID = $obj['userID'];
 $application_date = date('Y-m-d');
 $price_offer = $obj['price_offer'];
+$status = 0;
 
-$query = "INSERT INTO applications (jobID, userID, application_date, price_offer) VALUES ('" . $jobID . "', '" . $userID . "', '" . $application_date . "', '" . $price_offer . "')";
+$query = "INSERT INTO applications (jobID, userID, application_date, price_offer, status) VALUES ('" . $jobID . "', '" . $userID . "', '" . $application_date . "', '" . $price_offer . "', '" . $status . "')";
 $result = $mysqli->query($query);
 
 if ($result){

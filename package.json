@@ -25,6 +25,7 @@
     "expo": "^47.0.13",
     "expo-cli": "^4.3.0",
     "expo-constants": "^14.0.2",
+    "expo-image-picker": "^14.0.2",
     "expo-status-bar": "~1.4.2",
     "express": "^4.18.2",
     "firebase": "^9.16.0",

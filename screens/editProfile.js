@@ -56,7 +56,7 @@ const EditProfile = ({navigation}) => {
 
     const handelSubmit = () => {
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php', {
-        method: 'post',
+        method: 'patch',
         header:{
           Accept: 'application/json',
           'Content-type': 'application/json',
@@ -70,6 +70,9 @@ const EditProfile = ({navigation}) => {
           address: address,
           phone: phone_number,
         }),
+        catch(error){
+          alert("Error");
+        }
       })
 
     };
