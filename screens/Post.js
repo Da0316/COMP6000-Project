@@ -112,7 +112,34 @@ const Post = ({ navigation }) => {
 
     if (!result.canceled) {
       //setSelectedImage(result.assets[0].uri);
-      console.log(result);
+      //console.log(result);
+      let localUri = result.assets[0].uri;
+      let filename = localUri.split('/').pop();
+
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+      console.log(localUri);
+      const formData = new FormData();
+      formData.append('name', {
+          name: filename, 
+          type: type, 
+          uri: localUri });
+
+      
+
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then((response) => response.text())
+      .then((responseJson) => {
+        console.log(responseJson);
+      
+    }).catch((error) => {
+      console.error(error);
+    });
     } else {
       alert('You did not select any image.');
     }
