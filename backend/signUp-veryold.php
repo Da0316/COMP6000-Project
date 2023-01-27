@@ -26,13 +26,13 @@ if ($obj['email'] != "") {
 
 	$result = $mysqli->query($query);
 	
-	//$query = sprintf(
-		//"SELECT * FROM user WHERE username= '%s' limit 1",
-		//$mysqli->real_escape_string($username)
-	//);
-	//$result1 = $mysqli->query($query);
-	//&& $result1->num_rows > 0
-	if ($result->num_rows > 0 ) {
+	$query = sprintf(
+		"SELECT * FROM user WHERE username= '%s' limit 1",
+		$mysqli->real_escape_string($username)
+	);
+	$result1 = $mysqli->query($query);
+
+	if ($result->num_rows > 0 && $result->num_rows > 0) {
 		echo json_encode('email already exist');  // alert msg in react native		 		
 	} else {
 		//    $add = $mysqli->query("insert into users (name,email,password) values('$name','$email','$password')");
@@ -51,16 +51,10 @@ if ($obj['email'] != "") {
 			$mysqli->real_escape_string($phone)
 			
 		);
-		
-		//echo json_encode($result);
+
 		$result = $mysqli->query($query);
-		//echo json_encode($query);
 		if ($result) {
-			$query2 = "SELECT userID FROM user WHERE username = '" . $username . "'";
-			$result2 = $mysqli->query($query2);
-			$row2 = mysqli_fetch_assoc($result2);
-			$userID = $row2['userID'];
-			echo json_encode($userID); // alert msg in react native
+			echo  json_encode('User Registered Successfully, please login'); // alert msg in react native
 		} else {
 			echo json_encode('check internet connection'); // our query fail 		
 		}

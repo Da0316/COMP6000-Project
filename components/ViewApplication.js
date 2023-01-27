@@ -8,6 +8,7 @@ const ViewApplication = ({ID}) => {
     const [price, setPrice] = useState('');
     const [date, setDate] = useState('');
     const [userApplicationID, setUserApplicationID] = useState('');
+    const [statusNum, setStatusNum] = useState();
     const [status, setStatus] = useState('');
     const [jobTitle, setJobTitle] = useState('');
 
@@ -27,6 +28,7 @@ const ViewApplication = ({ID}) => {
         setDate(responseJson[1]);
         setUserApplicationID(responseJson[2]);
         setPrice(responseJson[3]);
+        setStatusNum(responseJson[4]);
         if (responseJson[4] == -1){
             setStatus("Rejected");
         } else if (responseJson[4] == 0){
@@ -40,7 +42,7 @@ const ViewApplication = ({ID}) => {
         console.error(error);
     });
     const nav = useNavigation();
-    const showApplication = () =>nav.navigate('Application', {ID});
+    const showApplication = () =>nav.navigate('Application', {ID, price, date, userApplicationID, statusNum});
 
     return (
         <TouchableOpacity onPress={showApplication}>

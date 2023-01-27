@@ -15,6 +15,9 @@ import selectSpecialities from './screens/selectSpecialities'
 import ViewJobsAndApps from './screens/viewJobsAndApps';
 import jobApplications from './screens/jobApplications';
 import application from './screens/application';
+import viewProfile from './screens/viewProfile';
+
+ 
 
 
 //will need to import any new screens 
@@ -74,7 +77,8 @@ function ProfileStack() {
 const Stack = createStackNavigator();
 //<NavContainter/>
 export default function App(navigation) {
-  
+
+ 
   return (
     
     <NavigationContainer>
@@ -88,6 +92,8 @@ export default function App(navigation) {
         <Stack.Screen name="Application" component={application}/>
         <Stack.Screen name="ViewJobsAndApps" component={ViewJobsAndApps}/>
         <Stack.Screen name="HomeScreen" component={StackScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="ViewProfile" component={viewProfile}/>
+
       </Stack.Navigator>
     </NavigationContainer>
   );  

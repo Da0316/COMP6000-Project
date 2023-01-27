@@ -3,7 +3,7 @@ include 'config.php';
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
 $jobID = $obj['jobID'];
-if (isset($obj["jobID"]) != ""){
+if (isset($obj['jobID']) != ""){
     $query = "SELECT * FROM jobs WHERE jobID = " . $jobID;
     $result = $mysqli->query($query);
     if ($result->num_rows > 0){
