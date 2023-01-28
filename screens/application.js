@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native';
+import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/database'
 
 function Application({route, navigation}){
     const {ID:applicationID} = route.params;
@@ -8,6 +9,7 @@ function Application({route, navigation}){
     const {date:applicationDate} = route.params;
     const {statusNum:applicationStatus} = route.params;
     const {userApplicationID:userAppID} = route.params;
+    const {jobTitle:jTitle} = route.params;
     
     try {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
@@ -31,6 +33,83 @@ function Application({route, navigation}){
         console.log(error);
     }
     
+    const onAddFriend = async () => {
+        let usernameLoggedIn = '';
+        try {
+            fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
+                method: 'post',
+                header: {
+                    Accept: 'application/json',
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userID: global.userID,
+                }),
+            })    
+            .then((response) => response.json())
+            .then((responseJson) => {
+                usernameLoggedIn = String(responseJson[1]);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+            const database = getDatabase();
+
+            const userAppliedSnapShot = await get(ref(database, 'users/' + String(usernameApplied)));
+            const userApplied = userAppliedSnapShot.val();
+
+            const userLoggedInSnapShot = await get(ref(database, 'users/' + usernameLoggedIn));
+            const userLoggedIn = userLoggedInSnapShot.val();
+
+            const newChatRoomRef = push(ref(database, 'chatrooms'), {
+                firstUser: usernameLoggedIn,
+                secondUser: String(usernameApplied),
+                messages: [],
+            })
+
+            const newChatroomID = newChatRoomRef.key;
+            const userAppliedFriends = userApplied.friends || [];
+
+            update(ref(database, 'users/' + userApplied.username), {
+                friends: [
+                    ...userAppliedFriends,
+                    {
+                        username: userLoggedIn.username,
+                        avatar: userLoggedIn.avatar,
+                        chatRoomId: newChatroomID,
+                    },
+                ],
+            });
+
+            const myFriends = userLoggedIn.friends || [];
+
+            update(ref(database, 'users/' + userLoggedIn.username), {
+                friends: [
+                    ...myFriends,
+                    {
+                        username: userApplied.username,
+                        avatar: userApplied.avatar,
+                        chatRoomId: newChatroomID,
+                    },
+                ],
+            });
+
+            /*update(ref(database, 'chatrooms/' + newChatroomID), {
+                message: [
+                    {
+                        text: usernameLoggedIn + " has accepted your application for '" + jTitle + "' at the rate of £" + priceOffer + "/hr.",
+                        sender: userLoggedIn.username,
+                        createdAt: new Date(),
+                    },
+                ],
+            });*/
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const handleAction = (choice) => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/acceptReject.php', {
         method: 'post',
@@ -47,6 +126,7 @@ function Application({route, navigation}){
         .then((responseJson) => {
               if (responseJson == 1 && choice == "Accept") {
                 alert("Application Accepted, Chatroom opened!");
+                onAddFriend();
                 navigation.navigate("HomeScreen");
               } else if (responseJson == 1 && choice == "Reject") {
                 alert("Application Rejected");

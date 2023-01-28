@@ -42,7 +42,7 @@ const ViewApplication = ({ID}) => {
         console.error(error);
     });
     const nav = useNavigation();
-    const showApplication = () =>nav.navigate('Application', {ID, price, date, userApplicationID, statusNum});
+    const showApplication = () =>nav.navigate('Application', {ID, price, date, userApplicationID, statusNum, jobTitle});
 
     return (
         <TouchableOpacity onPress={showApplication}>

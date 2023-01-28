@@ -81,7 +81,6 @@ export default function ChatApp(){
             const user = await findUser(name);
             if (user){
                 if (user.username == myData.username){
-                    console.log("ll");
                     return;
                 }
                 if (myData.friends && myData.friends.findIndex(f=>f.username === user.username) > 0) {

@@ -10,7 +10,7 @@ export default function Chat({onBack, myData, selectedUser}) {
     //load old messages
     const loadData = async () => {
       const myChatroom = await fetchMessages();
-
+      console.log(myChatroom);
       setMessages(renderMessages(myChatroom.messages));
     };
 
@@ -19,8 +19,10 @@ export default function Chat({onBack, myData, selectedUser}) {
     // set chatroom change listener
     const database = getDatabase();
     const chatroomRef = ref(database, `chatrooms/${selectedUser.chatroomId}`);
+    console.log(selectedUser);
     onValue(chatroomRef, snapshot => {
       const data = snapshot.val();
+      console.log(data);
       setMessages(renderMessages(data.messages));
     });
 
