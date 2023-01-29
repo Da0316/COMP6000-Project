@@ -57,15 +57,15 @@ function Application({route, navigation}){
 
             const database = getDatabase();
 
-            const userAppliedSnapShot = await get(ref(database, 'users/' + String(usernameApplied)));
+            const userAppliedSnapShot = await get(ref(database, 'users/' + usernameApplied));
             const userApplied = userAppliedSnapShot.val();
 
             const userLoggedInSnapShot = await get(ref(database, 'users/' + usernameLoggedIn));
             const userLoggedIn = userLoggedInSnapShot.val();
-
+            
             const newChatRoomRef = push(ref(database, 'chatrooms'), {
-                firstUser: usernameLoggedIn,
-                secondUser: String(usernameApplied),
+                firstUser: userLoggedIn.username,
+                secondUser: userApplied.username,
                 messages: [],
             })
 
@@ -78,7 +78,7 @@ function Application({route, navigation}){
                     {
                         username: userLoggedIn.username,
                         avatar: userLoggedIn.avatar,
-                        chatRoomId: newChatroomID,
+                        chatroomId: newChatroomID,
                     },
                 ],
             });
@@ -91,20 +91,20 @@ function Application({route, navigation}){
                     {
                         username: userApplied.username,
                         avatar: userApplied.avatar,
-                        chatRoomId: newChatroomID,
+                        chatroomId: newChatroomID,
                     },
                 ],
             });
 
-            /*update(ref(database, 'chatrooms/' + newChatroomID), {
-                message: [
+            update(ref(database, 'chatrooms/' + newChatroomID), {
+                messages: [
                     {
                         text: usernameLoggedIn + " has accepted your application for '" + jTitle + "' at the rate of £" + priceOffer + "/hr.",
                         sender: userLoggedIn.username,
                         createdAt: new Date(),
                     },
                 ],
-            });*/
+            });
         } catch (error) {
             console.log(error);
         }
