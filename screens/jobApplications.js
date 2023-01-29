@@ -6,6 +6,7 @@ function JobApplications ({route, navigation}) {
     const {jobID} = route.params;
     const [applications, setApplications] = useState([]);
     const [isApplicationEmpty, setIsApplicationEmpty] = useState(null);
+    const [applicationHasBeenAccepted, setApplicationHasBeenAccepted] = useState(false);
 
     useEffect(() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/getJobApplications.php', {
@@ -20,15 +21,18 @@ function JobApplications ({route, navigation}) {
         })
         .then((response) => response.json())
         .then((responseJson) => {
+            console.log(responseJson);
             if (responseJson == -1){
                 setIsApplicationEmpty(true);
             } else {
                 setIsApplicationEmpty(false);
                 const ids = [];
-                for (let i = 0; i < responseJson.length; i++){
+                for (let i = 0; i < responseJson.length; i + 2){
                     let object = {
                         id: responseJson[i],
+                        status: responseJson[i + 1],
                     };
+                    console.log(object)
                     ids.push(object)
                 };
                 setApplications(ids);
