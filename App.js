@@ -60,19 +60,19 @@ function StackScreen(){
       <Tab.Screen name="Home" component={HomeScreen}/>
       <Tab.Screen name="Post" component={Post}/>
       <Tab.Screen name="Chat" component={ChatApp}/>
-      <Tab.Screen name="Profile" component={ProfileStack}/>
+      <Tab.Screen name="Profile" component={Profile}/>
     </Tab.Navigator>
   );
 }
 
-function ProfileStack() {
+/*function ProfileStack() {
   return(
     <Stack.Navigator>
     <Stack.Screen name="Profile"  component={Profile} options={{headerShown: false }}/>
     <Stack.Screen name="EditProfile"  component={EditProfile} />
     </Stack.Navigator>
   );
-}
+}*/
 
 const Stack = createStackNavigator();
 //<NavContainter/>
@@ -91,6 +91,7 @@ export default function App(navigation) {
         <Stack.Screen name="JobApplications" component={jobApplications}/>
         <Stack.Screen name="Application" component={application}/>
         <Stack.Screen name="ViewJobsAndApps" component={ViewJobsAndApps}/>
+        <Stack.Screen name="Profile"  component={Profile} options={{headerShown: false }}/>
         <Stack.Screen name="HomeScreen" component={StackScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="ViewProfile" component={viewProfile}/>
 
