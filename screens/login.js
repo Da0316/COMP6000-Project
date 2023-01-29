@@ -63,8 +63,13 @@ const Login = ({navigation}) =>{
     
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login Page</Text>
+      <View style={styles.circle_2} ></View>
+      <View style={styles.circle_1}>
+        <Text style={styles.welcome}>Welcome</Text>
+      </View>
+      
       <StatusBar style="auto" />
+      <Text style={styles.title}>Login</Text>
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -84,14 +89,15 @@ const Login = ({navigation}) =>{
           secureTextEntry
         />
       </View>
+      <TouchableOpacity style={styles.LoginBtn} onPress={()=>signIn()}>
+        <Text style={styles.LoginText}>Login</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity >
         <Text style={styles.forgotPassBtn}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.LoginBtn} onPress={()=>signIn()}>
-        <Text style={styles.LoginText}>Login</Text>
-      </TouchableOpacity>
+
 
     <Text>Don't have an account?</Text>
       <TouchableOpacity style={styles.LoginBtn} onPress={()=>navigation.navigate('SignUp')}>
@@ -103,20 +109,62 @@ const Login = ({navigation}) =>{
 export default Login;
 
 const styles = StyleSheet.create({
+  circle_1:{
+    position:"absolute",
+    width :400,
+    height:400,
+    borderRadius:1000,
+    backgroundColor:"#F9CE40",
+    transform:[
+      {translateX:0},
+      {translateY:-350},
+      {rotate: "0deg"},
+    ],
+    elevation:20
+  },
+  circle_2:{
+    position:"absolute",
+    width :400,
+    height:400,
+    borderRadius:1000,
+    backgroundColor:"#B28B1D",
+    transform:[
+      {translateX:0},
+      {translateY:-348},
+      {rotate: "0deg"},
+    ],
+    
+
+    //ios
+    // shadowColor:"#000000",
+    // shadowOffset:{
+    //   width:0,
+    //   height:4
+    // },
+    // shadowOpacity:0.25,
+    // shadowRadius:4
+    
+  },
   container: {
     flex: 1,
-    backgroundColor: '#EEF5DB',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
   },
   title:{
-    padding:20,
+    padding:30,
     fontSize: 25,
     //fontFamily:"Cochin",
-    marginBottom:50
+    marginBottom:50,
+    color:"FFFFFF"
+  },
+  welcome:{
+    position:"absolute",
+    fontSize: 25,
+    color:"#C2C3C4",
   },
   inputView:{
-    backgroundColor: '#B8D8D8',
+    backgroundColor: '#C2C3C4',
     borderRadius:30,
     width:"70%",
     height:45,
@@ -132,7 +180,9 @@ const styles = StyleSheet.create({
   },
   forgotPassBtn:{
     height:30,
-    marginBottom:10
+    marginTop:5,
+    marginBottom:10,
+    //borderRadius: 25,
   },
   LoginBtn:{
     width: "70%",
@@ -140,7 +190,10 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
-    backgroundColor: "#FE5F55",
+    marginTop: 1,
+    backgroundColor: "#1A1918",
+  },
+  LoginText:{
+    color: "#C2C3C4",
   }
 });
