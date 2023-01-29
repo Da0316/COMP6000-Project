@@ -1,0 +1,29 @@
+yellow 
+#f9ce40
+rgb(249,206,64)
+
+black
+#1a1918
+rgb(26,25,24)
+
+offwhite
+#f1f3f3
+rgb(241,243,243)
+
+dark grey
+#939394
+rgb(147,147,148)
+
+brown
+#b28b1d
+rgb(178,139,29)
+
+another medium grey 
+#c2c3c4
+rgb(194,195,196)
+
+pale yellow
+#ead184
+rgb(234,209,132)
+
+
