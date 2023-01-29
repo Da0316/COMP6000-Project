@@ -67,9 +67,9 @@ const Login = ({navigation}) =>{
       <View style={styles.circle_1}>
         <Text style={styles.welcome}>Welcome</Text>
       </View>
-      
-      <StatusBar style="auto" />
       <Text style={styles.title}>Login</Text>
+      <StatusBar style="auto" />
+
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
