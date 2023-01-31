@@ -16,7 +16,7 @@ function JobApplications ({route, navigation}) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            id: jobID,
+            id: String(jobID),
         })
         })
         .then((response) => response.json())
@@ -27,10 +27,10 @@ function JobApplications ({route, navigation}) {
             } else {
                 setIsApplicationEmpty(false);
                 const ids = [];
-                for (let i = 0; i < responseJson.length; i + 2){
+                for (let i = 0; i < responseJson.length; i + 1){
                     let object = {
                         id: responseJson[i],
-                        status: responseJson[i + 1],
+                        //status: responseJson[i + 1],
                     };
                     console.log(object)
                     ids.push(object)
