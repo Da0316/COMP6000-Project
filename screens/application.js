@@ -99,7 +99,7 @@ function Application({route, navigation}){
             update(ref(database, 'chatrooms/' + newChatroomID), {
                 messages: [
                     {
-                        text: usernameLoggedIn + " has accepted your application for '" + jTitle + "' at the rate of £" + priceOffer + "/hr.",
+                        text: usernameLoggedIn + " has accepted your application for '" + jTitle + "' at the rate of £" + priceOffer + "/hr. Discuss a suitable dates and time!",
                         sender: userLoggedIn.username,
                         createdAt: new Date(),
                     },
