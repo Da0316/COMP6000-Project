@@ -6,7 +6,6 @@ function JobApplications ({route, navigation}) {
     const {jobID} = route.params;
     const [applications, setApplications] = useState([]);
     const [isApplicationEmpty, setIsApplicationEmpty] = useState(null);
-    const [applicationHasBeenAccepted, setApplicationHasBeenAccepted] = useState(false);
 
     useEffect(() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/getJobApplications.php', {
@@ -16,7 +15,7 @@ function JobApplications ({route, navigation}) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            id: String(jobID),
+            id: jobID,
         })
         })
         .then((response) => response.json())
@@ -27,13 +26,23 @@ function JobApplications ({route, navigation}) {
             } else {
                 setIsApplicationEmpty(false);
                 const ids = [];
-                for (let i = 0; i < responseJson.length; i + 1){
-                    let object = {
-                        id: responseJson[i],
-                        //status: responseJson[i + 1],
-                    };
-                    console.log(object)
-                    ids.push(object)
+                let acceptedFound = false;
+                for (let i = 0; i < responseJson.length; i+=2){
+                    if (responseJson[i + 1] == "1" && acceptedFound == false){
+                        acceptedFound = true;
+                        let object = {
+                            id: responseJson[i],
+                            status: responseJson[i + 1],
+                        };
+                        ids.push(object);
+                    }
+                    if (acceptedFound == false){
+                        let object = {
+                            id: responseJson[i],
+                            status: responseJson[i + 1],
+                        };
+                        ids.push(object);   
+                    }
                 };
                 setApplications(ids);
             }       
