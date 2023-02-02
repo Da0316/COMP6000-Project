@@ -120,7 +120,8 @@ function Application({route, navigation}){
         },
         body: JSON.stringify({
             applicationID: applicationID,
-            choice: choice
+            choice: choice,
+            priceOffer, priceOffer
         })
         })
         .then((response) => response.json())

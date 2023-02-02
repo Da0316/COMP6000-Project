@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {Text, View, useWindowDimensions, ScrollView} from 'react-native';
+import {Text, View, useWindowDimensions, ScrollView, StyleSheet} from 'react-native';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import ViewJob from "../components/ViewJob";
 import ViewApplication from "../components/ViewApplication";
@@ -31,7 +31,7 @@ export default ViewJobsAndApps = ({navigation}) => {
     const ApplicationView = () => (
         <ScrollView>
             {applicationID.map(object => {
-                return <ViewApplication key={object.id} ID={object.id} />
+                return <ViewApplication key={object.id} ID={object.id} type={"userApps"}/>
             })}
         </ScrollView>
     );
@@ -164,9 +164,16 @@ export default ViewJobsAndApps = ({navigation}) => {
                     })}
                 onIndexChange={setIndex}
                 initialLayout={{width: layout.width}}
+                style={styles.tabView}
             >
                 {isLoading && <Text>Loading...</Text>}
             </TabView>
         );
     };   
 }
+
+const styles = StyleSheet.create({
+    tabView: {
+        color: "#FFFFE0",
+    }
+})

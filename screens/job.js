@@ -65,7 +65,7 @@ function Job({route, navigation}){
             )
         } else if (sameUser == true) {
             return (
-                <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('JobApplications', {jobID})}>
+                <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('JobApplications', {jobID, jobTitle})}>
                     <Text>View Applications</Text>
                 </TouchableOpacity>        
             );  

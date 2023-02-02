@@ -8,6 +8,8 @@ function CreateApplication({route, navigation}){
     const [priceOffer, setPriceOffer] = useState('');
     
     const submit = () => {
+      console.log(jobID);
+      console.log(userID);
         if (priceOffer != ''){
             fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/createApplication.php', {
                 method: 'post',
@@ -46,7 +48,7 @@ function CreateApplication({route, navigation}){
           <SafeAreaView style={styles.formView}>
             <TextInput placeholder={"Price Offer*"} placeholderTextColor='#fff' onChangeText={(price_offer) => setPriceOffer(price_offer)} style={styles.TextInput}/>
             <TouchableOpacity style={styles.buttonsView} onPress={()=>submit()}>
-              <Text style={styles.buttonText}>Sign Up</Text>
+              <Text style={styles.buttonText}>Apply</Text>
             </TouchableOpacity>
           </SafeAreaView>
         </ScrollView>
