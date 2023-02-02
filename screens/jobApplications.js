@@ -28,21 +28,23 @@ function JobApplications ({route, navigation}) {
                 const ids = [];
                 let acceptedFound = false;
                 for (let i = 0; i < responseJson.length; i+=2){
-                    if (responseJson[i + 1] == "1" && acceptedFound == false){
-                        acceptedFound = true;
-                        let object = {
-                            id: responseJson[i],
-                            status: responseJson[i + 1],
-                        };
-                        ids.push(object);
-                    }
-                    if (acceptedFound == false){
-                        let object = {
-                            id: responseJson[i],
-                            status: responseJson[i + 1],
-                        };
-                        ids.push(object);   
-                    }
+                    if (responseJson [i + 1] != "-1"){
+                        if (responseJson[i + 1] == "1" && acceptedFound == false){
+                            acceptedFound = true;
+                            let object = {
+                                id: responseJson[i],
+                                status: responseJson[i + 1],
+                            };
+                            ids.push(object);
+                        }
+                        if (acceptedFound == false){
+                            let object = {
+                                id: responseJson[i],
+                                status: responseJson[i + 1],
+                            };
+                            ids.push(object);   
+                        }
+                    }   
                 };
                 setApplications(ids);
             }       
@@ -50,7 +52,8 @@ function JobApplications ({route, navigation}) {
         .catch((error) => {
             alert(error);
         });
-    }, []);
+        return () => {};
+    }, [route]);
     
     if (isApplicationEmpty == false){
         return (
