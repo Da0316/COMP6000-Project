@@ -73,20 +73,20 @@ const Profile=({navigation}) =>{
 
           <View style={styles.userInfoSection}>
               <View style={styles.row}>
-              <Icon name="map-marker-radius"color="#777777" size={20}/>
-              <Text style={{color:"#777777", marginLeft:20}}>{address}</Text>
+              <Icon name="map-marker-radius"color="#1A1918" size={20}/>
+              <Text style={{color:"#1A1918", marginLeft:20}}>{address}</Text>
               </View>
               <View style={styles.row}>
-              <Icon name="phone"color="#777777" size={20}/>
-              <Text style={{color:"#777777", marginLeft:20}}>{phone_number}</Text>
+              <Icon name="phone"color="#1A1918" size={20}/>
+              <Text style={{color:"#1A1918", marginLeft:20}}>{phone_number}</Text>
               </View>
               <View style={styles.row}>
-              <Icon name="email"color="#777777" size={20}/>
-              <Text style={{color:"#777777", marginLeft:20}}>{email}</Text>
+              <Icon name="email"color="#1A1918" size={20}/>
+              <Text style={{color:"#1A1918", marginLeft:20}}>{email}</Text>
               </View>
               <View style={styles.row}>
-              <Icon name="calendar"color="#777777" size={20}/>
-              <Text style={{color:"#777777", marginLeft:20}}>{date_of_birth}</Text>
+              <Icon name="calendar"color="#1A1918" size={20}/>
+              <Text style={{color:"#1A1918", marginLeft:20}}>{date_of_birth}</Text>
               </View>
 
               <View style={styles.userBtnWrapper}>
@@ -117,12 +117,13 @@ const Profile=({navigation}) =>{
           </View>
 
           <View style={styles.reviewSection}>
-          <Title style={{fontWeight:'bold', marginLeft:20,}}> Write Reviews</Title>
-          <TextInput
-          style={styles.reviewForm}
-          placeholder="Write Review"
-          placeholderTextColor={'#777777'}
-          />
+            <Icon name="message-draw"color="#1A1918" size={40}/>
+            <Title style={{fontWeight:'bold'}}> Write Reviews</Title>
+            <TextInput
+            style={styles.reviewForm}
+            placeholder="Write Review"
+            placeholderTextColor={'#777777'}
+            />
           </View >
       </SafeAreaView>
   );
@@ -133,7 +134,7 @@ export default Profile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#F3F3F3",
+    backgroundColor:"#FFFFFF",
     
   },
   userInfoSection: {
@@ -154,10 +155,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   infoBoxWrapper: {
-    borderBottomColor: '#dddddd',
-    borderBottomWidth: 1,
-    borderTopColor: '#dddddd',
-    borderTopWidth: 1,
     flexDirection: 'row',
     height: 100,
   },
@@ -170,19 +167,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
-    marginBottom: 20,
-    marginTop:20,
+    marginBottom: 10,
+    marginTop:10,
   },
   userBtn: {
-    borderColor: '#2e64e5',
-    borderWidth: 2,
-    borderRadius: 3,
-    paddingVertical: 10,
+    backgroundColor: '#1a1918',
+    color: "#FFFFF",
+    borderRadius:25,
+    justifyContent:"center",
+
+    height: 30,
+    //alignItems:"center",
+    //borderWidth: 2,
+    //borderRadius: 3,
     paddingHorizontal: 10,
     marginHorizontal: 5,
   },
   userBtnTxt: {
-    color: '#2e64e5'
+    color: '#FFFFFF'
   },
 
   reviewForm:{
@@ -190,5 +192,9 @@ const styles = StyleSheet.create({
     paddingTop:3,
     marginTop:10,
     paddingBottom:60
+  },
+  reviewSection:{
+    alignItems:"center"
+
   }
 });

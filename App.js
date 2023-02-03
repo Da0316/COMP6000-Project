@@ -94,6 +94,7 @@ export default function App(navigation) {
         <Stack.Screen name="ViewJobsAndApps" component={ViewJobsAndApps}/>
         <Stack.Screen name="Profile"  component={Profile} options={{headerShown: false }}/>
         <Stack.Screen name="HomeScreen" component={StackScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="EditProfile"  component={EditProfile} />
         <Stack.Screen name="ViewProfile" component={viewProfile}/>
         <Stack.Screen name="EditProfile" component={EditProfile}/>
         <Stack.Screen name="Reviews" component={Reviews}/>

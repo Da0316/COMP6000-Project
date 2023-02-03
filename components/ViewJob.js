@@ -2,6 +2,7 @@ import React from "react";
 import { View,StyleSheet,Text,Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import {useEffect} from "react";
 
 
 //data can be passed between react screens and components using props or routes
@@ -10,34 +11,42 @@ const ViewJob = ({ID}) => {
     const [jobTitle,setjobTilte] =useState('');
     const [jobDescription,setjobDescription] =useState('');
     const [price, setprice] =useState('');
+    const [image, setImage] = useState('https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg');
 
     //fetch data for the job from the database
     //need to create an API for this
-
-    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/postThumbnail.php', { //needs to be changed to your own ip
-          method: 'post', 
-          header: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            jobID: ID,
-            job_Description: ""
-          }),
-        })
-          .then((response) => response.json())
-          .then((responseJson) => {
-            //sets the variables
-            //console.log(responseJson);
-            setjobID(responseJson[0]);
-            setjobTilte(responseJson[1]);
-            setjobDescription(responseJson[2]);
-            setprice(responseJson[3]);
-            
+    useEffect(() => {
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/postThumbnail.php', { //needs to be changed to your own ip
+            method: 'post', 
+            header: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              jobID: ID,
+              job_Description: ""
+            }),
           })
-          .catch((error) => {
-            console.error(error);
-          });
+            .then((response) => response.json())
+            .then((responseJson) => {
+              //sets the variables
+              //console.log(responseJson);
+              setjobID(responseJson[0]);
+              setjobTilte(responseJson[1]);
+              setjobDescription(responseJson[2]);
+              setprice(responseJson[3]);
+              if (responseJson[4] == null){
+                setImage("https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg");
+              } else {
+                setImage("https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/" + responseJson[4]);
+              }
+              
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+          }, []);
+          //console.log(image);
         const nav = useNavigation();
         const showJob = () => nav.navigate('Job', {jobID}); //passes data to the job page using a route
         
@@ -49,7 +58,7 @@ const ViewJob = ({ID}) => {
               {/* image */}
               <Image source={{
                 
-                  uri: "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg"
+                  uri: image
               }}
               style={styles.image}
               />

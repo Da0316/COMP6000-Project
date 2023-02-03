@@ -22,8 +22,10 @@ const Post = ({ navigation }) => {
   const [price, setPrice] = useState('');
   const [taskTitle, setTaskTitle] = useState('');
   const [specialities, setSpecialities] = useState([]);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImageName, setSelectedImageName] = useState(null);
+  const [selectedImageType, setSelectedImageType] = useState(null);
 
   useEffect(() => {
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php', {
@@ -54,7 +56,7 @@ const Post = ({ navigation }) => {
 
 
   handleSubmit = () => {
-    console.log(selected);
+    //console.log(selectedImage);
     if (price == 0) {
       alert("You have to set a price");
     }else if(taskTitle ==''){
@@ -74,11 +76,14 @@ const Post = ({ navigation }) => {
             p: price,
             ID: global.userID,
             speciality: selected,
+            image: selectedImageName,
         }),
       })
         .then((response) => response.text())
         .then((responseJson) => {
+          console.log(responseJson);
           if (responseJson == 1){
+            
             alert("Job Added Successfully");
             setTaskDetails('');
             setPrice('');
@@ -92,7 +97,36 @@ const Post = ({ navigation }) => {
         .catch((error) => {
           console.error(error);
         });
-    }
+        
+        //console.log(selectedImage);
+        const formData = new FormData();
+        formData.append('name', {
+          name: selectedImageName, 
+          type: selectedImageType, 
+          uri: selectedImage });
+          //console.log (formData);
+          fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
+            method: 'POST',
+            
+            // body: JSON.stringify({
+            //   name: filename, 
+            //   type: type, 
+            //   uri: localUri
+            // }),
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            body: formData
+        }).then((response) => response.text())
+          .then((responseJson) => {
+            console.log(responseJson);
+          
+        }).catch((error) => {
+          console.error(error);
+        });
+      }
+
+
   };
 
   const showDatePicker = () => {
@@ -102,6 +136,7 @@ const Post = ({ navigation }) => {
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
+  
 
   //image picker added 
   const pickImageAsync = async () => {
@@ -113,37 +148,59 @@ const Post = ({ navigation }) => {
     if (!result.canceled) {
       //setSelectedImage(result.assets[0].uri);
       //console.log(result);
+      //setSelectedImage(result);
+
+
+
+
+      //
+      //handleSubmit();
       let localUri = result.assets[0].uri;
       let filename = localUri.split('/').pop();
 
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
-      console.log(localUri);
+      //console.log(localUri);
+      setSelectedImage(localUri);
+      setSelectedImageName(filename);
+      setSelectedImageType(type);
+      setSelected(true);
       const formData = new FormData();
       formData.append('name', {
           name: filename, 
           type: type, 
           uri: localUri });
-
       
 
-      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    }).then((response) => response.text())
-      .then((responseJson) => {
-        console.log(responseJson);
+      //console.log(localUri);
+      //console.log(formData);
+      //useEffect(() => {
+    //   fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
+    //     method: 'POST',
+        
+    //     // body: JSON.stringify({
+    //     //   name: filename, 
+    //     //   type: type, 
+    //     //   uri: localUri
+    //     // }),
+    //     headers: {
+    //         'Content-Type': 'multipart/form-data'
+    //     },
+    //     body: formData
+    // }).then((response) => response.text())
+    //   .then((responseJson) => {
+    //     console.log(responseJson);
       
-    }).catch((error) => {
-      console.error(error);
-    });
+    // }).catch((error) => {
+    //   console.error(error);
+    // });
+ //});
     } else {
       alert('You did not select any image.');
     }
+  
   };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -187,16 +244,17 @@ const Post = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={styles.buttonsView}
-            onPress={() => handleSubmit()}
-          >
-            <Text style={styles.buttonText}>Post</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonsView}
             onPress={() => pickImageAsync()}
           >
             <Text style={styles.buttonText}>Upload Image</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonsView}
+            onPress={() => handleSubmit()}
+          >
+            <Text style={styles.buttonText}>Post</Text>
+          </TouchableOpacity>
+          
           
         </View>
       </View>
