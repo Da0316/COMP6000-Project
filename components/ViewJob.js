@@ -11,7 +11,7 @@ const ViewJob = ({ID}) => {
     const [jobTitle,setjobTilte] =useState('');
     const [jobDescription,setjobDescription] =useState('');
     const [price, setprice] =useState('');
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState('https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg');
 
     //fetch data for the job from the database
     //need to create an API for this
