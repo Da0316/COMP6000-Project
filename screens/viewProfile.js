@@ -1,11 +1,11 @@
-import  React, {useState} from 'react';
-import { View,SafeAreaView,StyleSheet,} from 'react-native';
+import  React, {useState,useEffect} from 'react';
+import { View,SafeAreaView,useWindowDimensions,StyleSheet,ScrollView} from 'react-native';
 import { Avatar,Title,Caption,Text, TouchableRipple, TextInput } from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Login from '../chatroom_testing/Login';
 
-const ViewProfile=({navigation}) =>{
-      //const {userID, setUserID} = useState(null);
+const ViewProfile=({navigation,route}) =>{
+
       const [username, setUsername] = useState('');
       const [firstname, setFirstname] = useState(null);
       const [lastname, setLastname] = useState(null);
@@ -20,12 +20,13 @@ const ViewProfile=({navigation}) =>{
             },
             body: JSON.stringify({
                 //userID: 1
-                userID : userID,
+                userID : route.params.paramKey,
                 username: username,
                 firstname: firstname,
-                lastname: lastname,
-                phone: phone_number,
-
+                lastname:lastname,
+                phone_number: phone_number,
+                
+                
             }),
         })
         .then((response) => response.json())
@@ -44,6 +45,113 @@ const ViewProfile=({navigation}) =>{
         console.log(error);
         
     }
+
+    
+    const layout = useWindowDimensions();
+    const [index, setIndex] = useState(0);
+    const [routes] = useState([
+        {key: 'first', title: 'Jobs'},
+    ]);
+
+    const [jobID, setJobID] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isJobEmpty, setIsJobEmpty] = useState(false);
+
+    const JobView = () => (
+        <ScrollView>
+            {jobID.map(object => {
+                return <ViewJob key={object.id} ID={object.id}/>
+            })}
+        </ScrollView>
+    );
+
+    
+    const emptyJobView = () => (
+        <View>
+            <Text>No Jobs Posted</Text>
+        </View>
+    )
+
+    
+   useEffect(() => {
+        fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/getJobs.php', {
+        method: 'post',
+        header: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id: route.params.paramKey,
+        })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            if (responseJson == -1){
+                setIsJobEmpty(true)
+            } else {
+                const ids = [];
+                for (let i = 0; i < responseJson.length; i++){
+                    let object = {
+                        id: responseJson[i],
+                    };
+                    ids.push(object)
+                };
+                setJobID(ids);  
+            }
+            setIsLoading(false);
+        })
+        .catch((error) => {
+            alert(error);
+        });
+    }, []);
+
+    useEffect(() => {
+        fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/getApplications.php', {
+        method: 'post',
+        header: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id: route.params.paramKey,
+        })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            if (responseJson == -1){
+                setIsApplicationEmpty(true);
+            } else {
+                const ids = [];
+                for (let i = 0; i < responseJson.length; i++){
+                    let object = {
+                        id: responseJson[i],
+                    };
+                    ids.push(object)
+                };
+                
+            }
+            setIsLoading(false);        
+        })
+        .catch((error) => {
+            alert(error);
+        });
+    }, []); 
+
+    if (isJobEmpty == true){
+        return (
+            <TabView
+                navigationState={{index, routes}}
+                renderScene={SceneMap({
+                    first: emptyJobView,
+                    })}
+                onIndexChange={setIndex}
+                initialLayout={{width: layout.width}}
+            >
+                {isLoading && <Text>Loading...</Text>}
+            </TabView>
+        );
+   
+}
     // console.log(userID);
     // console.log(firstname);
     // console.log(lastname);
@@ -81,8 +189,10 @@ const ViewProfile=({navigation}) =>{
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Chat')}>
                   <Text style={styles.userBtnTxt}>Message</Text>
                 </TouchableRipple>
+                <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Reviews')}>
+                  <Text style={styles.userBtnTxt}>View/Write Reviews</Text>
+                </TouchableRipple>
               </View>
-
           <View style={styles.infoBoxWrapper}>
              <View style={[styles.infoBox, {
               borderRightColor: '#dddddd',
@@ -98,14 +208,6 @@ const ViewProfile=({navigation}) =>{
            </View>
           </View>
 
-          <View style={styles.reviewSection}>
-          <Title style={{fontWeight:'bold', marginLeft:20,}}> Write Reviews</Title>
-          <TextInput
-          style={styles.reviewForm}
-          placeholder="Write Review"
-          placeholderTextColor={'#777777'}
-          />
-          </View >
       </SafeAreaView>
   );
 };

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Button, StyleSheet, View, Title, Text, TouchableOpacity} from 'react-native';
-import ViewProfile from "../components/ViewProfile";
 function Job({route, navigation}){
     const { jobID } = route.params;
     const [userPostedID, setUserPostedID] = useState(null);
@@ -75,7 +74,7 @@ function Job({route, navigation}){
     const profileView = () => {
         if (sameUser == false){
             return (
-                <TouchableOpacity styles={styles.applicationButton} onPress = {() => navigation.navigate('ViewProfile', {userPostedID})}>
+                <TouchableOpacity styles={styles.applicationButton} onPress = {() => navigation.navigate('ViewProfile', {paramKey: userPostedID})}>
                     <Text>Posted By:{username}</Text>
                 </TouchableOpacity>
             )

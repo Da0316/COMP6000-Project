@@ -10,12 +10,13 @@ import Profile from './screens/profile';
 import EditProfile from './screens/editProfile';
 import nav from './navigation/NavContainter';
 import job from './screens/job'
-import createApplication from './screens/createApplication'
-import selectSpecialities from './screens/selectSpecialities'
+import createApplication from './screens/createApplication';
+import selectSpecialities from './screens/selectSpecialities';
 import ViewJobsAndApps from './screens/viewJobsAndApps';
 import jobApplications from './screens/jobApplications';
 import application from './screens/application';
 import viewProfile from './screens/viewProfile';
+import Reviews from './screens/reviews';
 
  
 
@@ -94,6 +95,8 @@ export default function App(navigation) {
         <Stack.Screen name="Profile"  component={Profile} options={{headerShown: false }}/>
         <Stack.Screen name="HomeScreen" component={StackScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="ViewProfile" component={viewProfile}/>
+        <Stack.Screen name="EditProfile" component={EditProfile}/>
+        <Stack.Screen name="Reviews" component={Reviews}/>
 
       </Stack.Navigator>
     </NavigationContainer>
