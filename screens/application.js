@@ -10,6 +10,7 @@ function Application({route, navigation}){
     const {statusNum:applicationStatus} = route.params;
     const {userApplicationID:userAppID} = route.params;
     const {jobTitle:jTitle} = route.params;
+    const {jobID:jobID} = route.params;
     
     try {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
@@ -119,7 +120,8 @@ function Application({route, navigation}){
         },
         body: JSON.stringify({
             applicationID: applicationID,
-            choice: choice
+            choice: choice,
+            priceOffer, priceOffer
         })
         })
         .then((response) => response.json())
@@ -130,6 +132,7 @@ function Application({route, navigation}){
                 navigation.navigate("HomeScreen");
               } else if (responseJson == 1 && choice == "Reject") {
                 alert("Application Rejected");
+                navigation.navigate("JobApplications", {jobID});
               } else if (responseJson == -1) {
                 alert("error");
               }
