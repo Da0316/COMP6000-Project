@@ -2,24 +2,17 @@ import React, { useState } from "react";
 import {useEffect} from "react";
 import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert} from "react-native";
 import SearchBar from "../components/SearchBar";
-import TaskOne from "../components/TaskOne";
-import TaskTwo from "../components/TaskTwo";
 import ViewJob from "../components/ViewJob";
-import Post from "./Post";
 //import{ StackNavigator } from "react-navigation";
-import Login from "./login";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen =({ navigation })=> {
     const [searchText, setSearchText] = useState("");
     const [recentJobIDs, setRecentJobIDs] = useState([]);
-    const [id1, setId1] = useState('');
-
+    const [recommendedJobs, setRecommendedJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     
   
     useEffect(() => {
-    
      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobsDate.php', { //needs to be changed to your own ip
           method: 'post', 
           header: {
@@ -27,7 +20,7 @@ const HomeScreen =({ navigation })=> {
             'Content-type': 'application/json',
           },
           body: JSON.stringify({
-            
+            id: global.userID,
           }),
         })
           .then((response) => response.json())
@@ -48,6 +41,33 @@ const HomeScreen =({ navigation })=> {
           // });
           
     }, []);
+
+    useEffect(() => {
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/recommendedJobs.php', {
+        method: 'post',
+        header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: global.userID,
+        })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        const ids = [];
+        for (let i = 0; i < responseJson.length; i++){
+          let object = {
+            id: responseJson[i],
+          }
+          ids.push(object);
+        }
+        setRecommendedJobs(ids);
+      })
+      .catch((error) => {
+        alert(error)
+      })
+    })
 
         
         if(loading){
@@ -72,6 +92,11 @@ const HomeScreen =({ navigation })=> {
                 })}
               </ScrollView>
               <Text style={styles.title}>Recommended For You</Text>
+              <ScrollView horizontal = {true}>
+                {recommendedJobs.map(object => {
+                  return <ViewJob key = {object.id} ID={object.id}/>
+                })}
+              </ScrollView>
             </ScrollView>
         </View>
         
