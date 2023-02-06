@@ -12,11 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen =({ navigation })=> {
     const [searchText, setSearchText] = useState("");
-    const [jobsID, setJobsID] = useState([]);
+    const [recentJobIDs, setRecentJobIDs] = useState([]);
     const [id1, setId1] = useState('');
-    const addTask = () => navigation.navigate('Post');
-    const chatScreen = () => navigation.navigate('Chat')
-    const job = () => navigation.navigate('Job')
 
     const [loading, setLoading] = useState(true);
     
@@ -34,8 +31,15 @@ const HomeScreen =({ navigation })=> {
           }),
         })
           .then((response) => response.json())
-          .then(jobsID => {
-            setJobsID(jobsID)
+          .then((responseJson) => {
+            const ids = [];
+            for (let i = 0; i < responseJson.length; i++){
+              let object = {
+                id: responseJson[i],
+              }
+              ids.push(object)
+            }
+            setRecentJobIDs(ids);
             setLoading(false);
           });
           
@@ -43,7 +47,7 @@ const HomeScreen =({ navigation })=> {
           //   console.error(error);
           // });
           
-        }, []);
+    }, []);
 
         
         if(loading){
@@ -60,12 +64,14 @@ const HomeScreen =({ navigation })=> {
             <Text style={styles.header}>Home Screen</Text>
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
             <Text>{searchText}</Text>
-            <Text style={styles.title}> Recent Tasks </Text>
-           <ScrollView>
-            <ViewJob ID={jobsID[0]}/>
-            <ViewJob ID={jobsID[2]}/>
-            <ViewJob ID={3}/>
-            <ViewJob ID={6}/>
+            <ScrollView>
+              <Text style={styles.title}> Recent Tasks </Text>
+              <ScrollView horizontal ={true}>
+                {recentJobIDs.map(object => {
+                  return <ViewJob key ={object.id} ID={object.id}/>
+                })}
+              </ScrollView>
+              <Text style={styles.title}>Recommended For You</Text>
             </ScrollView>
         </View>
         
@@ -79,8 +85,7 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:"#fff",
-        paddingTop: 50,
- 
+
     },
     header:{
         marginLeft: 'auto',
