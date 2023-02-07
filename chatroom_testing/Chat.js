@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
-import {Image, Pressable, StyleSheet, Text} from 'react-native';
+import {Image, TouchableOpacity, StyleSheet, Text, View, Alert} from 'react-native';
 import {getDatabase, get, ref, onValue, off, update} from 'firebase/database';
 
 export default function Chat({onBack, myData, selectedUser}) {
@@ -10,7 +10,6 @@ export default function Chat({onBack, myData, selectedUser}) {
     //load old messages
     const loadData = async () => {
       const myChatroom = await fetchMessages();
-      console.log(myChatroom);
       setMessages(renderMessages(myChatroom.messages));
     };
 
@@ -107,12 +106,57 @@ export default function Chat({onBack, myData, selectedUser}) {
     [fetchMessages, myData.username, selectedUser.chatroomId],
   );
 
+  const showConfirmationPopup = () => {
+    return Alert.alert(
+      "Job Completed?",
+      "Are you sure the job has been completed. The chat will be deleted",
+      [
+        {
+          text: "Yes",
+          onPress: () => {
+            handleJobCompleted();
+          },
+        },
+        {
+          text: "No",
+        },
+      ]
+    );
+  };
+
+  const handleJobCompleted = () => {
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/.php', {
+      method: 'post',
+      header: {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        userID: userAppID,
+      }),
+    })    
+    .then((response) => response.json())
+    .then((responseJson) => {
+            setUsernameApplied(responseJson[1]);
+        })
+    .catch((error) => {
+          console.log(error);
+    });
+  }
+
   return (
     <>
-      <Pressable onPress={onBack} style={styles.actionBar}>
-        <Image source={require('./assets/back.png')} />
-        <Text>{selectedUser?.name}</Text>
-      </Pressable>
+      <View style={styles.actionBar}>
+        <TouchableOpacity onPress={onBack}>
+          <Image source={require('./assets/back.png')}/>
+        </TouchableOpacity>
+        <TouchableOpacity>
+            <Text style={styles.text}>{selectedUser.username}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={showConfirmationPopup}>
+            <Text style={styles.text}>Completed?</Text>
+        </TouchableOpacity>
+      </View>
       <GiftedChat
         messages={messages}
         onSend={newMessage => onSend(newMessage)}
@@ -131,5 +175,9 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
+  text: {
+    fontWeight: 'bold',
+  }
 });

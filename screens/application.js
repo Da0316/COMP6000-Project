@@ -63,11 +63,11 @@ function Application({route, navigation}){
 
             const userLoggedInSnapShot = await get(ref(database, 'users/' + usernameLoggedIn));
             const userLoggedIn = userLoggedInSnapShot.val();
-            
             const newChatRoomRef = push(ref(database, 'chatrooms'), {
                 firstUser: userLoggedIn.username,
                 secondUser: userApplied.username,
                 messages: [],
+                jobID: jobID,
             })
 
             const newChatroomID = newChatRoomRef.key;
