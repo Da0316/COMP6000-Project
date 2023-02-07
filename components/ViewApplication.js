@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         width:"90%",
         alignSelf: "center",
         borderRadius: 40,
-        backgroundColor: "#E4F6F8",
+        backgroundColor: "#D0D0D0",
         marginTop: 20
     },
     image:{

@@ -27,14 +27,6 @@ export default function Users({
   };
   return (
     <>
-      <View style={styles.addUser}>
-        <TextInput
-          style={styles.input}
-          onChangeText={setUserToAdd}
-          value={userToAdd}
-        />
-        <Button title={'Add User'} onPress={() => onAddFriend(userToAdd)} />
-      </View>
       <FlatList
         data={users}
         renderItem={renderUser}

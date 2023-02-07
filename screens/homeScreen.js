@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
 
     title:{
         fontWeight: "bold",
+        fontSize: 20
     },
     Button:{
         backgroundColor: "green",
@@ -129,12 +130,7 @@ const styles = StyleSheet.create({
         mardinRight: 10,
         justifyContent: "center",
         alignContent: "center"
-
     },
-    addTask:{
-
-    }
-    
 });
 
 

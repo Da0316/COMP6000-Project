@@ -2,6 +2,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from "react";
 import { StyleSheet, Text, ScrollView, ImageBackground, View, SafeAreaView, TextInput, TouchableOpacity, Button } from 'react-native';
+import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/database'
 
 //package for calander picker 
 //import an images file with pictures in for images 
@@ -50,7 +51,7 @@ const SignUp = ({navigation}) =>{
           password: password,
         }),
       })
-        .then((response) => response.text())
+        .then((response) => response.json())
         .then((responseJson) =>{
           if (responseJson === "try again"){
             alert("Please fill in details ")
@@ -58,7 +59,13 @@ const SignUp = ({navigation}) =>{
             alert("Account already signed up with this email")
           } else {
             alert("Signup Successful!");
-            navigation.navigate('SelectSpecialities', {userID: responseJson});
+            const newUserObj = {
+              username: String(responseJson[1]), 
+              avatar: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fnobita.me%2Fresources%2Favatar-from-url.86%2F&psig=AOvVaw1HkgvX6GHC1E4KWum1aYA8&ust=1667929212435000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCJDj19POnPsCFQAAAAAdAAAAABAO'
+            };
+            const database = getDatabase();
+            set(ref(database, 'users/' + responseJson[1]), newUserObj);
+            navigation.navigate('SelectSpecialities', {userID: responseJson[0]});
           }
         })
         .catch((error)=>{

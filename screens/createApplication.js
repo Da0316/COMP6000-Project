@@ -39,20 +39,17 @@ function CreateApplication({route, navigation}){
         };
     }
     return (
-        <View style={styles.mainView}>
-        <View style={styles.TopView}></View>
-        <ScrollView style={styles.bottomView}>
-          <Text style={styles.heading}>
-            Create Application
-          </Text>
-          <SafeAreaView style={styles.formView}>
+      <View style={styles.mainView}>
+        <Text style={styles.heading}>
+          Create Application
+        </Text>
+        <SafeAreaView style={styles.formView}>
             <TextInput placeholder={"Price Offer*"} placeholderTextColor='#fff' onChangeText={(price_offer) => setPriceOffer(price_offer)} style={styles.TextInput}/>
             <TouchableOpacity style={styles.buttonsView} onPress={()=>submit()}>
               <Text style={styles.buttonText}>Apply</Text>
             </TouchableOpacity>
           </SafeAreaView>
-        </ScrollView>
-      </View>  
+      </View>
     );
 }
 
@@ -61,12 +58,11 @@ export default CreateApplication;
 const styles = StyleSheet.create({
 
     mainView:{
-      marginTop:40,
       flex:1,
       flexDirection:'column',
       justifyContent:'center',
-      alignItems:'center'
-  
+      alignItems:'center',
+      backgroundColor:'#F9CE40',
     },
 
     TopView:{
@@ -96,7 +92,7 @@ const styles = StyleSheet.create({
     },
 
     formView:{
-      wifth:'100%',
+      width:'100%',
       display:'flex',
       flexDirection:'column',
       alignItems:'center',
@@ -111,7 +107,7 @@ const styles = StyleSheet.create({
       borderRadius:10,
       paddingLeft:5,
       marginTop:20,
-      color:'#fff'
+      color:'#fff',
     },
 
     buttonsView:{
