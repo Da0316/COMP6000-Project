@@ -3,7 +3,7 @@ include 'config.php';
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
 $userID = $obj['userID'];
--if (isset($_POST['submit'])) {
+if (isset($_POST['submit'])) {
   // retrieve the form data
   $firstname = $_POST['firstname'];
   $lastname = $_POST['lastname'];
