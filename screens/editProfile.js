@@ -7,13 +7,10 @@ import { View,
         TextInput, 
         StyleSheet 
         } from "react-native";
-
+import * as ImagePicker from 'expo-image-picker';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-
-
-
 
 
 const EditProfile = ({navigation}) => {
@@ -23,13 +20,16 @@ const EditProfile = ({navigation}) => {
     const [email,setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [phone_number, setPhone_number] = useState('');
-
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImageName, setSelectedImageName] = useState('');
+    const [selectedImageType, setSelectedImageType] = useState('');
+    const [selected, setSelected] = useState(false);
 
 
     useEffect(() => {
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
             method: 'post',
-            header: {
+            headers: {
                 Accept: 'application/json',
                 'Content-type': 'application/json',
             },
@@ -55,9 +55,9 @@ const EditProfile = ({navigation}) => {
     }, []);
 
     const handelSubmit = () => {
-      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php', {
+      fetch('https:/project/08/editProfile.php', {
         method: 'patch',
-        header:{
+        headers:{
           Accept: 'application/json',
           'Content-type': 'application/json',
         },
@@ -70,18 +70,92 @@ const EditProfile = ({navigation}) => {
           address: address,
           phone: phone_number,
         }),
-        catch(error){
-          alert("Error");
-        }
       })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if(responseJson == "success"){
+          alert("Updated");
+        }
+        if(responseJson == "error"){
+          alert("Not Updated");
+        }
 
+
+      })
+        .catch((error) => {
+          alert("Error");
+        });
+      };
+
+    
+
+    const formData = new FormData();
+        formData.append('name', {
+          name: selectedImageName, 
+          type: selectedImageType, 
+          uri: selectedImage });
+          //console.log (formData);
+          fetch('https:/project/08/upload.php',{
+            method: 'POST',
+            
+            // body: JSON.stringify({
+            //   name: filename, 
+            //   type: type, 
+            //   uri: localUri
+            // }),
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            body: formData
+        }).then((response) => response.text())
+          .then((responseJson) => {
+            console.log(responseJson);
+          
+        }).catch((error) => {
+          console.error(error);
+        });
+
+    const pickImageAsync = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        quality: 1,
+      });
+  
+      if (!result.canceled) {
+        //setSelectedImage(result.assets[0].uri);
+        //console.log(result);
+        //setSelectedImage(result);
+  
+        
+        //
+        //handleSubmit();
+        let localUri = result.assets[0].uri;
+        let filename = localUri.split('/').pop();
+  
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+        //console.log(localUri);
+        setSelectedImage(localUri);
+        setSelectedImageName(filename);
+        setSelectedImageType(type);
+        setSelected(true);
+        const formData = new FormData();
+        formData.append('name', {
+            name: filename, 
+            type: type, 
+            uri: localUri });
+        
+      } else {
+        alert('You did not select any image.');
+      }
+    
     };
         
     return (
         <View style={styles.container}>
             <View style={{margin: 20}}>
                 <View style={{alignItems: 'center'}}>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity onPress={() => pickImageAsync()}>
                         <View style={{
                             height: 100,
                             width: 100,

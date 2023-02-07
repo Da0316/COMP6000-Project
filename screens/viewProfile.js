@@ -2,7 +2,7 @@ import  React, {useState,useEffect} from 'react';
 import { View,SafeAreaView,useWindowDimensions,StyleSheet,ScrollView} from 'react-native';
 import { Avatar,Title,Caption,Text, TouchableRipple, TextInput } from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Login from '../chatroom_testing/Login';
+import ViewJob from "../components/ViewJob";
 
 const ViewProfile=({navigation,route}) =>{
 
@@ -105,41 +105,10 @@ const ViewProfile=({navigation,route}) =>{
         });
     }, []);
 
-    useEffect(() => {
-        fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/getApplications.php', {
-        method: 'post',
-        header: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            id: route.params.paramKey,
-        })
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
-            if (responseJson == -1){
-                setIsApplicationEmpty(true);
-            } else {
-                const ids = [];
-                for (let i = 0; i < responseJson.length; i++){
-                    let object = {
-                        id: responseJson[i],
-                    };
-                    ids.push(object)
-                };
-                
-            }
-            setIsLoading(false);        
-        })
-        .catch((error) => {
-            alert(error);
-        });
-    }, []); 
 
     if (isJobEmpty == true){
         return (
-            <TabView
+            <View
                 navigationState={{index, routes}}
                 renderScene={SceneMap({
                     first: emptyJobView,
@@ -148,7 +117,7 @@ const ViewProfile=({navigation,route}) =>{
                 initialLayout={{width: layout.width}}
             >
                 {isLoading && <Text>Loading...</Text>}
-            </TabView>
+            </View>
         );
    
 }

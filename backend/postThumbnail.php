@@ -23,7 +23,7 @@ include 'config.php';
 			//echo json_encode[$r];
 		}*/
 		$row = mysqli_fetch_assoc($result);
-		$r = array($row['jobID'], $row['job_title'],$row['job_description'], $row['price']);
+		$r = array($row['jobID'], $row['job_title'],$row['job_description'], $row['price'], $row['imageName']);
 		echo json_encode($r);
 		//echo json_encode($row['userID']);
 		if ($result->num_rows == 1) {
@@ -31,7 +31,7 @@ include 'config.php';
 		} else {
 			echo json_encode(-1);
 		}
-		//} else {
+		//} else {0
 		//	echo json_encode('try again');
 		
 	
