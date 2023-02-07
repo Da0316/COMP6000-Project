@@ -2,27 +2,17 @@ import React, { useState } from "react";
 import {useEffect} from "react";
 import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert} from "react-native";
 import SearchBar from "../components/SearchBar";
-import TaskOne from "../components/TaskOne";
-import TaskTwo from "../components/TaskTwo";
 import ViewJob from "../components/ViewJob";
-import Post from "./Post";
 //import{ StackNavigator } from "react-navigation";
-import Login from "./login";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen =({ navigation })=> {
     const [searchText, setSearchText] = useState("");
-    const [jobsID, setJobsID] = useState([]);
-    const [id1, setId1] = useState('');
-    const addTask = () => navigation.navigate('Post');
-    const chatScreen = () => navigation.navigate('Chat')
-    const job = () => navigation.navigate('Job')
-
+    const [recentJobIDs, setRecentJobIDs] = useState([]);
+    const [recommendedJobs, setRecommendedJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     
   
     useEffect(() => {
-    
      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobsDate.php', { //needs to be changed to your own ip
           method: 'post', 
           header: {
@@ -30,12 +20,19 @@ const HomeScreen =({ navigation })=> {
             'Content-type': 'application/json',
           },
           body: JSON.stringify({
-            
+            id: global.userID,
           }),
         })
           .then((response) => response.json())
-          .then(jobsID => {
-            setJobsID(jobsID)
+          .then((responseJson) => {
+            const ids = [];
+            for (let i = 0; i < responseJson.length; i++){
+              let object = {
+                id: responseJson[i],
+              }
+              ids.push(object)
+            }
+            setRecentJobIDs(ids);
             setLoading(false);
           });
           
@@ -43,7 +40,34 @@ const HomeScreen =({ navigation })=> {
           //   console.error(error);
           // });
           
-        }, []);
+    }, []);
+
+    useEffect(() => {
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/recommendedJobs.php', {
+        method: 'post',
+        header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: global.userID,
+        })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        const ids = [];
+        for (let i = 0; i < responseJson.length; i++){
+          let object = {
+            id: responseJson[i],
+          }
+          ids.push(object);
+        }
+        setRecommendedJobs(ids);
+      })
+      .catch((error) => {
+        alert(error)
+      })
+    })
 
         
         if(loading){
@@ -60,12 +84,19 @@ const HomeScreen =({ navigation })=> {
             <Text style={styles.header}>Home Screen</Text>
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
             <Text>{searchText}</Text>
-            <Text style={styles.title}> Recent Tasks </Text>
-           <ScrollView>
-            <ViewJob ID={jobsID[0]}/>
-            <ViewJob ID={jobsID[2]}/>
-            <ViewJob ID={3}/>
-            <ViewJob ID={6}/>
+            <ScrollView>
+              <Text style={styles.title}> Recent Tasks </Text>
+              <ScrollView horizontal ={true}>
+                {recentJobIDs.map(object => {
+                  return <ViewJob key ={object.id} ID={object.id}/>
+                })}
+              </ScrollView>
+              <Text style={styles.title}>Recommended For You</Text>
+              <ScrollView horizontal = {true}>
+                {recommendedJobs.map(object => {
+                  return <ViewJob key = {object.id} ID={object.id}/>
+                })}
+              </ScrollView>
             </ScrollView>
         </View>
         
@@ -79,8 +110,7 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:"#fff",
-        paddingTop: 50,
- 
+
     },
     header:{
         marginLeft: 'auto',

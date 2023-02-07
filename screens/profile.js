@@ -1,6 +1,6 @@
 import  React, {useState} from 'react';
-import { View,SafeAreaView,StyleSheet,} from 'react-native';
-import { Avatar,Title,Caption,Text, TouchableRipple, TextInput } from 'react-native-paper';
+import { View,SafeAreaView,StyleSheet, ScrollView} from 'react-native';
+import { Avatar,Title,Caption,Text, TouchableRipple, TextInput} from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Login from '../chatroom_testing/Login';
 
@@ -54,6 +54,7 @@ const Profile=({navigation}) =>{
     // console.log(date_of_birth);
   return (
       <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.scrollView}>
           <View style={styles.userInfoSection}>
               <View style={{flexDirection:'row', marginTop: 15}}>
                   <Avatar.Image
@@ -102,22 +103,19 @@ const Profile=({navigation}) =>{
               </View>
 
           <View style={styles.infoBoxWrapper}>
-             <View style={[styles.infoBox, {
-              borderRightColor: '#dddddd',
-              borderRightWidth: 1
-               }]}>
-               <Title>Ratings Level</Title>
-               <Caption>1</Caption>
+             <View style={styles.infoBox}>
+               <Text style={styles.title2}>Ratings Level</Text>
+               <Caption style={styles.titlenum}>1</Caption>
             </View>
-         <View style={styles.infoBox}>
-          <Title>Jobs Completed</Title>
-          <Caption>1</Caption>
-         </View>
+            <View style={styles.infoBox}>
+              <Text style={styles.title2} >Jobs Completed</Text>
+              <Caption style={styles.titlenum}>1</Caption>
+            </View>
            </View>
           </View>
 
           <View style={styles.reviewSection}>
-            <Icon name="message-draw"color="#1A1918" size={40}/>
+            <Icon name="message-draw"color="#1A1918" size={30}/>
             <Title style={{fontWeight:'bold'}}> Write Reviews</Title>
             <TextInput
             style={styles.reviewForm}
@@ -125,6 +123,7 @@ const Profile=({navigation}) =>{
             placeholderTextColor={'#777777'}
             />
           </View >
+          </ScrollView>
       </SafeAreaView>
   );
 };
@@ -139,11 +138,23 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingHorizontal: 30,
-    marginBottom: 25,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  title2:{
+    flexDirection: 'column',
+    fontSize:16,
+    alignItems:'center',
+    justifyContent:'center',
+    marginBottom:2,
+    textAlign:'center'
+  },
+  titlenum:{
+    fontSize:16
+
   },
   caption: {
     fontSize: 14,
@@ -156,32 +167,46 @@ const styles = StyleSheet.create({
   },
   infoBoxWrapper: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     height: 100,
   },
   infoBox: {
+    //fontSize:6,
     width: '50%',
     alignItems: 'center',
     justifyContent: 'center',
+    margin:8,
+    paddingHorizontal:3,
+    //flexDirection: 'column',
+    //position: "absolute",
+    width:100,
+    height:100,
+    borderRadius:1000,
+    backgroundColor: "#C2C3C4",
+    transform:[
+      {translateX:0},
+      {translateY:0},
+      {rotate:"0deg"},
+    ]
   },
   userBtnWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
     marginBottom: 10,
-    marginTop:10,
+    marginTop:3,
   },
   userBtn: {
     backgroundColor: '#1a1918',
     color: "#FFFFF",
     borderRadius:25,
     justifyContent:"center",
-
     height: 30,
     //alignItems:"center",
     //borderWidth: 2,
     //borderRadius: 3,
     paddingHorizontal: 10,
-    marginHorizontal: 5,
+    marginHorizontal: 3,
   },
   userBtnTxt: {
     color: '#FFFFFF'
@@ -190,8 +215,8 @@ const styles = StyleSheet.create({
   reviewForm:{
     backgroundColor: "white",
     paddingTop:3,
-    marginTop:10,
-    paddingBottom:60
+    marginTop:8,
+    paddingBottom:40
   },
   reviewSection:{
     alignItems:"center"

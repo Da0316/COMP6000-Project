@@ -17,6 +17,7 @@ import jobApplications from './screens/jobApplications';
 import application from './screens/application';
 import viewProfile from './screens/viewProfile';
 import Reviews from './screens/reviews';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
  
 
@@ -57,9 +58,39 @@ const Tab = createBottomTabNavigator();
 function StackScreen(){
   //const Tab = createBottomTabNavigator
   return(
-    <Tab.Navigator>
+    <Tab.Navigator 
+    screenOptions={({ route }) =>({
+      // tabBarStyle: {
+      //   backgroundColor: '#1a1918',
+      // },
+      //tabBarActiveBackgroundColor: "#032845",
+      //tabBarIconStyle:{ fontSize: 12, backgroundcolor: '#b28b1d', paddingBottom: 3},
+      tabBarIcon: ({ focused , color, size }) => {
+        let iconName;
+
+            if (route.name === 'Home') {
+              iconName = focused
+                ? 'ios-home'
+                : 'ios-home-outline';
+            } else if (route.name === 'Profile') {
+              iconName = focused ? 'ios-person-circle' : 'ios-person-circle-outline';
+            } else if (route.name === 'Chat') {
+              iconName = focused ? 'chatbox' : 'chatbox-outline';
+            } else if (route.name === 'Post a task') {
+              iconName = focused ? 'ios-add-circle' : 'ios-add-circle-outline';
+            }
+
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: '#f9ce40',
+          tabBarInactiveTintColor: '#1a1918',
+        }
+        )}
+
+    
+    >
       <Tab.Screen name="Home" component={HomeScreen}/>
-      <Tab.Screen name="Post" component={Post}/>
+      <Tab.Screen name="Post a task" component={Post}/>
       <Tab.Screen name="Chat" component={ChatApp}/>
       <Tab.Screen name="Profile" component={Profile}/>
     </Tab.Navigator>
