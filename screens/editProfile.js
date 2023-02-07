@@ -55,7 +55,7 @@ const EditProfile = ({navigation}) => {
     }, []);
 
     const handelSubmit = () => {
-      fetch('https:/project/08/editProfile.php', {
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php', {
         method: 'patch',
         headers:{
           Accept: 'application/json',
@@ -95,7 +95,7 @@ const EditProfile = ({navigation}) => {
           type: selectedImageType, 
           uri: selectedImage });
           //console.log (formData);
-          fetch('https:/project/08/upload.php',{
+          fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
             method: 'POST',
             
             // body: JSON.stringify({
