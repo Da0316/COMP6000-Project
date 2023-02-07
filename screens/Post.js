@@ -26,6 +26,7 @@ const Post = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageName, setSelectedImageName] = useState(null);
   const [selectedImageType, setSelectedImageType] = useState(null);
+  const [selectedSpecialties, setSelectedSpecialties] = useState([]);
 
   useEffect(() => {
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php', {
@@ -75,7 +76,7 @@ const Post = ({ navigation }) => {
             taskD: taskDetails,
             p: price,
             ID: global.userID,
-            speciality: selected,
+            speciality: selectedSpecialties,
             image: selectedImageName,
         }),
       })
@@ -226,7 +227,7 @@ const Post = ({ navigation }) => {
           <View>
             <Text>Task speciality</Text>
             <SelectList
-              setSelected={(val) => setSelected(val)}
+              setSelected={(val) => setSelectedSpecialties(val)}
               data={specialities}
               save="value"
               label="Categories"
