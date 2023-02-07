@@ -12,6 +12,7 @@ const ViewApplication = ({ID, type}) => {
     const [status, setStatus] = useState('');
     const [jobTitle, setJobTitle] = useState('');
     const [usernameApplied, setUsernameApplied] = useState('');
+    const [image, setImage] = useState('https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg');
     useEffect (() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/applicationThumbnail.php', { //needs to be changed to your own ip
             method: 'post', 
@@ -38,6 +39,11 @@ const ViewApplication = ({ID, type}) => {
                 setStatus("Accepted");
             }
             setJobTitle(responseJson[5]);
+            if (responseJson[6] == null){
+                setImage("https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg");
+              } else {
+                setImage("https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/" + responseJson[6]);
+              }
         })
         .catch((error) => {
             console.error(error);
@@ -75,7 +81,7 @@ const ViewApplication = ({ID, type}) => {
             <TouchableOpacity onPress={showJob}>
                 <View style={styles.userApplicationContainer}>
                     <Image source={{
-                        uri: "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg"
+                        uri: image
                     }}
                     style={styles.image}
                     />

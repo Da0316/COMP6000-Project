@@ -7,10 +7,13 @@ import { View,
         TextInput, 
         StyleSheet 
         } from "react-native";
-import * as ImagePicker from 'expo-image-picker';
+
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+
+
+
 
 
 const EditProfile = ({navigation}) => {
@@ -20,16 +23,13 @@ const EditProfile = ({navigation}) => {
     const [email,setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [phone_number, setPhone_number] = useState('');
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [selectedImageName, setSelectedImageName] = useState('');
-    const [selectedImageType, setSelectedImageType] = useState('');
-    const [selected, setSelected] = useState(false);
+
 
 
     useEffect(() => {
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
             method: 'post',
-            headers: {
+            header: {
                 Accept: 'application/json',
                 'Content-type': 'application/json',
             },
@@ -55,9 +55,9 @@ const EditProfile = ({navigation}) => {
     }, []);
 
     const handelSubmit = () => {
-      fetch('https:/project/08/editProfile.php', {
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php', {
         method: 'patch',
-        headers:{
+        header:{
           Accept: 'application/json',
           'Content-type': 'application/json',
         },
@@ -70,17 +70,9 @@ const EditProfile = ({navigation}) => {
           address: address,
           phone: phone_number,
         }),
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        if(responseJson == "success"){
-          alert("Updated");
+        catch(error){
+          alert("Error");
         }
-        if(responseJson == "error"){
-          alert("Not Updated");
-        }
-
-
       })
         .catch((error) => {
           alert("Error");
@@ -155,7 +147,7 @@ const EditProfile = ({navigation}) => {
         <View style={styles.container}>
             <View style={{margin: 20}}>
                 <View style={{alignItems: 'center'}}>
-                    <TouchableOpacity onPress={() => pickImageAsync()}>
+                    <TouchableOpacity onPress={() => {}}>
                         <View style={{
                             height: 100,
                             width: 100,
