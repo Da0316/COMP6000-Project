@@ -57,13 +57,15 @@ const Post = ({ navigation }) => {
 
 
   handleSubmit = () => {
-    //console.log(selectedImage);
+    
     if (price == 0) {
       alert("You have to set a price");
     }else if(taskTitle ==''){
       alert("You need to add a title");
     }else if(taskDetails == ''){
       alert("You need to add Job details");
+    }else if (setSelected == false){
+      alert("You need to add an image");
     }else {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/post.php", {
         method: "post",
@@ -85,12 +87,13 @@ const Post = ({ navigation }) => {
           console.log(responseJson);
           if (responseJson == 1){
             
-            alert("Job Added Successfully");
+            
             setTaskDetails('');
             setPrice('');
             setSelected(null);
             setTaskTitle('');
-          navigation.navigate("HomeScreen");
+            navigation.navigate("Home");
+            alert("Job Added Successfully");
           } else if (responseJson == -1){
             alert("An error has occured")
           }
