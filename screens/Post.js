@@ -57,7 +57,7 @@ const Post = ({ navigation }) => {
 
 
   handleSubmit = () => {
-    //console.log(selectedImage);
+    
     if (price == 0) {
       alert("You have to set a price");
     }else if(taskTitle ==''){
@@ -85,12 +85,13 @@ const Post = ({ navigation }) => {
           console.log(responseJson);
           if (responseJson == 1){
             
-            alert("Job Added Successfully");
+            
             setTaskDetails('');
             setPrice('');
             setSelected(null);
             setTaskTitle('');
-          navigation.navigate("HomeScreen");
+            navigation.navigate("Home");
+            alert("Job Added Successfully");
           } else if (responseJson == -1){
             alert("An error has occured")
           }
