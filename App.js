@@ -60,6 +60,11 @@ function StackScreen(){
   return(
     <Tab.Navigator 
     screenOptions={({ route }) =>({
+      // tabBarStyle: {
+      //   backgroundColor: '#1a1918',
+      // },
+      //tabBarActiveBackgroundColor: "#032845",
+      //tabBarIconStyle:{ fontSize: 12, backgroundcolor: '#b28b1d', paddingBottom: 3},
       tabBarIcon: ({ focused , color, size }) => {
         let iconName;
 
@@ -79,7 +84,8 @@ function StackScreen(){
           },
           tabBarActiveTintColor: '#f9ce40',
           tabBarInactiveTintColor: '#1a1918',
-        })}
+        }
+        )}
 
     
     >
