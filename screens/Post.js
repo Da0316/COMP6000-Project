@@ -23,6 +23,7 @@ const Post = ({ navigation }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [specialities, setSpecialities] = useState([]);
   const [selected, setSelected] = useState(false);
+  const [selectedSpec, setSelectedSpec] = useState([])
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageName, setSelectedImageName] = useState(null);
   const [selectedImageType, setSelectedImageType] = useState(null);
@@ -56,7 +57,7 @@ const Post = ({ navigation }) => {
 
 
   handleSubmit = () => {
-    //console.log(selectedImage);
+    console.log(selected);
     if (price == 0) {
       alert("You have to set a price");
     }else if(taskTitle ==''){
@@ -87,7 +88,7 @@ const Post = ({ navigation }) => {
             alert("Job Added Successfully");
             setTaskDetails('');
             setPrice('');
-            setSelected(null);
+            //setSelected(null);
             setTaskTitle('');
           navigation.navigate("HomeScreen");
           } else if (responseJson == -1){
@@ -146,15 +147,7 @@ const Post = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      //setSelectedImage(result.assets[0].uri);
-      //console.log(result);
-      //setSelectedImage(result);
-
-
-
-
-      //
-      //handleSubmit();
+      
       let localUri = result.assets[0].uri;
       let filename = localUri.split('/').pop();
 
@@ -164,37 +157,13 @@ const Post = ({ navigation }) => {
       setSelectedImage(localUri);
       setSelectedImageName(filename);
       setSelectedImageType(type);
-      setSelected(true);
+      setSelected(true);// selected for if an image is selected
       const formData = new FormData();
       formData.append('name', {
           name: filename, 
           type: type, 
           uri: localUri });
       
-
-      //console.log(localUri);
-      //console.log(formData);
-      //useEffect(() => {
-    //   fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
-    //     method: 'POST',
-        
-    //     // body: JSON.stringify({
-    //     //   name: filename, 
-    //     //   type: type, 
-    //     //   uri: localUri
-    //     // }),
-    //     headers: {
-    //         'Content-Type': 'multipart/form-data'
-    //     },
-    //     body: formData
-    // }).then((response) => response.text())
-    //   .then((responseJson) => {
-    //     console.log(responseJson);
-      
-    // }).catch((error) => {
-    //   console.error(error);
-    // });
- //});
     } else {
       alert('You did not select any image.');
     }
