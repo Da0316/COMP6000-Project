@@ -67,7 +67,7 @@ const HomeScreen =({ navigation })=> {
       .catch((error) => {
         alert(error)
       })
-    })
+    }, [])
 
         
         if(loading){
