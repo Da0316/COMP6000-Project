@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         width:"90%",
         alignSelf: "center",
         borderRadius: 40,
-        backgroundColor: "#EDF6F9",
+        backgroundColor: "#dcdcdc",
         marginTop: 20
     },
     image:{
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         fontSize:14,
         alignSelf: 'flex-end',
         fontWeight: "bold",
-        color:"#0077B6",
+        //color:"#0077B6",
         marginTop:10
     }
 })
