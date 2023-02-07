@@ -64,6 +64,8 @@ const Post = ({ navigation }) => {
       alert("You need to add a title");
     }else if(taskDetails == ''){
       alert("You need to add Job details");
+    }else if (setSelected == false){
+      alert("You need to add an image");
     }else {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/post.php", {
         method: "post",
