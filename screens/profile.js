@@ -1,4 +1,4 @@
-import  React, {useState} from 'react';
+import  React, {useState, useEffect} from 'react';
 import { View,SafeAreaView,StyleSheet, ScrollView} from 'react-native';
 import { Avatar,Title,Caption,Text, TouchableRipple, TextInput} from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -13,8 +13,9 @@ const Profile=({navigation}) =>{
       const [address, setAddress] = useState(null);
       const[email, setEmail] = useState(null);
       const [phone_number, setPhone_number] = useState(null);
+      const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
 
-      try {
+      useEffect(() => { 
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
             method: 'post',
             header: {
@@ -37,14 +38,16 @@ const Profile=({navigation}) =>{
           setAddress(responseJson[5]);
           setEmail(responseJson[6]);
           setPhone_number(responseJson[7]);
+          if(responseJson[8] == null){
+          }
+          else{
+            setSelectedImageName (responseJson[8]);
+          }
+          
         })
         .catch((error) => {
             console.log(error);
-        });
-    } catch (error) {
-        console.log(error);
-        
-    }
+        })  }, []);
     // console.log(userID);
     // console.log(firstname);
     // console.log(lastname);
@@ -59,7 +62,7 @@ const Profile=({navigation}) =>{
               <View style={{flexDirection:'row', marginTop: 15}}>
                   <Avatar.Image
                       source={{
-                          uri: 'https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YmFja2dyb3VuZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60',
+                          uri: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName,
                       }}
                       size={90} />
                   <View style= {{marginLeft:20}}>

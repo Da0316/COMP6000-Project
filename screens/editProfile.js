@@ -21,7 +21,7 @@ const EditProfile = ({navigation}) => {
     const [address, setAddress] = useState('');
     const [phone_number, setPhone_number] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
-    const [selectedImageName, setSelectedImageName] = useState('');
+    const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
     const [selectedImageType, setSelectedImageType] = useState('');
     const [selected, setSelected] = useState(false);
 
@@ -48,6 +48,13 @@ const EditProfile = ({navigation}) => {
           setAddress(responseJson[5]);
           setEmail(responseJson[6]);
           setPhone_number(responseJson[7]);
+          if(responseJson[8] == null){
+          }
+          else{
+            setSelectedImageName (responseJson[8]);
+          }
+          
+        
         })
         .catch((error) => {
             console.log(error);
@@ -114,34 +121,6 @@ const EditProfile = ({navigation}) => {
         });
       };
 
-    
-
-    // const formData = new FormData();
-    //     formData.append('name', {
-    //       name: selectedImageName, 
-    //       type: selectedImageType, 
-    //       uri: selectedImage });
-    //       //console.log (formData);
-    //       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
-    //         method: 'POST',
-            
-    //         // body: JSON.stringify({
-    //         //   name: filename, 
-    //         //   type: type, 
-    //         //   uri: localUri
-    //         // }),
-    //         headers: {
-    //             'Content-Type': 'multipart/form-data'
-    //         },
-    //         body: formData
-    //     }).then((response) => response.text())
-    //       .then((responseJson) => {
-    //         console.log(responseJson);
-          
-    //     }).catch((error) => {
-    //       //console.error(error);
-    //     });
-
     const pickImageAsync = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
@@ -192,7 +171,7 @@ const EditProfile = ({navigation}) => {
                         }}>
                             <ImageBackground
                                 source={{
-                                uri:'https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YmFja2dyb3VuZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60',
+                                uri:'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName,
                                 }}
                                 style={{height:100, width:100}}
                                 imageStyle={{borderRadius:100/2}}

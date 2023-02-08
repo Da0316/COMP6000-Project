@@ -10,7 +10,7 @@ const ViewProfile=({navigation,route}) =>{
       const [firstname, setFirstname] = useState(null);
       const [lastname, setLastname] = useState(null);
       const [phone_number, setPhone_number] = useState(null);
-
+      const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
       try {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
             method: 'post',
@@ -37,6 +37,11 @@ const ViewProfile=({navigation,route}) =>{
           setFirstname(responseJson[2]);
           setLastname(responseJson[3]);
           setPhone_number(responseJson[7]);
+          if(responseJson[8] == null){
+          }
+          else{
+            setSelectedImageName (responseJson[8]);
+          }
         })
         .catch((error) => {
             console.log(error);
@@ -45,13 +50,6 @@ const ViewProfile=({navigation,route}) =>{
         console.log(error);
         
     }
-
-    
-    const layout = useWindowDimensions();
-    const [index, setIndex] = useState(0);
-    const [routes] = useState([
-        {key: 'first', title: 'Jobs'},
-    ]);
 
     const [jobID, setJobID] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -105,22 +103,9 @@ const ViewProfile=({navigation,route}) =>{
         });
     }, []);
 
-
-    if (isJobEmpty == true){
-        return (
-            <View
-                navigationState={{index, routes}}
-                renderScene={SceneMap({
-                    first: emptyJobView,
-                    })}
-                onIndexChange={setIndex}
-                initialLayout={{width: layout.width}}
-            >
-                {isLoading && <Text>Loading...</Text>}
-            </View>
-        );
    
-}
+   
+ 
     // console.log(userID);
     // console.log(firstname);
     // console.log(lastname);
@@ -134,7 +119,7 @@ const ViewProfile=({navigation,route}) =>{
               <View style={{flexDirection:'row', marginTop: 15}}>
                   <Avatar.Image
                       source={{
-                          uri: 'https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YmFja2dyb3VuZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60',
+                        uri: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName,
                       }}
                       size={90} />
                   <View style= {{marginLeft:20}}>
@@ -152,7 +137,6 @@ const ViewProfile=({navigation,route}) =>{
               <Icon name="phone"color="#777777" size={20}/>
               <Text style={{color:"#777777", marginLeft:20}}>{phone_number}</Text>
               </View>
-
 
               <View style={styles.userBtnWrapper}>
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Chat')}>
@@ -176,6 +160,16 @@ const ViewProfile=({navigation,route}) =>{
          </View>
            </View>
           </View>
+        <ScrollView>
+        <ScrollView horizontal = {true}>
+                {jobID.map(object => {
+                  return <ViewJob key = {object.id} ID={object.id}/>
+                })}
+              </ScrollView>
+        </ScrollView>
+
+          
+        
 
       </SafeAreaView>
   );
@@ -212,7 +206,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#dddddd',
     borderTopWidth: 1,
     flexDirection: 'row',
-    height: 100,
+    height: 60,
   },
   infoBox: {
     width: '50%',
@@ -223,8 +217,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
-    marginBottom: 20,
-    marginTop:20,
+    marginBottom: 10,
+    marginTop:10,
   },
   userBtn: {
     borderColor: '#2e64e5',
