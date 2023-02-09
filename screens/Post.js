@@ -212,8 +212,8 @@ const Post = ({ navigation }) => {
           <Text>Task title</Text>
           <TextInput
             style={styles.tasktitleBox}
-            placeholder="  task Title"
-            placeholderTextColor={"#3c3744"}
+            placeholder="task Title"
+            placeholderTextColor={"#3c3744"} //fontcolour
             onChangeText={(taskTitle) => setTaskTitle(taskTitle)}
           />
           <View style={styles.detailsContainer}>
@@ -232,7 +232,7 @@ const Post = ({ navigation }) => {
               data={specialities}
               save="value"
               label="Categories"
-              boxStyles={{marginTop:25}}
+              boxStyles={{marginVertical:5,}}
             />
           </View>
 
@@ -271,7 +271,7 @@ export default Post;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F3F3F3",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
   },
   title: {
@@ -281,31 +281,52 @@ const styles = StyleSheet.create({
   taskContainer: {
     flex: 15,
   },
-  taskDetails: {
-    backgroundColor: "white",
-    paddingTop: 3,
-    marginTop: 10,
+  detailsContainer:{
+    flex:5
+
+  },specialityContainer :{
+
+  },PriceContainer:{
+
+  },ButtonsContainer:{
+
+  },taskDetails: {
+    backgroundColor: "#c2c3c4",
+    //paddingTop: 3,
+    //marginTop: 10,
     paddingBottom: 60,
-    marginBottom: 2,
+    //marginBottom: 2,
+    borderRadius:20,
+    marginVertical: 10,
+    paddingHorizontal:10,
   },
   SelectList: {
-    backgroundColor: "grey",
+    //backgroundColor: "#c2c3c4",
   },
   priceTxt: {
-    marginTop: 10,
-    backgroundColor: "white",
-    fontSize: 15,
+    marginVertical: 10,
+    marginHorizontal:10,
+    backgroundColor: "#c2c3c4",
+    //fontSize: 15,
+    borderRadius:20,
+    paddingHorizontal:10,
+    
+  
   },
   taskTitle: {
     fontSize: 20,
   },
   tasktitleBox: {
-    backgroundColor: "white",
-    fontSize: 10,
-    marginTop: 10,
-    paddingTop: 3,
-    paddingBottom: 8,
-    marginBottom: 2,
+    backgroundColor: "#c2c3c4",
+    marginHorizontal:5,
+    paddingHorizontal:10,
+    marginVertical: 10,
+    //fontSize: 10,
+    //marginTop: 10,
+    //paddingTop: 3,
+    //paddingBottom: 8,
+   // marginBottom: 2,
+    borderRadius:20
   },
   buttonsView: {
     width: "90%",
@@ -323,4 +344,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     padding: 10,
   },
+  // TextInput:{
+  //   backgroundColor:"#b28b1d"
+  // }
 });
