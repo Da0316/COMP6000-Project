@@ -208,7 +208,7 @@ const Post = ({ navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.task}>
+        <View style={styles.taskContainer}>
           <Text>Task title</Text>
           <TextInput
             style={styles.tasktitleBox}
@@ -216,15 +216,16 @@ const Post = ({ navigation }) => {
             placeholderTextColor={"#3c3744"}
             onChangeText={(taskTitle) => setTaskTitle(taskTitle)}
           />
+          <View style={styles.detailsContainer}>
           <Text>Tell us more about what are you looking for.</Text>
-
           <TextInput
             style={styles.taskDetails}
             placeholder="  taskDetails"
             placeholderTextColor={"#3c3744"}
             onChangeText={(taskDetails) => setTaskDetails(taskDetails)}
           />
-          <View>
+          </View>
+          <View style={styles.specialityContainer}>
             <Text>Task speciality</Text>
             <SelectList
               setSelected={(val) => setSelectedSpecialties(val)}
@@ -243,6 +244,7 @@ const Post = ({ navigation }) => {
               onChangeText={(price) => setPrice(price)}
             />
           </View>
+          <View style={styles.ButtonsContainer}>
           <TouchableOpacity
             style={styles.buttonsView}
             onPress={() => pickImageAsync()}
@@ -255,6 +257,7 @@ const Post = ({ navigation }) => {
           >
             <Text style={styles.buttonText}>Post</Text>
           </TouchableOpacity>
+          </View>
           
           
         </View>
@@ -275,7 +278,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 20,
   },
-  task: {
+  taskContainer: {
     flex: 15,
   },
   taskDetails: {
