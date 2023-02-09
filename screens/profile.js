@@ -94,7 +94,7 @@ const Profile=({navigation}) =>{
               </View>
 
               <View style={styles.userBtnWrapper}>
-              <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Login')}>
+              <TouchableRipple style={styles.logoutBtn} onPress={()=>navigation.navigate('Login')}>
                   <Text style={styles.userBtnTxt}> Logout</Text>
                 </TouchableRipple>
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('EditProfile')}>
@@ -223,6 +223,18 @@ const styles = StyleSheet.create({
   },
   reviewSection:{
     alignItems:"center"
+
+  },logoutBtn:{
+    backgroundColor: '#b28b1d',
+    color: "#FFFFF",
+    borderRadius:25,
+    justifyContent:"center",
+    height: 30,
+    //alignItems:"center",
+    //borderWidth: 2,
+    //borderRadius: 3,
+    paddingHorizontal: 10,
+    marginHorizontal: 3,
 
   }
 });

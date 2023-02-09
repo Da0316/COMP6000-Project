@@ -208,11 +208,8 @@ const Post = ({ navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.title}>post Task</Text>
-
         <View style={styles.task}>
           <Text>Task title</Text>
-
           <TextInput
             style={styles.tasktitleBox}
             placeholder="  task Title"
@@ -239,7 +236,7 @@ const Post = ({ navigation }) => {
           </View>
 
           <View style={styles.PriceContainer}>
-            <Text style={styles.price}>Price:</Text>
+            <Text style={styles.price}>Price(per hour):</Text>
             <TextInput
               style={styles.priceTxt}
               placeholder="£"
