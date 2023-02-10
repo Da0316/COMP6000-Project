@@ -13,9 +13,6 @@ import {
 export default function Users({
   users,
   onClickUser,
-  userToAdd,
-  setUserToAdd,
-  onAddFriend,
 }) {
   const renderUser = ({item}) => {
     return (

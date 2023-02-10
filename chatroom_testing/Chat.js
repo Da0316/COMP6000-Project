@@ -3,7 +3,7 @@ import {GiftedChat} from 'react-native-gifted-chat';
 import {Image, TouchableOpacity, StyleSheet, Text, View, Alert} from 'react-native';
 import {getDatabase, get, ref, onValue, off, update} from 'firebase/database';
 
-export default function Chat({onBack, myData, selectedUser}) {
+export default function Chat({onBack, myData, selectedUser, viewUser}) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -132,7 +132,6 @@ export default function Chat({onBack, myData, selectedUser}) {
         'Content-type': 'application/json',
       },
       body: JSON.stringify({
-        userID: userAppID,
       }),
     })    
     .then((response) => response.json())
@@ -150,7 +149,7 @@ export default function Chat({onBack, myData, selectedUser}) {
         <TouchableOpacity onPress={onBack}>
           <Image source={require('./assets/back.png')}/>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={viewUser}>
             <Text style={styles.text}>{selectedUser.username}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={showConfirmationPopup}>

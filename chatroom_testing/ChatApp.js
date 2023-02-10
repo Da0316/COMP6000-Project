@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Chat from './Chat';
 import Login from './Login';
 import Users from './Users';
+import ViewUser from './ViewUser';
 import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/database'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -62,7 +63,11 @@ export default function ChatApp(){
     //};
 
     const onBack = () => {
-        setCurrentPage('users');
+        if (currentPage == 'viewProfile'){
+            setCurrentPage('chat')
+        } else if (currentPage == 'users'){
+            setCurrentPage('users');
+        }
     }
 
     const findUser = async name => {
@@ -74,6 +79,10 @@ export default function ChatApp(){
         setCurrentPage('chat');
         setSelectedUser(user);
     };
+
+    const viewUser = () => {
+        setCurrentPage('viewUser');
+    }
 
     const onAddFriend = async name => {
         try {
@@ -145,7 +154,11 @@ export default function ChatApp(){
             );
         case 'chat':
             return (
-                <Chat myData={myData} selectedUser={selectedUser} onBack={onBack} />
+                <Chat myData={myData} selectedUser={selectedUser} onBack={onBack} viewUser={viewUser}/>
+            );
+        case 'viewUser':
+            return (
+                <ViewUser selectedUser={selectedUser} onBack={onBack}></ViewUser>
             );
         default:
             return null;
