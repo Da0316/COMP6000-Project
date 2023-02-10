@@ -4,6 +4,7 @@ import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert} from 
 import SearchBar from "../components/SearchBar";
 import ViewJob from "../components/ViewJob";
 import { SelectList } from "react-native-dropdown-select-list";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 //import{ StackNavigator } from "react-navigation";
 
 const HomeScreen =({ navigation, route })=> {
@@ -98,19 +99,21 @@ const HomeScreen =({ navigation, route })=> {
             <View style ={styles.Button}>
             
             </View>
-            <Text style={styles.header}>Home Screen</Text>
-            <SearchBar searchText={searchText} setSearchText={setSearchText} />
-            
+            <Text style={styles.header}>Search up for tasks that you're good at!</Text>
+            <View style= {styles.searchContainer}>
+              <SearchBar searchText={searchText} setSearchText={setSearchText} style={styles.searchBox} />
+              <SelectList
+                setSelected={(val) => setFilter(val)}
+                data={filterChoices}
+                save="value"
+                label="Categories"
+                onSelect={()=> handelFilter}
+                style={styles.sortBox}
+                boxStyles={{marginRight:10}}
+                
+              />
+            </View>
             <View>
-            <Text>Filter Search</Text>
-            <SelectList
-              setSelected={(val) => setFilter(val)}
-              data={filterChoices}
-              save="value"
-              label="Categories"
-              onSelect={()=> handelFilter}
-              boxStyles={{marginTop:25}}
-            />
            </View>
 
             <ScrollView>
@@ -141,12 +144,32 @@ const styles = StyleSheet.create({
         backgroundColor:"#fff",
 
     },
-    header:{
-        marginLeft: 'auto',
-        marginRight: 'auto',
-    },
+    searchContainer:{
+      flexDirection:"row",
+      //flexGrow: 4,
+      //marginHorizontal:5,
+      justifyContent:"space-between",
 
-    title:{
+    },
+    header:{
+      justifyContent:"center",
+        //marginLeft: 'auto',
+        //marginRight: 'auto',
+    },
+    searchBox:{
+      paddingHorizontal:25,
+      flexGrow:4,
+      //paddingHorizontal:10
+      //marginLeft
+    },
+    sortBox:{
+      flexGrow :1,
+      alignSelf:"flex-end",
+      //marginLeft:5
+
+    }
+
+    ,title:{
         fontWeight: "bold",
         fontSize: 20
     },

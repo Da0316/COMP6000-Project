@@ -19,14 +19,16 @@ export default SearchBar;
 
 const styles = StyleSheet.create({
     container:{
-        margin: 10
+        margin: "auto",
 
     },
     input:{
-        backgroundColor: "#fff",
-        padding: 12,
+        backgroundColor: "#EBEBEB",
+        paddingHorizontal: 100,
         borderRadius: 10,
         color: "#000",
-        borderWidth: 1
+        borderWidth: 1,
+        flexGrow:4,
+        marginHorizontal:2
     }
 });
