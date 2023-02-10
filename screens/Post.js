@@ -209,50 +209,51 @@ const Post = ({ navigation }) => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.taskContainer}>
-          <Text>Task title</Text>
+          <Text style={styles.baseText}>Task title:</Text>
           <TextInput
             style={styles.tasktitleBox}
             placeholder="task Title"
-            placeholderTextColor={"#3c3744"} //fontcolour
+            //placeholderTextColor={"#3c3744"} //fontcolour
             onChangeText={(taskTitle) => setTaskTitle(taskTitle)}
           />
           <View style={styles.detailsContainer}>
-          <Text>Tell us more about what are you looking for.</Text>
+          <Text style={styles.baseText}>Tell us more about what are you looking for.</Text>
           <TextInput
             style={styles.taskDetails}
-            placeholder="  taskDetails"
-            placeholderTextColor={"#3c3744"}
+            placeholder="task Details"
+            //placeholderTextColor={"#3c3744"}
             onChangeText={(taskDetails) => setTaskDetails(taskDetails)}
           />
           </View>
           <View style={styles.specialityContainer}>
-            <Text>Task speciality</Text>
+            <Text style={styles.baseText}>Task speciality:</Text>
             <SelectList
               setSelected={(val) => setSelectedSpecialties(val)}
               data={specialities}
               save="value"
               label="Categories"
-              boxStyles={{marginVertical:5,}}
+              boxStyles={{marginVertical:5,backgroundColor:"#EBEBEB",borderColor:"#939394"}}
             />
           </View>
 
           <View style={styles.PriceContainer}>
-            <Text style={styles.price}>Price(per hour):</Text>
+            <Text style={styles.baseText}>Price(per hour):</Text>
             <TextInput
-              style={styles.priceTxt}
+              style={styles.priceBox}
               placeholder="£"
+              //placeholderTextColor={"#3c3744"}
               onChangeText={(price) => setPrice(price)}
             />
           </View>
           <View style={styles.ButtonsContainer}>
           <TouchableOpacity
-            style={styles.buttonsView}
+            style={styles.pickImgBtn}
             onPress={() => pickImageAsync()}
           >
             <Text style={styles.buttonText}>Upload Image</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.buttonsView}
+            style={styles.postBtn}
             onPress={() => handleSubmit()}
           >
             <Text style={styles.buttonText}>Post</Text>
@@ -273,78 +274,89 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
     alignItems: "center",
+    alignContent: "center",
   },
   title: {
     flex: 1,
     fontSize: 20,
   },
   taskContainer: {
-    flex: 15,
+    
   },
   detailsContainer:{
-    flex:5
+    //flex:5
 
   },specialityContainer :{
 
   },PriceContainer:{
+    
 
   },ButtonsContainer:{
+    justifyContent: "center",
+    alignContent:"center",
 
   },taskDetails: {
-    backgroundColor: "#c2c3c4",
-    //paddingTop: 3,
-    //marginTop: 10,
+    backgroundColor: "#EBEBEB",
     paddingBottom: 60,
-    //marginBottom: 2,
     borderRadius:20,
+    marginVertical: 10,
+    paddingHorizontal:10,
+  },
+  priceBox:{
+    backgroundColor: "#EBEBEB",
+    borderRadius:15,
     marginVertical: 10,
     paddingHorizontal:10,
   },
   SelectList: {
-    //backgroundColor: "#c2c3c4",
+
   },
-  priceTxt: {
-    marginVertical: 10,
-    marginHorizontal:10,
-    backgroundColor: "#c2c3c4",
-    //fontSize: 15,
-    borderRadius:20,
-    paddingHorizontal:10,
-    
   
-  },
-  taskTitle: {
-    fontSize: 20,
-  },
   tasktitleBox: {
-    backgroundColor: "#c2c3c4",
+    backgroundColor: "#EBEBEB",
     marginHorizontal:5,
     paddingHorizontal:10,
     marginVertical: 10,
-    //fontSize: 10,
-    //marginTop: 10,
-    //paddingTop: 3,
-    //paddingBottom: 8,
-   // marginBottom: 2,
     borderRadius:20
   },
-  buttonsView: {
+  postBtn: {
     width: "90%",
     color: "#000",
     height: 50,
-    backgroundColor: "#c2d4f0",
+    backgroundColor: "#f9ce40",
+    borderRadius: 10,
+    marginVertical: 15,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5,
+    //marginBottom:15
+  },
+  pickImgBtn:{
+    width: "90%",
+    //position: "relative",
+    color: "#000",
+    height: 50,
+    backgroundColor: "#939394",
     borderRadius: 10,
     marginTop: 15,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  },
-  buttonText: {
+    elevation: 5,
+
+  },buttonText: {
     fontWeight: "bold",
     fontSize: 15,
     padding: 10,
   },
-  // TextInput:{
-  //   backgroundColor:"#b28b1d"
-  // }
+  baseText:{
+    fontSize: 15,
+    marginHorizontal:1,
+    paddingVertical:1,
+    paddingHorizontal:1,
+    marginVertical: 1,
+
+    //fontFamily:
+  }
 });

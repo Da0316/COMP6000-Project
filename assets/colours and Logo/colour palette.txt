@@ -10,6 +10,9 @@ offwhite
 #f1f3f3
 rgb(241,243,243)
 
+very light grey
+#EBEBEB
+
 dark grey
 #939394
 rgb(147,147,148)

@@ -161,10 +161,10 @@ const styles = StyleSheet.create({
   welcome:{
     position:"absolute",
     fontSize: 25,
-    color:"#C2C3C4",
+    color:"#EBEBEB",
   },
   inputView:{
-    backgroundColor: '#C2C3C4',
+    backgroundColor: '#EBEBEB',
     borderRadius:30,
     width:"70%",
     height:45,
