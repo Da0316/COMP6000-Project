@@ -3,13 +3,20 @@ import {useEffect} from "react";
 import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert} from "react-native";
 import SearchBar from "../components/SearchBar";
 import ViewJob from "../components/ViewJob";
+import { SelectList } from "react-native-dropdown-select-list";
 //import{ StackNavigator } from "react-navigation";
 
-const HomeScreen =({ navigation })=> {
+const HomeScreen =({ navigation, route })=> {
     const [searchText, setSearchText] = useState("");
     const [recentJobIDs, setRecentJobIDs] = useState([]);
     const [recommendedJobs, setRecommendedJobs] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState('Most relevant');
+    const [filterChoices, setFilterChoices] = useState([{key:'1', value:'Most relevant'},
+    {key:'2', value:'price low to high'},
+    {key:'3', value:'price high to low'},
+    {key:'4', value:'Newest'},
+    {key:'5', value:'Oldest'}]);
     
   
     useEffect(() => {
@@ -39,8 +46,9 @@ const HomeScreen =({ navigation })=> {
           // .catch((error) => {
           //   console.error(error);
           // });
+           handelFilter = () =>{}
           
-    }, []);
+    }, [route]);
 
     useEffect(() => {
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/recommendedJobs.php', {
@@ -69,6 +77,15 @@ const HomeScreen =({ navigation })=> {
       })
     }, [])
 
+    handelSearch = async () =>{
+      try{
+        const res = await fetch('search.php');
+        const jobs = await res.json();
+      }catch{
+
+      }
+    }
+
         
         if(loading){
           return <Text>Loading....</Text>;
@@ -83,7 +100,19 @@ const HomeScreen =({ navigation })=> {
             </View>
             <Text style={styles.header}>Home Screen</Text>
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
-            <Text>{searchText}</Text>
+            
+            <View>
+            <Text>Filter Search</Text>
+            <SelectList
+              setSelected={(val) => setFilter(val)}
+              data={filterChoices}
+              save="value"
+              label="Categories"
+              onSelect={()=> handelFilter}
+              boxStyles={{marginTop:25}}
+            />
+           </View>
+
             <ScrollView>
               <Text style={styles.title}> Recent Tasks </Text>
               <ScrollView horizontal ={true}>

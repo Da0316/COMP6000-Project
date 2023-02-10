@@ -61,9 +61,9 @@ const EditProfile = ({navigation}) => {
             //console.log("1");
         });
     }, []);
-
+    
     const handelSubmit = () => {
-      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/edit.php', {
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php', {
         method: 'patch',
         headers:{
           Accept: 'application/json',
@@ -91,9 +91,9 @@ const EditProfile = ({navigation}) => {
 
       })
         .catch((error) => {
-          alert("Error");
+          alert(error);
         });
-
+        if (selected == true){
         const formData = new FormData();
         formData.append('name', {
           name: selectedImageName, 
@@ -120,6 +120,7 @@ const EditProfile = ({navigation}) => {
           console.error(error);
         });
       };
+    }
 
     const pickImageAsync = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
