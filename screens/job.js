@@ -75,14 +75,14 @@ function Job({route, navigation}){
         if (sameUser == false){
             return (
                 <TouchableOpacity styles={styles.applicationButton} onPress = {() => navigation.navigate('ViewProfile', {paramKey: userPostedID})}>
-                    <Text>Posted By:{username}</Text>
+                    <Text styles={styles.row}>Posted By:{username}</Text>
                 </TouchableOpacity>
             )
         }
         else{
             return(
                 <View styles={styles.row}>
-                    <Text>Posted By: {username}</Text>
+                    <Text styles={styles.row} >Posted By: {username}</Text>
                 </View>
             )
 
@@ -92,31 +92,31 @@ function Job({route, navigation}){
     
 
     return (
-        <View styles={styles.container}>
+        <View styles={{backgroundColor:"#FFFFFF",flex:1}}>
             <View styles={styles.information}>
                 <View styles={styles.row}>
-                    <Text>{jobTitle}</Text>
+                    <Text style={styles.title}>{jobTitle}</Text>
                 </View>
-                <View>{profileView()}</View>
+                <View styles={styles.row}>{profileView()}</View>
                 <View styles={styles.row}>
-                    <Text>Speciality: {speciality}</Text>
-                </View>
-                <View styles={styles.row}>
-                    <Text>Description: {jobDescription}</Text>
+                    <Text style={styles.baseText}>Speciality: {speciality}</Text>
                 </View>
                 <View styles={styles.row}>
-                    <Text>Date Posted: {postedDate}</Text>
+                    <Text style={styles.baseText}>Description: {jobDescription}</Text>
                 </View>
                 <View styles={styles.row}>
-                    <Text>Has the Job Been Accepted: {accepted}</Text>
+                    <Text style={styles.baseText}>Date Posted: {postedDate}</Text>
                 </View>
                 <View styles={styles.row}>
-                    <Text>Has the Job Been Completed: {completed}</Text>
+                    <Text style={styles.baseText}>Has the Job Been Accepted: {accepted}</Text>
                 </View>
                 <View styles={styles.row}>
-                    <Text>Price: ${price}</Text>
+                    <Text style={styles.baseText}>Has the Job Been Completed: {completed}</Text>
                 </View>
-                <View>{renderButton()}</View>
+                <View styles={styles.row}>
+                    <Text style={styles.baseText}>Price: ${price}</Text>
+                </View>
+                <View style={styles.applicationButton}>{renderButton()}</View>
             </View>
             
         </View>
@@ -130,26 +130,56 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24, 
         fontWeight: 'bold',
+        alignContent:'center',
+        alignItems:'center',
+        textAlign: 'center',
+
     },
     applicationButton: {
-        borderColor: '#2e64e5',
-        borderWidth: 2,
-        borderRadius: 3,
-        paddingVertical: 10,
-        paddingHorizontal: 50,
-        marginHorizontal: 5,
+        // borderColor: '#FFF',
+        // borderWidth: 2,
+        // borderRadius: 3,
+        // paddingVertical: 10,
+        // paddingHorizontal: 50,
+        // marginHorizontal: 5,
+        width: "90%",
+        //color: "#000",
+        height: 50,
+        backgroundColor: "#f9ce40",
+        borderRadius: 10,
+        marginVertical: 15,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf:"center",
+        elevation: 5,
     },
     container: {
         flex: 1,
-        backgroundColor: '#EEF5DB',
+        backgroundColor:"#FFFFFF"
     },
     information: {
         paddingHorizontal: 30,
         marginBottom: 25,
+        backgroundColor:"#FFFFFF"
+        //alignSelf:"center",
+        //alignContent:"stretch"
     },
     row: {
-        flexDirection: 'row',
-        marginBottom: 10,
-        alignItems: 'center',
+        marginVertical:20,
+        //paddingHorizontal:10,
+        //paddingVertical:20,
+        // alignContent:"stretch",
+        //flexDirection: 'row',
+        //marginBottom: 10,
+        //textAlign: "center",
+        //alignItems: 'center',
+
+        //justifyContent:"space-between",
+        //marginHorizontal:5
     },
+    baseText:{
+        alignContent:"center"
+
+    }
 });

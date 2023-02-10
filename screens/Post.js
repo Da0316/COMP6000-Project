@@ -330,6 +330,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
+    alignSelf:"center",
     //marginBottom:15
   },
   pickImgBtn:{
@@ -344,6 +345,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
+    alignSelf:"center",
 
   },buttonText: {
     fontWeight: "bold",
