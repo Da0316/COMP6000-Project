@@ -92,40 +92,41 @@ const SignUp = ({navigation}) =>{
   };
   
   return (
+
     
-    <View style={styles.mainView}>
-      <View style={styles.TopView}></View>
-      <ScrollView style={styles.bottomView}>
-        <Text style={styles.heading}>
-          Create Account
-        </Text>
-        <SafeAreaView style={styles.formView}>
-          <TextInput placeholder={"First name*"} placeholderTextColor='#fff' onChangeText={(firstName) => setFirstName(firstName)} style={styles.TextInput}/>
-          <TextInput placeholder={"Last name*"} placeholderTextColor='#fff' onChangeText={(lastName) => setLastName(lastName)} style={styles.TextInput}/>
-          <TextInput placeholder={"Set Username*"} placeholderTextColor='#fff' onChangeText={(userName) => setuserName(userName)} style={styles.TextInput}/>
-          
-          <View>
-            <Button title="Show Date Picker" onPress={showDatePicker} />
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
-            />
-          </View>
-          <TextInput placeholder={"Email address*"} placeholderTextColor='#fff' onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>
-          <TextInput placeholder={"Phone Number*"} keyboardType='numeric' placeholderTextColor='#fff' maxLength={11} onChangeText={(pNumber) => setPNumber(pNumber)}  style={styles.TextInput}/>
-          <TextInput placeholder={"address*"} placeholderTextColor='#fff' onChangeText={(address) => setAddress(address)} style={styles.TextInput}/>
-          <TextInput placeholder={"Password*"} placeholderTextColor='#fff' onChangeText={(password) => setPassword(password)} secureTextEntry={true} style={styles.TextInput}/>
-          <TextInput placeholder={"Confirm password*"} placeholderTextColor='#fff' onChangeText={(conPasswrod) => setConPassword(conPasswrod)} secureTextEntry={true} style={styles.TextInput}/>
-          <TouchableOpacity style={styles.buttonsView} onPress={()=>handelSubmit()}>
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </TouchableOpacity>
-        </SafeAreaView>
-      </ScrollView>
+      <View style={styles.mainView}>
+        <ScrollView style={styles.bottomView}>
+          <Text style={styles.heading}>
+            Create Account
+          </Text>
+          <SafeAreaView style={styles.formView}>
+            <TextInput placeholder={"First name*"}  onChangeText={(firstName) => setFirstName(firstName)} style={styles.TextInput}/>
+            <TextInput placeholder={"Last name*"}  onChangeText={(lastName) => setLastName(lastName)} style={styles.TextInput}/>
+            <TextInput placeholder={"Set Username*"}  onChangeText={(userName) => setuserName(userName)} style={styles.TextInput}/>
+            
+            <View>
+              <Button title="Date of Birth" onPress={showDatePicker} />
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+                style={styles.datePickerModal}
+              />
+            </View>
+            <TextInput placeholder={"Email address*"}  onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>
+            <TextInput placeholder={"Phone Number*"} keyboardType='numeric'  maxLength={11} onChangeText={(pNumber) => setPNumber(pNumber)}  style={styles.TextInput}/>
+            <TextInput placeholder={"address*"}  onChangeText={(address) => setAddress(address)} style={styles.TextInput}/>
+            <TextInput placeholder={"Password*"}  onChangeText={(password) => setPassword(password)} secureTextEntry={true} style={styles.TextInput}/>
+            <TextInput placeholder={"Confirm password*"}  onChangeText={(conPasswrod) => setConPassword(conPasswrod)} secureTextEntry={true} style={styles.TextInput}/>
+            <TouchableOpacity style={styles.buttonsView} onPress={()=>handelSubmit()}>
+              <Text style={styles.buttonText}>Sign Up</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
+        </ScrollView>
 
 
-    </View>
+      </View>
   );
 }
 export default SignUp; 
@@ -139,16 +140,17 @@ const styles = StyleSheet.create({
   //   justifyContent: 'center',
   // },
   mainView:{
-    marginTop:40,
+    //marginTop:10,
     flex:1,
     flexDirection:'column',
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor:"#FFFFFF"
 
   },
   TopView:{
     width:'100%',
-    height:'20%',
+    height:'0%',
     display:'flex',
     justifyContent:'center',
     alignItems:'center'
@@ -157,16 +159,17 @@ const styles = StyleSheet.create({
   bottomView:{
     width:'100%',
     height:'80%',
-    backgroundColor:'purple',
+    backgroundColor:'#f9ce40',
     borderTopLeftRadius:40,
     borderTopRightRadius:40
   },
   heading:{
-    color:'#fff',
+    color:'#1a1918',
     fontSize:30,
     fontWeight:'bold',
-    marginLeft:20,
-    marginTop:50
+    textAlign:"center",
+    //marginLeft:20,
+    marginTop:20
 
   },
   formView:{
@@ -174,12 +177,13 @@ const styles = StyleSheet.create({
     display:'flex',
     flexDirection:'column',
     alignItems:'center',
-    marginTop:40
+    marginTop:10,
+    
   },
   TextInput:{
     width:'90%',
     borderWidth:1,
-    borderColor:'#fff',
+    borderColor:'#1a1918',
     height:50,
     borderRadius:10,
     paddingLeft:5,
@@ -194,7 +198,7 @@ const styles = StyleSheet.create({
     height:50,
     backgroundColor:'#fff',
     borderRadius:10,
-    marginTop:20,
+    marginVertical:10,
     display:'flex',
     justifyContent:'center',
     alignItems:'center'
@@ -202,5 +206,9 @@ const styles = StyleSheet.create({
   buttonText:{
     fontWeight:'bold',
     fontSize:18
+  },
+  datePickerModal:{
+    backgroundColor:"black",
+    color:"white"
   }
 });
