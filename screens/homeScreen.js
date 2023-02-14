@@ -96,47 +96,45 @@ const HomeScreen =({ navigation, route })=> {
     //console.log(jobsID[0]);
     return (
         <View style={styles.container}>
-            <View style ={styles.Button}>
-            
-            </View>
-            <Text style={styles.header}><Text style={{fontWeight:"bold",fontSize:25,paddingHorizontal:5}}>Hi! </Text>
-Search up for tasks that you're good at !</Text>
-            <View style= {styles.searchContainer}>
-              <SearchBar searchText={searchText} setSearchText={setSearchText} style={styles.searchBox} />
-              {/* <SelectList
-                setSelected={(val) => setFilter(val)}
-                data={filterChoices}
-                save="value"
-                label="Categories"
-                onSelect={()=> handelFilter}
-                style={styles.sortBox}
-                boxStyles={{marginRight:10}}
-                
-              /> */}
-            </View>
-            <View>
-           </View>
-
-            <ScrollView>
-              <Text style={styles.title}> Recent Tasks </Text>
-              <ScrollView 
-              style={styles.ScrollView}
-              horizontal ={true}
-              //alwaysBounceVertical={true}
-              //showsHorizontalScrollIndicator={true}
-              pagingEnabled={true}
-              >
-                {recentJobIDs.map(object => {
-                  return <ViewJob key ={object.id} ID={object.id}/>
-                })}
+          <View style={styles.upperView}>
+              <Text style={styles.header}><Text style={{fontWeight:"bold",fontSize:30,paddingHorizontal:5}}>Hi! </Text>
+  Search up for tasks that you're good at !</Text>
+              <View style= {styles.searchContainer}>
+                <SearchBar searchText={searchText} setSearchText={setSearchText} style={styles.searchBox} />
+                {/* <SelectList
+                  setSelected={(val) => setFilter(val)}
+                  data={filterChoices}
+                  save="value"
+                  label="Categories"
+                  onSelect={()=> handelFilter}
+                  style={styles.sortBox}
+                  boxStyles={{marginRight:10}}
+                  
+                /> */}
+              </View>
+          </View>
+            <View style={styles.bottomView}>
+              <ScrollView>
+                <Text style={styles.title}> Recent Tasks </Text>
+                <ScrollView 
+                style={styles.ScrollView}
+                horizontal ={true}
+                //alwaysBounceVertical={true}
+                //showsHorizontalScrollIndicator={true}
+                pagingEnabled={true}
+                >
+                  {recentJobIDs.map(object => {
+                    return <ViewJob key ={object.id} ID={object.id}/>
+                  })}
+                </ScrollView>
+                <Text style={styles.title}>Recommended For You</Text>
+                <ScrollView horizontal = {true}>
+                  {recommendedJobs.map(object => {
+                    return <ViewJob key = {object.id} ID={object.id}/>
+                  })}
+                </ScrollView>
               </ScrollView>
-              <Text style={styles.title}>Recommended For You</Text>
-              <ScrollView horizontal = {true}>
-                {recommendedJobs.map(object => {
-                  return <ViewJob key = {object.id} ID={object.id}/>
-                })}
-              </ScrollView>
-            </ScrollView>
+            </View>
         </View>
         
     );
@@ -154,23 +152,35 @@ const styles = StyleSheet.create({
     searchContainer:{
       //flexDirection:"row",
       //flexGrow: 4,
-      marginVertical:10
+      marginVertical:5,
+
+      backgroundColor:"fff",
       //justifyContent:"space-between",
 
     },
-    header:{
+    upperView:{
+      width:'100%',
+      height:'22%',
+      backgroundColor:'#f9ce40',
+      borderBottomRightRadius:45,
+      borderBottomLeftRadius:45,
+      elevation:10
+
+    },bottomView:{
+      width:'100%',
+      height:'78%',
+      marginBottom:20,
+      // borderTopRightRadius:45,
+      // borderTopLeftRadius:45,
+      
+
+    }
+    ,header:{
       justifyContent:"center",
       paddingLeft:20,
       fontSize:16,
-      paddingVertical:5
-        //marginLeft: 'auto',
-        //marginRight: 'auto',
-    },
-    searchBox:{
-      paddingHorizontal:50,
-      //flexGrow:4,
-      //paddingHorizontal:10
-      //marginLeft
+      paddingVertical:5,
+      paddingTop:8
     },
     sortBox:{
       flexGrow :1,
@@ -199,7 +209,9 @@ const styles = StyleSheet.create({
     },
     ScrollView:{
       //backgroundColor:"fff",
-      margin:5
+      margin:5,
+      
+      //fadingEdgeLength:10
 
     }
 });

@@ -62,17 +62,17 @@ const ViewJob = ({ID}) => {
               }}
               style={styles.image}
               />
-              <View style={{padding: 20}}>
+              <View style={styles.info}>
 
                 {/* title */}
                 <Text style={styles.title}>{jobTitle}</Text>
 
                 {/* description*/}
                 <Text style={styles.description}>{jobDescription}</Text>
-          
-                {/* amount */}
-                <Text style={styles.amount}>£{price}/h </Text>
+
               </View>
+                {/* amount */}
+               <Text style={styles.amount}>£{price}/h </Text>
           </View>
         </TouchableOpacity>
     )
@@ -82,34 +82,45 @@ export default ViewJob;
 
 const styles = StyleSheet.create({ 
     container:{
-        width:"90%",
+        width:150,
         alignSelf: "center",
         borderRadius: 40,
         backgroundColor: "#EBEBEB",
-        marginTop: 20
+        marginVertical: 10,
+        marginHorizontal:8
     },
     image:{
-        height:200,
-        width: "100%",
+        height:150,
+        width: 150,
         borderTopLeftRadius:40,
         borderTopRightRadius:40
 
     },
+    info:{
+      padding: 10,
+      height:100,
+      backgroundColor:"#EBEBEB",
+      borderBottomLeftRadius:40,
+      borderBottomRightRadius:40
+
+
+    },
     title:{
-        fontSize:18,
+        fontSize:14,
         fontWeight:"600",
         marginTop: 10
     },
     description:{
-        fontSize:14,
+        fontSize:12,
         fontWeight:"400",
-        marginTop: 10
+        marginTop: 6
     },
     amount:{
         fontSize:14,
         alignSelf: 'flex-end',
         fontWeight: "bold",
         //color:"#0077B6",
-        marginTop:10
+        marginBottom:10,
+        marginEnd:15
     }
 })

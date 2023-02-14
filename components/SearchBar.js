@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
 
     },
     input:{
-        backgroundColor: "#EBEBEB",
-        paddingHorizontal: 30,
-        borderRadius: 15,
+        backgroundColor: "#f1f3f3",
+        paddingHorizontal: 20,
+        borderRadius: 20,
         color: "#000",
-        borderWidth: 1,
-        marginHorizontal:15,
+        borderWidth: 2,
+        marginHorizontal:20,
         height:40,
         alignItems:"flex-end",
-        borderColor:"#EBEBEB"
+        borderColor:"#f1f3f3"
     }
 });
