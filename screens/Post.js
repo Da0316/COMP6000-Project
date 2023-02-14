@@ -213,14 +213,13 @@ const Post = ({ navigation }) => {
           <TextInput
             style={styles.tasktitleBox}
             placeholder="task Title"
-            //placeholderTextColor={"#3c3744"} //fontcolour
             onChangeText={(taskTitle) => setTaskTitle(taskTitle)}
           />
           <View style={styles.detailsContainer}>
           <Text style={styles.baseText}>Tell us more about what are you looking for.</Text>
           <TextInput
             style={styles.taskDetails}
-            placeholder="task Details"
+            placeholder="task details"
             //placeholderTextColor={"#3c3744"}
             onChangeText={(taskDetails) => setTaskDetails(taskDetails)}
           />
@@ -331,11 +330,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     elevation: 5,
     alignSelf:"center",
-    //marginBottom:15
   },
   pickImgBtn:{
     width: "90%",
-    //position: "relative",
     color: "#000",
     height: 50,
     backgroundColor: "#939394",
@@ -358,7 +355,7 @@ const styles = StyleSheet.create({
     paddingVertical:1,
     paddingHorizontal:1,
     marginVertical: 1,
+    fontFamily:"sans-serif-medium"
 
-    //fontFamily:
   }
 });

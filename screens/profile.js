@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     marginBottom:2,
-    textAlign:'center'
+    textAlign:'center',
+    fontFamily:"sans-serif-medium"
   },
   titlenum:{
     fontSize:16
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
     alignItems:"center"
 
   },logoutBtn:{
-    backgroundColor: '#1a1918',
+    backgroundColor: '#de3737',
     color: "#FFFFF",
     borderRadius:25,
     justifyContent:"center",

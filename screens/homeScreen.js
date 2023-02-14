@@ -170,8 +170,7 @@ const styles = StyleSheet.create({
       width:'100%',
       height:'78%',
       marginBottom:20,
-      // borderTopRightRadius:45,
-      // borderTopLeftRadius:45,
+
       
 
     }
@@ -180,13 +179,12 @@ const styles = StyleSheet.create({
       paddingLeft:20,
       fontSize:16,
       paddingVertical:5,
-      paddingTop:8
+      paddingTop:8,
+      //fontFamily:"sans-serif-medium"
     },
     sortBox:{
       flexGrow :1,
       alignSelf:"flex-end",
-      //marginLeft:5
-
     }
 
     ,title:{
@@ -208,9 +206,7 @@ const styles = StyleSheet.create({
 
     },
     ScrollView:{
-      //backgroundColor:"fff",
       margin:5,
-      
       //fadingEdgeLength:10
 
     }
