@@ -99,10 +99,11 @@ const HomeScreen =({ navigation, route })=> {
             <View style ={styles.Button}>
             
             </View>
-            <Text style={styles.header}>Search up for tasks that you're good at!</Text>
+            <Text style={styles.header}><Text style={{fontWeight:"bold",fontSize:25,paddingHorizontal:5}}>Hi! </Text>
+Search up for tasks that you're good at !</Text>
             <View style= {styles.searchContainer}>
               <SearchBar searchText={searchText} setSearchText={setSearchText} style={styles.searchBox} />
-              <SelectList
+              {/* <SelectList
                 setSelected={(val) => setFilter(val)}
                 data={filterChoices}
                 save="value"
@@ -111,14 +112,20 @@ const HomeScreen =({ navigation, route })=> {
                 style={styles.sortBox}
                 boxStyles={{marginRight:10}}
                 
-              />
+              /> */}
             </View>
             <View>
            </View>
 
             <ScrollView>
               <Text style={styles.title}> Recent Tasks </Text>
-              <ScrollView horizontal ={true}>
+              <ScrollView 
+              style={styles.ScrollView}
+              horizontal ={true}
+              //alwaysBounceVertical={true}
+              //showsHorizontalScrollIndicator={true}
+              pagingEnabled={true}
+              >
                 {recentJobIDs.map(object => {
                   return <ViewJob key ={object.id} ID={object.id}/>
                 })}
@@ -145,20 +152,23 @@ const styles = StyleSheet.create({
 
     },
     searchContainer:{
-      flexDirection:"row",
+      //flexDirection:"row",
       //flexGrow: 4,
-      //marginHorizontal:5,
-      justifyContent:"space-between",
+      marginVertical:10
+      //justifyContent:"space-between",
 
     },
     header:{
       justifyContent:"center",
+      paddingLeft:20,
+      fontSize:16,
+      paddingVertical:5
         //marginLeft: 'auto',
         //marginRight: 'auto',
     },
     searchBox:{
-      paddingHorizontal:25,
-      flexGrow:4,
+      paddingHorizontal:50,
+      //flexGrow:4,
       //paddingHorizontal:10
       //marginLeft
     },
@@ -183,6 +193,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "center"
     },
+    items:{
+      //backgroundColor:"blue"
+
+    },
+    ScrollView:{
+      //backgroundColor:"fff",
+      margin:5
+
+    }
 });
 
 
