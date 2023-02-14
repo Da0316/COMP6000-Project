@@ -147,7 +147,8 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     marginBottom:2,
-    textAlign:'center'
+    textAlign:'center',
+    fontFamily:"sans-serif-medium"
   },
   titlenum:{
     fontSize:16
@@ -174,12 +175,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin:8,
     paddingHorizontal:3,
-    //flexDirection: 'column',
-    //position: "absolute",
+    elevation:5,
     width:100,
     height:100,
     borderRadius:1000,
-    backgroundColor: "#C2C3C4",
+    backgroundColor: "#f9ce40",
     transform:[
       {translateX:0},
       {translateY:0},
@@ -199,9 +199,7 @@ const styles = StyleSheet.create({
     borderRadius:25,
     justifyContent:"center",
     height: 30,
-    //alignItems:"center",
-    //borderWidth: 2,
-    //borderRadius: 3,
+    elevation:5,
     paddingHorizontal: 10,
     marginHorizontal: 3,
   },
@@ -213,14 +211,12 @@ const styles = StyleSheet.create({
     alignItems:"center"
 
   },logoutBtn:{
-    backgroundColor: '#b28b1d',
+    backgroundColor: '#de3737',
     color: "#FFFFF",
     borderRadius:25,
     justifyContent:"center",
     height: 30,
-    //alignItems:"center",
-    //borderWidth: 2,
-    //borderRadius: 3,
+    elevation:5,
     paddingHorizontal: 10,
     marginHorizontal: 3,
 

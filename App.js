@@ -76,7 +76,7 @@ function StackScreen(){
               iconName = focused ? 'ios-person-circle' : 'ios-person-circle-outline';
             } else if (route.name === 'Chat') {
               iconName = focused ? 'chatbox' : 'chatbox-outline';
-            } else if (route.name === 'Post a task') {
+            } else if (route.name === 'Post task') {
               iconName = focused ? 'ios-add-circle' : 'ios-add-circle-outline';
             }
 
@@ -90,7 +90,7 @@ function StackScreen(){
     
     >
       <Tab.Screen name="Home" component={HomeScreen}/>
-      <Tab.Screen name="Post a task" component={Post}/>
+      <Tab.Screen name="Post task" component={Post}/>
       <Tab.Screen name="Chat" component={ChatApp}/>
       <Tab.Screen name="Profile" component={Profile}/>
     </Tab.Navigator>
