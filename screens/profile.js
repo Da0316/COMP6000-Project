@@ -118,13 +118,7 @@ const Profile=({navigation}) =>{
           </View>
 
           <View style={styles.reviewSection}>
-            <Icon name="message-draw"color="#1A1918" size={30}/>
-            <Title style={{fontWeight:'bold'}}> Write Reviews</Title>
-            <TextInput
-            style={styles.reviewForm}
-            placeholder="Write Review"
-            placeholderTextColor={'#777777'}
-            />
+            
           </View >
           </ScrollView>
       </SafeAreaView>
@@ -215,12 +209,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF'
   },
 
-  reviewForm:{
-    backgroundColor: "white",
-    paddingTop:3,
-    marginTop:8,
-    paddingBottom:40
-  },
   reviewSection:{
     alignItems:"center"
 
