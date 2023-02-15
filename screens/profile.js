@@ -14,6 +14,7 @@ const Profile=({navigation}) =>{
       const[email, setEmail] = useState(null);
       const [phone_number, setPhone_number] = useState(null);
       const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
+      const [jobsCompleted, setJobsCompleted] = useState(null);
 
       useEffect(() => { 
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
@@ -47,7 +48,8 @@ const Profile=({navigation}) =>{
         })
         .catch((error) => {
             console.log(error);
-        })  }, []);
+        })  
+    }, []);
     // console.log(userID);
     // console.log(firstname);
     // console.log(lastname);
@@ -55,6 +57,26 @@ const Profile=({navigation}) =>{
     // console.log(phone_number);
     // console.log(email);
     // console.log(date_of_birth);
+
+
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateJobsCompleted.php', {
+      method: 'post',
+      header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+         userID: global.userID,
+      })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+          setJobsCompleted(responseJson);
+       })
+      .catch((error) => {
+          alert(error);
+      });
+
   return (
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView}>
@@ -112,7 +134,7 @@ const Profile=({navigation}) =>{
             </View>
             <View style={styles.infoBox}>
               <Text style={styles.title2} >Jobs Completed</Text>
-              <Caption style={styles.titlenum}>1</Caption>
+              <Caption style={styles.titlenum}>{jobsCompleted}</Caption>
             </View>
            </View>
           </View>
