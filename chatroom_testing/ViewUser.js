@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View,SafeAreaView,StyleSheet,ScrollView} from 'react-native';
+import {View,SafeAreaView,StyleSheet,ScrollView, TouchableOpacity, Image} from 'react-native';
 import { Avatar,Title,Caption,Text, TouchableRipple, TextInput } from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -10,7 +10,6 @@ export default function ViewUser({selectedUser, onBack}){
     const [phone_number, setPhone_number] = useState(null);
     const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
 
-    useEffect(() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/chatViewUser.php', {
             method: 'post',
             header : {
@@ -25,6 +24,7 @@ export default function ViewUser({selectedUser, onBack}){
         .then((responseJson) => {
             setUserID(responseJson);
         })
+        if (userID != null){
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
             method: 'post',
             header : {
@@ -44,7 +44,7 @@ export default function ViewUser({selectedUser, onBack}){
                 setSelectedImageName (responseJson[8]);
             }
         })
-    }, [])
+      }
 
     const [jobID, setJobID] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -101,6 +101,11 @@ export default function ViewUser({selectedUser, onBack}){
 
   return (
       <SafeAreaView style={styles.container}>
+        <View style={styles.actionBar}>
+          <TouchableOpacity onPress={onBack}>
+            <Image source={require('./assets/back.png')}/>
+          </TouchableOpacity>
+        </View>
           <View style={styles.userInfoSection}>
               <View style={{flexDirection:'row', marginTop: 15}}>
                   <Avatar.Image
@@ -125,11 +130,8 @@ export default function ViewUser({selectedUser, onBack}){
               </View>
 
               <View style={styles.userBtnWrapper}>
-                <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Chat')}>
-                  <Text style={styles.userBtnTxt}>Message</Text>
-                </TouchableRipple>
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Reviews')}>
-                  <Text style={styles.userBtnTxt}>View/Write Reviews</Text>
+                  <Text style={styles.userBtnTxt}>View Reviews</Text>
                 </TouchableRipple>
               </View>
           <View style={styles.infoBoxWrapper}>
@@ -217,5 +219,13 @@ const styles = StyleSheet.create({
       paddingTop:3,
       marginTop:10,
       paddingBottom:60
-    }
+    },
+    actionBar: {
+      backgroundColor: '#cacaca',
+      height: 41,
+      width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
   });

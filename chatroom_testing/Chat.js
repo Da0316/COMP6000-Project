@@ -1,12 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {Image, TouchableOpacity, StyleSheet, Text, View, Alert} from 'react-native';
-import {getDatabase, get, ref, onValue, off, update} from 'firebase/database';
+import {getDatabase, get, ref, onValue, off, update, remove, child} from 'firebase/database';
 
 export default function Chat({onBack, myData, selectedUser, viewUser}) {
   const [messages, setMessages] = useState([]);
 
+  
   useEffect(() => {
+    const database = getDatabase();
+    const chatroomRef = ref(database, `chatrooms/${selectedUser.chatroomId}`);
     //load old messages
     const loadData = async () => {
       const myChatroom = await fetchMessages();
@@ -16,8 +19,6 @@ export default function Chat({onBack, myData, selectedUser, viewUser}) {
     loadData();
 
     // set chatroom change listener
-    const database = getDatabase();
-    const chatroomRef = ref(database, `chatrooms/${selectedUser.chatroomId}`);
     onValue(chatroomRef, snapshot => {
       const data = snapshot.val();
       setMessages(renderMessages(data.messages));
@@ -124,23 +125,46 @@ export default function Chat({onBack, myData, selectedUser, viewUser}) {
     );
   };
 
-  const handleJobCompleted = () => {
-    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/.php', {
-      method: 'post',
-      header: {
-        Accept: 'application/json',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-      }),
-    })    
-    .then((response) => response.json())
-    .then((responseJson) => {
-            setUsernameApplied(responseJson[1]);
+  const handleJobCompleted = async () => {
+
+      const database = getDatabase();
+      const chatroomRef = await get(ref(database, `chatrooms/` + selectedUser.chatroomId));
+      const jobID = chatroomRef.val().jobID;
+
+      const currentChatroom = await fetchMessages();
+
+      const lastMessages = currentChatroom.messages || [];
+
+      update(ref(database, `chatrooms/` + selectedUser.chatroomId), {
+        messages: [
+          ...lastMessages,
+          {
+            text: "Job has been complete. Thank you!",
+            sender: myData.username,
+            createdAt: new Date(),
+          },
+        ],
+      });
+      try {
+        await fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobComplete.php', {
+          method: 'post',
+          header: {
+            Accept: 'application/json',
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            jobID: jobID,
+          }),
+        })    
+        .then((response) => response.json())
+        .then((responseJson) => {
         })
-    .catch((error) => {
-          console.log(error);
-    });
+        .catch((error) => {
+              console.log(error);
+        });
+    } catch {
+      console.log(error);
+    }
   }
 
   return (
