@@ -25,7 +25,6 @@ const SearchScreen =({ navigation, route })=> {
           })
           .then((response) => response.json())
           .then((responseJson) => {
-            console.log(responseJson);
             const ids = [];
             for (let i = 0; i < responseJson.length; i++){
               let object = {
@@ -41,21 +40,7 @@ const SearchScreen =({ navigation, route })=> {
           
     }, [route]);
 
-    
-
-    handelSearch = async () =>{
-      try{
-        const res = await fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php');
-       
-      }catch{
-
-      }
-    }
-
-        
-        // if(loading){
-        //   return <Text>Loading....</Text>;
-        // }
+    //look into adding a back button to get back to the home screen
         
     
     //console.log(jobsID[0]);

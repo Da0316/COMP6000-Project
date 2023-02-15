@@ -54,7 +54,7 @@ const ViewJob = ({ID}) => {
 
     return(
         <TouchableOpacity onPress={showJob}>
-          <View style={styles.container}>
+          <View style={styles.container} >
               {/* image */}
               <Image source={{
                 

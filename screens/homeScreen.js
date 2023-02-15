@@ -5,6 +5,7 @@ import SearchBar from "../components/SearchBar";
 import ViewJob from "../components/ViewJob";
 import { SelectList } from "react-native-dropdown-select-list";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 //import{ StackNavigator } from "react-navigation";
 
 const HomeScreen =({ navigation, route })=> {
@@ -80,15 +81,7 @@ const HomeScreen =({ navigation, route })=> {
     }, [])
 
     handelSearch = async () =>{
-      // try{
-      //   const res = await fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php');
-      //   const jobs = await res.json();
-      //   setJobs(jobs);
-      //   navigation.goBack();
-      //   navigation.state.params.onNewJobs(jobs);
-      // }catch{
 
-      // }
       navigation.navigate('SearchScreen', query);
     }
 
@@ -100,7 +93,7 @@ const HomeScreen =({ navigation, route })=> {
     
     //console.log(jobsID[0]);
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
           <View style={styles.upperView}>
               <Text style={styles.header}><Text style={{fontWeight:"bold",fontSize:30,paddingHorizontal:5}}>Hi! </Text>
   Search up for tasks that you're good at !</Text>
@@ -141,7 +134,7 @@ const HomeScreen =({ navigation, route })=> {
                 </ScrollView>
               </ScrollView>
             </View>
-        </View>
+        </ScrollView>
         
     );
   
