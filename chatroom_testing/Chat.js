@@ -158,6 +158,9 @@ export default function Chat({onBack, myData, selectedUser, viewUser}) {
         })    
         .then((response) => response.json())
         .then((responseJson) => {
+          if (responseJson == -1){
+            console.log("error");
+          }
         })
         .catch((error) => {
               console.log(error);
