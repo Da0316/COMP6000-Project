@@ -63,9 +63,9 @@ export default function ChatApp(){
     //};
 
     const onBack = () => {
-        if (currentPage == 'viewProfile'){
+        if (currentPage == 'viewUser'){
             setCurrentPage('chat')
-        } else if (currentPage == 'users'){
+        } else if (currentPage == 'chat'){
             setCurrentPage('users');
         }
     }
