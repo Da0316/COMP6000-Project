@@ -18,7 +18,7 @@ import application from './screens/application';
 import viewProfile from './screens/viewProfile';
 import Reviews from './screens/reviews';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import SearchScreen from './screens/SearchScreen';
  
 
 
@@ -129,6 +129,7 @@ export default function App(navigation) {
         <Stack.Screen name="ViewProfile" component={viewProfile}/>
         <Stack.Screen name="EditProfile" component={EditProfile}/>
         <Stack.Screen name="Reviews" component={Reviews}/>
+        <Stack.Screen name="SearchScreen" component={SearchScreen}/>
 
       </Stack.Navigator>
     </NavigationContainer>

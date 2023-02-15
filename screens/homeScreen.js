@@ -18,6 +18,7 @@ const HomeScreen =({ navigation, route })=> {
     {key:'3', value:'price high to low'},
     {key:'4', value:'Newest'},
     {key:'5', value:'Oldest'}]);
+    const [query, setQuery] = useState('');
     
   
     useEffect(() => {
@@ -79,12 +80,16 @@ const HomeScreen =({ navigation, route })=> {
     }, [])
 
     handelSearch = async () =>{
-      try{
-        const res = await fetch('search.php');
-        const jobs = await res.json();
-      }catch{
+      // try{
+      //   const res = await fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php');
+      //   const jobs = await res.json();
+      //   setJobs(jobs);
+      //   navigation.goBack();
+      //   navigation.state.params.onNewJobs(jobs);
+      // }catch{
 
-      }
+      // }
+      navigation.navigate('SearchScreen', query);
     }
 
         
@@ -100,7 +105,8 @@ const HomeScreen =({ navigation, route })=> {
               <Text style={styles.header}><Text style={{fontWeight:"bold",fontSize:30,paddingHorizontal:5}}>Hi! </Text>
   Search up for tasks that you're good at !</Text>
               <View style= {styles.searchContainer}>
-                <SearchBar searchText={searchText} setSearchText={setSearchText} style={styles.searchBox} />
+                <SearchBar searchText={query} setSearchText={setQuery} style={styles.searchBox} />
+                <TouchableOpacity onPress={handelSearch}><Text>Search</Text></TouchableOpacity>
                 {/* <SelectList
                   setSelected={(val) => setFilter(val)}
                   data={filterChoices}
