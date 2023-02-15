@@ -19,18 +19,18 @@ export default SearchBar;
 
 const styles = StyleSheet.create({
     container:{
-        margin: "auto",
-        
-        
+        //margin: "auto",
+        marginHorizontal:8,
+        width:280,
 
     },
     input:{
         backgroundColor: "#f1f3f3",
-        paddingHorizontal: 20,
+        paddingHorizontal: 15,
         borderRadius: 20,
         color: "#000",
         borderWidth: 2,
-        marginHorizontal:20,
+        marginHorizontal:5,
         height:40,
         alignItems:"flex-end",
         borderColor:"#f1f3f3"

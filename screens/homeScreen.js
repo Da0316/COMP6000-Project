@@ -96,10 +96,10 @@ const HomeScreen =({ navigation, route })=> {
         <ScrollView style={styles.container}>
           <View style={styles.upperView}>
               <Text style={styles.header}><Text style={{fontWeight:"bold",fontSize:30,paddingHorizontal:5}}>Hi! </Text>
-  Search up for tasks that you're good at !</Text>
+                  Search up for tasks that you're good at !</Text>
               <View style= {styles.searchContainer}>
                 <SearchBar searchText={query} setSearchText={setQuery} style={styles.searchBox} />
-                <TouchableOpacity onPress={handelSearch}><Text>Search</Text></TouchableOpacity>
+                <TouchableOpacity onPress={handelSearch}><Text style={styles.searchTxt}>Search</Text></TouchableOpacity>
                 {/* <SelectList
                   setSelected={(val) => setFilter(val)}
                   data={filterChoices}
@@ -149,17 +149,21 @@ const styles = StyleSheet.create({
 
     },
     searchContainer:{
-      //flexDirection:"row",
+      flexDirection:"row",
       //flexGrow: 4,
-      marginVertical:5,
-
+      //marginHorizontal:0,
+      marginVertical:10,
+      //paddingHorizontal:50,
       backgroundColor:"fff",
+      elevation:8
       //justifyContent:"space-between",
 
     },
     upperView:{
       width:'100%',
-      height:'22%',
+      height:'16%',
+      //marginHorizontal:10,
+      //marginRight:10,
       backgroundColor:'#f9ce40',
       borderBottomRightRadius:45,
       borderBottomLeftRadius:45,
@@ -167,11 +171,9 @@ const styles = StyleSheet.create({
 
     },bottomView:{
       width:'100%',
-      height:'78%',
+      height:'84%',
       marginBottom:20,
-
-      
-
+      marginTop:5
     }
     ,header:{
       justifyContent:"center",
@@ -188,7 +190,8 @@ const styles = StyleSheet.create({
 
     ,title:{
         fontWeight: "bold",
-        fontSize: 20
+        fontSize: 20,
+        paddingLeft:8
     },
     Button:{
         backgroundColor: "green",
@@ -200,11 +203,22 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "center"
     },
-    items:{
-      //backgroundColor:"blue"
+    searchTxt:{
+      backgroundColor:"#1a1918",
+      borderColor:"#1a1918",
+      color:"white",
+      marginRight:10,
+      height:40,
+      borderWidth: 2,
+      //paddingHorizontal: 15,
+      borderRadius: 15,
+      paddingVertical:8,
+      paddingHorizontal:5,
+      textAlign:"center",
+      elevation:8
 
-    },
-    ScrollView:{
+    }
+    ,ScrollView:{
       margin:5,
       //fadingEdgeLength:10
 
