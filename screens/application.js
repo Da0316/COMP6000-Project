@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native';
-import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/database'
+import {getDatabase, get, ref, set, onValue, update, push, child} from 'firebase/database'
 
 function Application({route, navigation}){
     const {ID:applicationID} = route.params;
@@ -54,57 +54,97 @@ function Application({route, navigation}){
                         let usernameLoggedIn = responseJson[1];
                         const database = getDatabase();
 
+
                         const userAppliedSnapShot = await get(ref(database, 'users/' + usernameApplied));
                         const userApplied = userAppliedSnapShot.val();
 
-                        console.log(usernameLoggedIn);
                         const userLoggedInSnapShot = await get(ref(database, 'users/' + usernameLoggedIn));
                         const userLoggedIn = userLoggedInSnapShot.val();
-                        //console.log(userLoggedIn);
 
-                        const newChatRoomRef = push(ref(database, 'chatrooms'), {
-                            firstUser: userLoggedIn.username,
-                            secondUser: userApplied.username,
-                            messages: [],
-                            jobID: jobID,
+                        let found = false;
+                        const foundChatroomkey = null
+                        const chatroomsSnapshot = await get(ref(database, "chatrooms/"));
+                        console.log(chatroomsSnapshot)
+                        chatroomsSnapshot.forEach((childSnapshot) => {
+                            const chatroom = childSnapshot.val();
+                            if ((userApplied.username == chatroom.firstUser && userLoggedIn.username ==chatroom.secondUser) ||
+                            (userApplied.username == chatroom.secondUser && userLoggedIn.username ==chatroom.firstUser)){
+                                found = true;
+                                const lastMessages = chatroom.messages || [];
+                                console.log(lastMessages);
+                                update(ref(database, 'chatrooms/' + childSnapshot.key), {
+                                    messages: [
+                                        ...lastMessages,
+                                        {
+                                            text: usernameLoggedIn + " has accepted your application for '" + jTitle + "' at the rate of £" + priceOffer + "/hr. Discuss a suitable dates and time!",
+                                            sender: userLoggedIn.username,
+                                            createdAt: new Date(),
+                                        },
+                                    ],
+                                });
+                                update(ref(database, "chatrooms/" + childSnapshot.key), {
+                                    jobID: jobID
+                                });
+                            }
                         })
+                        console.log(found);
+                        
 
-                        const newChatroomID = newChatRoomRef.key;
-                        const userAppliedFriends = userApplied.friends || [];
+                        if (found == false){
+                            const newChatRoomRef = push(ref(database, 'chatrooms'), {
+                                firstUser: userLoggedIn.username,
+                                secondUser: userApplied.username,
+                                messages: [],
+                                jobID: jobID,
+                            })
 
-                        update(ref(database, 'users/' + userApplied.username), {
-                            friends: [
-                                ...userAppliedFriends,
-                                {
-                                    username: userLoggedIn.username,
-                                    avatar: userLoggedIn.avatar,
-                                    chatroomId: newChatroomID,
-                                },
-                            ],
-                        });
+                            const newChatroomID = newChatRoomRef.key;
+                            const userAppliedFriends = userApplied.friends || [];
 
-                        const myFriends = userLoggedIn.friends || [];
+                            update(ref(database, 'users/' + userApplied.username), {
+                                friends: [
+                                    ...userAppliedFriends,
+                                    {
+                                        username: userLoggedIn.username,
+                                        avatar: userLoggedIn.avatar,
+                                        chatroomId: newChatroomID,
+                                    },
+                                ],
+                            });
 
-                        update(ref(database, 'users/' + userLoggedIn.username), {
-                            friends: [
-                                ...myFriends,
-                                {
-                                    username: userApplied.username,
-                                    avatar: userApplied.avatar,
-                                    chatroomId: newChatroomID,
-                                },
-                            ],
-                        });
+                            const myFriends = userLoggedIn.friends || [];
 
-                        update(ref(database, 'chatrooms/' + newChatroomID), {
-                            messages: [
-                                {
-                                    text: usernameLoggedIn + " has accepted your application for '" + jTitle + "' at the rate of £" + priceOffer + "/hr. Discuss a suitable dates and time!",
-                                    sender: userLoggedIn.username,
-                                    createdAt: new Date(),
-                                },
-                            ],
-                        });
+                            update(ref(database, 'users/' + userLoggedIn.username), {
+                                friends: [
+                                    ...myFriends,
+                                    {
+                                        username: userApplied.username,
+                                        avatar: userApplied.avatar,
+                                        chatroomId: newChatroomID,
+                                    },
+                                ],
+                            });
+
+                            update(ref(database, 'chatrooms/' + newChatroomID), {
+                                messages: [
+                                    {
+                                        text: usernameLoggedIn + " has accepted your application for '" + jTitle + "' at the rate of £" + priceOffer + "/hr. Discuss a suitable dates and time!",
+                                        sender: userLoggedIn.username,
+                                        createdAt: new Date(),
+                                    },
+                                ],
+                            });
+                        } else if (found == true){
+                            update(ref(database, 'chatrooms/' + foundChatroomkey), {
+                                messages: [
+                                    {
+                                        text: usernameLoggedIn + " has accepted your application for '" + jTitle + "' at the rate of £" + priceOffer + "/hr. Discuss a suitable dates and time!",
+                                        sender: userLoggedIn.username,
+                                        createdAt: new Date(),
+                                    },
+                                ],
+                            });
+                        }
                     })
                     .catch((error) => {
                         console.log(error);
