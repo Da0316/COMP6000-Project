@@ -57,17 +57,33 @@ function Job({route, navigation}){
 
     const renderButton = () => {
         if (sameUser == false){
-            return (
-                <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('CreateApplication', {jobID})}>
-                    <Text>Create Application</Text>
-                </TouchableOpacity>
-            )
+            if (accepted == "No"){
+                return (
+                    <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('CreateApplication', {jobID})}>
+                        <Text>Create Application</Text>
+                    </TouchableOpacity>
+                )
+            } else {
+                return (
+                    <View styles={styles.applicatioButton}>
+                        <Text>Accepted</Text>
+                    </View>
+                );
+            }
         } else if (sameUser == true) {
-            return (
-                <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('JobApplications', {jobID, jobTitle})}>
-                    <Text>View Applications</Text>
-                </TouchableOpacity>        
-            );  
+            if (completed == "No"){
+                return (
+                    <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('JobApplications', {jobID, jobTitle})}>
+                        <Text>View Applications</Text>
+                    </TouchableOpacity>        
+                );  
+            } else {
+                return (
+                    <View styles={styles.applicatioButton}>
+                        <Text>Completed</Text>
+                    </View>
+                );
+            }
         }
     };
 
@@ -78,8 +94,7 @@ function Job({route, navigation}){
                     <Text styles={styles.row}>Posted By:{username}</Text>
                 </TouchableOpacity>
             )
-        }
-        else{
+        } else {
             return(
                 <View styles={styles.row}>
                     <Text styles={styles.row} >Posted By: {username}</Text>

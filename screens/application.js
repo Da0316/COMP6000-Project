@@ -64,7 +64,7 @@ function Application({route, navigation}){
                         let found = false;
                         const foundChatroomkey = null
                         const chatroomsSnapshot = await get(ref(database, "chatrooms/"));
-                        
+
                         chatroomsSnapshot.forEach((childSnapshot) => {
                             const chatroom = childSnapshot.val();
                             if ((userApplied.username == chatroom.firstUser && userLoggedIn.username ==chatroom.secondUser) ||
@@ -201,31 +201,60 @@ function Application({route, navigation}){
             </View>
         );
     } else {
-        return (
-            <View style={styles.mainView}>
-                <View>
-                    <Text>Username: {usernameApplied}</Text>
-                    <Text>Application Date: {applicationDate}</Text>
-                    <Text>Price Offered: ${priceOffer}</Text>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <View style={styles.button}>
-                        <Button
-                            title="Accept"
-                            color="green"
-                            onPress={() => handleAction("Accept")}
-                        />
+        console.log(applicationStatus);
+        if (applicationStatus == 0){
+            return (
+                <View style={styles.mainView}>
+                    <View>
+                        <Text>Username: {usernameApplied}</Text>
+                        <Text>Application Date: {applicationDate}</Text>
+                        <Text>Price Offered: ${priceOffer}</Text>
                     </View>
-                    <View style={styles.button}>
-                        <Button
-                            title="Reject"
-                            color="red"
-                            onPress={() => handleAction("Reject")}
-                        />
+                    <View style={styles.buttonContainer}>
+                        <View style={styles.button}>
+                            <Button
+                                title="Accept"
+                                color="green"
+                                onPress={() => handleAction("Accept")}
+                            />
+                        </View>
+                        <View style={styles.button}>
+                            <Button
+                                title="Reject"
+                                color="red"
+                                onPress={() => handleAction("Reject")}
+                            />
+                    </View>
+                    </View>
                 </View>
+            );
+        } else if (applicationStatus == 1) {
+            return (
+                <View style={styles.mainView}>
+                    <View>
+                        <Text>Username: {usernameApplied}</Text>
+                        <Text>Application Date: {applicationDate}</Text>
+                        <Text>Price Offered: ${priceOffer}</Text>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <Text>Accepted</Text>
+                    </View>
                 </View>
-            </View>
-        );
+            );
+        } else if (applicationStatus == -1){
+            return (
+                <View style={styles.mainView}>
+                    <View>
+                        <Text>Username: {usernameApplied}</Text>
+                        <Text>Application Date: {applicationDate}</Text>
+                        <Text>Price Offered: ${priceOffer}</Text>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <Text>Rejected</Text>
+                    </View>
+                </View>
+            );
+        }
     }
 }
 
