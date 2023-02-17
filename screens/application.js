@@ -64,7 +64,7 @@ function Application({route, navigation}){
                         let found = false;
                         const foundChatroomkey = null
                         const chatroomsSnapshot = await get(ref(database, "chatrooms/"));
-                        console.log(chatroomsSnapshot)
+                        
                         chatroomsSnapshot.forEach((childSnapshot) => {
                             const chatroom = childSnapshot.val();
                             if ((userApplied.username == chatroom.firstUser && userLoggedIn.username ==chatroom.secondUser) ||
@@ -87,8 +87,6 @@ function Application({route, navigation}){
                                 });
                             }
                         })
-                        console.log(found);
-                        
 
                         if (found == false){
                             const newChatRoomRef = push(ref(database, 'chatrooms'), {
