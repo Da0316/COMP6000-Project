@@ -183,7 +183,7 @@ const EditProfile = ({navigation}) => {
                                          alignItems: 'center',
                                      }}>
 
-                                        <Icon name="camera" size={35} color="#fff" style={{
+                                        <Icon name="camera" size={35} color="#f9ce40" style={{
                                             opacity: 0.7,
                                             alignItems: 'center',
                                             justifyContent: 'center',
@@ -200,10 +200,10 @@ const EditProfile = ({navigation}) => {
                     </Text>
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="user-o" size={20} />
+                    <FontAwesome name="user-o" size={20} color="#1a1918" />
                     <TextInput 
                     placeholder= {firstname}
-                    placeholderTextColor="#666666"
+                    placeholderTextColor="#ead184"
                     autoCorrect={false}
                     style={styles.textInput}
                     value={firstname}
@@ -211,7 +211,7 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="user-o" size={20} />
+                    <FontAwesome name="user-o" size={20} color="#1a1918" />
                     <TextInput 
                     placeholder="Last Name"
                     placeholderTextColor="#666666"
@@ -222,7 +222,7 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="user-o" size={20} />
+                    <FontAwesome name="user-o" size={20} color="#1a1918" />
                     <TextInput 
                     placeholder="Username"
                     placeholderTextColor="#666666"
@@ -233,7 +233,7 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="phone" size={20} />
+                    <FontAwesome name="phone" size={20} color="#1a1918" />
                     <TextInput 
                     placeholder="Phone"
                     placeholderTextColor="#666666"
@@ -245,7 +245,7 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="envelope-o" size={20} />
+                    <FontAwesome name="envelope-o" size={20} color="#1a1918" />
                     <TextInput 
                     placeholder="Email"
                     placeholderTextColor="#666666"
@@ -257,7 +257,7 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <Icon name="map-marker-outline" size={20} />
+                    <Icon name="map-marker-outline" size={20} color="#1a1918" />
                     <TextInput 
                     placeholder="Address"
                     placeholderTextColor="#666666"
@@ -280,11 +280,12 @@ export default EditProfile;
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor:"#FFFFFF"
     },
     commandButton: {
       padding: 15,
       borderRadius: 10,
-      backgroundColor: '#FF6347',
+      backgroundColor: '#1a1918',
       alignItems: 'center',
       marginTop: 10,
     },
@@ -355,6 +356,6 @@ const styles = StyleSheet.create({
       flex: 1,
       marginTop: Platform.OS === 'android' ? -2 : -12,
       paddingLeft: 10,
-      color: '#055a39',
+      color: '#1a1918',
     },
   });
