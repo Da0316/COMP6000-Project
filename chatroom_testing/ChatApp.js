@@ -6,7 +6,7 @@ import ViewUser from './ViewUser';
 import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/database'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function ChatApp(){
+export default function ChatApp(navigation){
     const [currentPage, setCurrentPage] = useState(null);
     const [username, setUsername] = useState(null);
     const [users, setUsers] = useState([]);
@@ -154,7 +154,7 @@ export default function ChatApp(){
             );
         case 'chat':
             return (
-                <Chat myData={myData} selectedUser={selectedUser} onBack={onBack} viewUser={viewUser}/>
+                <Chat myData={myData} selectedUser={selectedUser} onBack={onBack} viewUser={viewUser} navigation={navigation}/>
             );
         case 'viewUser':
             return (

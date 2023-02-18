@@ -1,11 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {Image, TouchableOpacity, StyleSheet, Text, View, Alert} from 'react-native';
-import {getDatabase, get, ref, onValue, off, update, remove, child} from 'firebase/database';
+import {getDatabase, get, ref, onValue, off, update, remove, child, set} from 'firebase/database';
 
-export default function Chat({onBack, myData, selectedUser, viewUser}) {
+export default function Chat({onBack, myData, selectedUser, viewUser, navigation}) {
   const [messages, setMessages] = useState([]);
-
+  const [hostUser, setHostUser] = useState(null);
+  const [jobCompleted, setJobCompleted] = useState(null);
+  const [jobID, setJobID] = useState(null);
+  const [firstUser, setFirstUser] = useState(null);
   
   useEffect(() => {
     const database = getDatabase();
@@ -13,9 +16,12 @@ export default function Chat({onBack, myData, selectedUser, viewUser}) {
     //load old messages
     const loadData = async () => {
       const myChatroom = await fetchMessages();
+      
+      setJobID(myChatroom.jobID)
+      setFirstUser(myChatroom.firstUser);
       setMessages(renderMessages(myChatroom.messages));
     };
-
+    
     loadData();
 
     // set chatroom change listener
@@ -170,28 +176,122 @@ export default function Chat({onBack, myData, selectedUser, viewUser}) {
     }
   }
 
-  return (
-    <>
-      <View style={styles.actionBar}>
-        <TouchableOpacity onPress={onBack}>
-          <Image source={require('./assets/back.png')}/>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={viewUser}>
-            <Text style={styles.text}>{selectedUser.username}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={showConfirmationPopup}>
-            <Text style={styles.text}>Completed?</Text>
-        </TouchableOpacity>
-      </View>
-      <GiftedChat
-        messages={messages}
-        onSend={newMessage => onSend(newMessage)}
-        user={{
-          _id: myData.username,
-        }}
-      />
-    </>
-  );
+  useEffect(() => { 
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
+        method: 'post',
+        header: {
+            Accept: 'application/json',
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+            //userID: 1
+            userID: global.userID
+        }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if (responseJson[1] == firstUser){
+        setHostUser(true);
+      } else {
+        setHostUser(false);
+      }
+    })
+    .catch((error) => {
+        console.log(error);
+    })  
+  }, []);
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php', {
+          method: 'post',
+          header: {
+              Accept: 'application/json',
+              'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+              jobID: jobID
+          }),
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson[6] == 1){
+          setJobCompleted(true);
+        } else if (responseJson[6] == 0){
+          setJobCompleted(false);
+        }
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+
+  console.log(jobCompleted);
+  if (hostUser == true){
+    if (jobCompleted == false){
+      return (
+        <>
+          <View style={styles.actionBar}>
+            <TouchableOpacity onPress={onBack}>
+              <Image source={require('./assets/back.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={viewUser}>
+                <Text style={styles.text}>{selectedUser.username}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={showConfirmationPopup}>
+                <Text style={styles.text}>Completed?</Text>
+            </TouchableOpacity>
+          </View>
+          <GiftedChat
+            messages={messages}
+            onSend={newMessage => onSend(newMessage)}
+            user={{
+              _id: myData.username,
+            }}
+          />
+        </>
+      );
+    } else if (jobCompleted == true){
+      return (
+        <>
+          <View style={styles.actionBar}>
+            <TouchableOpacity onPress={onBack}>
+              <Image source={require('./assets/back.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={viewUser}>
+                <Text style={styles.text}>{selectedUser.username}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate('Reviews')}>
+                <Text style={styles.text}>Completed?</Text>
+            </TouchableOpacity>
+          </View>
+          <GiftedChat
+            messages={messages}
+            onSend={newMessage => onSend(newMessage)}
+            user={{
+              _id: myData.username,
+            }}
+          />
+        </>
+      );
+    }
+  } else if (hostUser == false){
+    return (
+      <>
+        <View style={styles.actionBar}>
+          <TouchableOpacity onPress={onBack}>
+            <Image source={require('./assets/back.png')}/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={viewUser}>
+              <Text style={styles.text}>{selectedUser.username}</Text>
+          </TouchableOpacity>
+        </View>
+        <GiftedChat
+          messages={messages}
+          onSend={newMessage => onSend(newMessage)}
+          user={{
+            _id: myData.username,
+          }}
+        />
+      </>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
