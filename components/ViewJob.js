@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         borderRadius: 40,
         backgroundColor: "#EBEBEB",
-        marginVertical: 10,
+        marginVertical: 15,
         marginHorizontal:8
     },
     image:{

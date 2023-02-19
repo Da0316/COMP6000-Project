@@ -116,13 +116,13 @@ const ViewProfile=({navigation,route}) =>{
   return (
       <SafeAreaView style={styles.container}>
           <View style={styles.userInfoSection}>
-              <View style={{flexDirection:'row', marginTop: 15}}>
+              <View style={{flexDirection:'row', marginTop: 2}}>
                   <Avatar.Image
                       source={{
                         uri: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName,
                       }}
-                      size={90} />
-                  <View style= {{marginLeft:20}}>
+                      size={60} />
+                  <View style= {{marginLeft:12}}>
                       <Title style={[styles.title,{
                           marginTop:15,
                           marginBottom:5,
@@ -160,13 +160,15 @@ const ViewProfile=({navigation,route}) =>{
          </View>
            </View>
           </View>
-        <ScrollView>
-        <ScrollView horizontal = {true}>
-                {jobID.map(object => {
-                  return <ViewJob key = {object.id} ID={object.id}/>
-                })}
-              </ScrollView>
-        </ScrollView>
+          <View style={styles.scrollViewContainer}>
+            <ScrollView>
+            <ScrollView horizontal = {true}>
+                      {jobID.map(object => {
+                        return <ViewJob key = {object.id} ID={object.id} />
+                      })}
+                  </ScrollView>
+            </ScrollView>
+          </View>
 
           
         
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingHorizontal: 30,
-    marginBottom: 15,
+    marginBottom: 5,
   },
   title: {
     fontSize: 24,
@@ -203,18 +205,19 @@ const styles = StyleSheet.create({
   infoBoxWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: 100,
+    height: 90,
   },
   infoBox: {
-    width: '50%',
+    width: '40%',
     alignItems: 'center',
     justifyContent: 'center',
-    margin:8,
+    marginHorizontal:20,
+    //marginVertical:2,
     paddingHorizontal:3,
     elevation:5,
     width:100,
     height:100,
-    borderRadius:1000,
+    borderRadius:200,
     backgroundColor: "#f9ce40",
     transform:[
       {translateX:0},
@@ -257,5 +260,8 @@ const styles = StyleSheet.create({
     marginBottom:2,
     textAlign:'center',
     fontFamily:"sans-serif-medium"
+  },
+  scrollViewContainer:{
+    //marginVertical:5
   }
 });
