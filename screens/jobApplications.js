@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import { ScrollView, View, Text, StyleSheet} from 'react-native';
 import ViewApplication from '../components/ViewApplication';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 function JobApplications ({route}) {
     const {jobID:jobID} = route.params;
@@ -68,8 +69,10 @@ function JobApplications ({route}) {
         );
     } else if (isApplicationEmpty == true){
         return (
-            <View>
-                <Text>No Applications have been made</Text>
+            <View style={styles.result}>
+                <Icon name="clipboard-text-multiple-outline"color="#f9ce40" size={40}/>
+                <Text style={styles.noApplications}>No Applications yet!</Text>
+                <Text>Wait for users to apply for this job</Text>
             </View>
         );
     }
@@ -84,5 +87,19 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    result:{
+        flex:1,
+       backgroundColor:"#FFFFFF",
+       alignItems:"center",
+       justifyContent:"center"
+       
+        
+    },
+    noApplications:{
+        marginTop:15,
+        marginBottom:5,
+        fontSize:16,
+        fontWeight:"bold"
     }
 })
