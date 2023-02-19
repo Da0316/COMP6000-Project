@@ -150,20 +150,16 @@ const styles = StyleSheet.create({
     },
     searchContainer:{
       flexDirection:"row",
-      //flexGrow: 4,
-      //marginHorizontal:0,
       marginVertical:10,
-      //paddingHorizontal:50,
       backgroundColor:"fff",
       elevation:8
-      //justifyContent:"space-between",
+
 
     },
     upperView:{
       width:'100%',
       height:'16%',
-      //marginHorizontal:10,
-      //marginRight:10,
+
       backgroundColor:'#f9ce40',
       borderBottomRightRadius:45,
       borderBottomLeftRadius:45,

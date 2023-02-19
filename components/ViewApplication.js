@@ -99,8 +99,8 @@ const ViewApplication = ({ID, type}) => {
                 <TouchableOpacity onPress={showApplication}>
                     <View style={styles.jobApplicationsContainer}>
                         <View style={{padding: 20}}>
-                            <Text style={styles.title}>{usernameApplied}</Text>
-                            <Text style={styles.description}>Status: {status}</Text>
+                            <Text style={styles.title}>Username : {usernameApplied}</Text>
+                            <Text style={styles.description}>Status: <Text></Text>{status}</Text>
                             <Text style={styles.amount}>Price offer: £{price}/h</Text>
                         </View>
                     </View>
@@ -116,8 +116,9 @@ const styles = StyleSheet.create({
         width:"90%",
         alignSelf: "center",
         borderRadius: 40,
-        backgroundColor: "#FFFFE0",
-        marginTop: 20
+        backgroundColor: "#EBEBEB",
+        marginVertical: 20,
+        elevation:10
     },
     userApplicationContainer: {
         width:"90%",
