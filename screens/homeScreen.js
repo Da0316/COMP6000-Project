@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {useEffect} from "react";
-import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert} from "react-native";
+import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert, PermissionsAndroid} from "react-native";
 import SearchBar from "../components/SearchBar";
 import ViewJob from "../components/ViewJob";
 import { SelectList } from "react-native-dropdown-select-list";
@@ -14,6 +14,7 @@ const HomeScreen =({ navigation, route })=> {
     const [recommendedJobs, setRecommendedJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('Most relevant');
+    const [location, setLocation] = useState(false);
     const [filterChoices, setFilterChoices] = useState([{key:'1', value:'Most relevant'},
     {key:'2', value:'price low to high'},
     {key:'3', value:'price high to low'},
@@ -21,7 +22,6 @@ const HomeScreen =({ navigation, route })=> {
     {key:'5', value:'Oldest'}]);
     const [query, setQuery] = useState('');
     
-  
     useEffect(() => {
       try {
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobsDate.php', { //needs to be changed to your own ip
@@ -49,7 +49,7 @@ const HomeScreen =({ navigation, route })=> {
             setLoading(false);
           });
         } catch {
-          console.log("error idk")
+          console.log("error")
         }
           
           // .catch((error) => {
@@ -89,17 +89,14 @@ const HomeScreen =({ navigation, route })=> {
     }, [])
 
     handelSearch = async () =>{
-
       navigation.navigate('SearchScreen', query);
     }
 
         
-        if(loading){
-          return <Text>Loading....</Text>;
-        }
-        
-    
-    //console.log(jobsID[0]);
+    if(loading){
+      return <Text>Loading....</Text>;
+    }
+
     return (
         <ScrollView style={styles.container}>
           <View style={styles.upperView}>
@@ -141,6 +138,9 @@ const HomeScreen =({ navigation, route })=> {
                   })}
                 </ScrollView>
               </ScrollView>
+            </View>
+            <View>
+              
             </View>
         </ScrollView>
     );
@@ -223,8 +223,18 @@ const styles = StyleSheet.create({
     ,ScrollView:{
       margin:5,
       //fadingEdgeLength:10
-
-    }
+    },
+    buttonsView:{
+      width:'90%',
+      color:'#000',
+      height:50,
+      backgroundColor:'#fff',
+      borderRadius:10,
+      marginTop:20,
+      display:'flex',
+      justifyContent:'center',
+      alignItems:'center'
+    },
 });
 
 
