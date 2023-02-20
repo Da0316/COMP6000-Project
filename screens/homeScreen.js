@@ -23,7 +23,8 @@ const HomeScreen =({ navigation, route })=> {
     
   
     useEffect(() => {
-     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobsDate.php', { //needs to be changed to your own ip
+      try {
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobsDate.php', { //needs to be changed to your own ip
           method: 'post', 
           header: {
             Accept: 'application/json',
@@ -36,15 +37,20 @@ const HomeScreen =({ navigation, route })=> {
           .then((response) => response.json())
           .then((responseJson) => {
             const ids = [];
-            for (let i = 0; i < responseJson.length; i++){
-              let object = {
-                id: responseJson[i],
+            for (let i = 0; i < responseJson.length / 2; i+= 2){
+              if (responseJson[i + 1] != global.userID){
+                let object = {
+                  id: responseJson[i],
+                }
+                ids.push(object)
               }
-              ids.push(object)
             }
             setRecentJobIDs(ids);
             setLoading(false);
           });
+        } catch {
+          console.log("error idk")
+        }
           
           // .catch((error) => {
           //   console.error(error);
@@ -66,12 +72,15 @@ const HomeScreen =({ navigation, route })=> {
       })
       .then((response) => response.json())
       .then((responseJson) => {
+        console.log(responseJson);
         const ids = [];
-        for (let i = 0; i < responseJson.length; i++){
-          let object = {
-            id: responseJson[i],
+        for (let i = 0; i < responseJson.length / 2; i += 2){
+          if (responseJson[i + 1] != global.userID){
+            let object = {
+              id: responseJson[i],
+            }
+            ids.push(object);
           }
-          ids.push(object);
         }
         setRecommendedJobs(ids);
       })
