@@ -37,13 +37,11 @@ const HomeScreen =({ navigation, route })=> {
           .then((response) => response.json())
           .then((responseJson) => {
             const ids = [];
-            for (let i = 0; i < responseJson.length / 2; i+= 2){
-              if (responseJson[i + 1] != global.userID){
+            for (let i = 0; i < responseJson.length; i++){
                 let object = {
                   id: responseJson[i],
                 }
                 ids.push(object)
-              }
             }
             setRecentJobIDs(ids);
             setLoading(false);

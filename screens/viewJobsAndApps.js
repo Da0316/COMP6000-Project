@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {Text, View, useWindowDimensions, ScrollView, StyleSheet} from 'react-native';
-import {TabView, SceneMap} from 'react-native-tab-view';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import ViewJob from "../components/ViewJob";
 import ViewApplication from "../components/ViewApplication";
 
@@ -122,6 +122,17 @@ export default ViewJobsAndApps = ({navigation}) => {
                     })}
                 onIndexChange={setIndex}
                 initialLayout={{width: layout.width}}
+                renderTabBar={props => (
+                    <TabBar
+                      {...props}
+                      renderLabel={({ route, color }) => (
+                        <Text style={{ color: 'black', margin: 8 }}>
+                          {route.title}
+                        </Text>
+                      )}
+                      style={{backgroundColor: '#f9ce40'}}
+                    />
+                )}
             >
                 {isLoading && <Text>Loading...</Text>}
             </TabView>
@@ -136,6 +147,17 @@ export default ViewJobsAndApps = ({navigation}) => {
                     })}
                 onIndexChange={setIndex}
                 initialLayout={{width: layout.width}}
+                renderTabBar={props => (
+                    <TabBar
+                      {...props}
+                      renderLabel={({ route, color }) => (
+                        <Text style={{ color: 'black', margin: 8 }}>
+                          {route.title}
+                        </Text>
+                      )}
+                      style={{backgroundColor: '#f9ce40'}}
+                    />
+                )}
             >
                 {isLoading && <Text>Loading...</Text>}
             </TabView>
@@ -150,6 +172,17 @@ export default ViewJobsAndApps = ({navigation}) => {
                     })}
                 onIndexChange={setIndex}
                 initialLayout={{width: layout.width}}
+                renderTabBar={props => (
+                    <TabBar
+                      {...props}
+                      renderLabel={({ route, color }) => (
+                        <Text style={{ color: 'black', margin: 8 }}>
+                          {route.title}
+                        </Text>
+                      )}
+                      style={{backgroundColor: '#f9ce40'}}
+                    />
+                )}
             >
                 {isLoading && <Text>Loading...</Text>}
             </TabView>
@@ -165,6 +198,17 @@ export default ViewJobsAndApps = ({navigation}) => {
                 onIndexChange={setIndex}
                 initialLayout={{width: layout.width}}
                 style={styles.tabView}
+                renderTabBar={props => (
+                    <TabBar
+                      {...props}
+                      renderLabel={({ route, color }) => (
+                        <Text style={{ color: 'black', margin: 8 }}>
+                          {route.title}
+                        </Text>
+                      )}
+                      style={{backgroundColor: '#f9ce40'}}
+                    />
+                )}
             >
                 {isLoading && <Text>Loading...</Text>}
             </TabView>
