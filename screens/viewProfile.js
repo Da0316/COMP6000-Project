@@ -1,5 +1,5 @@
 import  React, {useState,useEffect} from 'react';
-import { View,SafeAreaView,useWindowDimensions,StyleSheet,ScrollView} from 'react-native';
+import { View,SafeAreaView,StyleSheet,ScrollView} from 'react-native';
 import { Avatar,Title,Caption,Text, TouchableRipple, TextInput } from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import ViewJob from "../components/ViewJob";
@@ -134,16 +134,16 @@ const ViewProfile=({navigation,route}) =>{
 
           <View style={styles.userInfoSection}>
               <View style={styles.row}>
-              <Icon name="phone"color="#777777" size={20} color="#1A1918"/>
-              <Text style={{color:"#1A1918", marginLeft:20}}>{phone_number}</Text>
+              <Icon name="phone"color="#777777" size={20}/>
+              <Text style={{color:"#777777", marginLeft:20}}>{phone_number}</Text>
               </View>
 
               <View style={styles.userBtnWrapper}>
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Chat')}>
                   <Text style={styles.userBtnTxt}>Message</Text>
                 </TouchableRipple>
-                <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Reviews')}>
-                  <Text style={styles.userBtnTxt}>Reviews</Text>
+                <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Reviews', { jobId: route?.params?.jobID })}>
+                  <Text style={styles.userBtnTxt}>View/Write Reviews</Text>
                 </TouchableRipple>
               </View>
           <View style={styles.infoBoxWrapper}>
@@ -151,11 +151,11 @@ const ViewProfile=({navigation,route}) =>{
               borderRightColor: '#dddddd',
               borderRightWidth: 1
                }]}>
-               <Title style={styles.title2}>Ratings Level</Title>
+               <Title>Ratings Level</Title>
                <Caption>1</Caption>
             </View>
          <View style={styles.infoBox}>
-          <Title style={styles.title2}>Jobs Completed</Title>
+          <Title>Jobs Completed</Title>
           <Caption>1</Caption>
          </View>
            </View>
@@ -180,12 +180,12 @@ export default ViewProfile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#FFFFFF",
+    backgroundColor:"#F3F3F3",
     
   },
   userInfoSection: {
     paddingHorizontal: 30,
-    marginBottom: 15,
+    marginBottom: 25,
   },
   title: {
     fontSize: 24,
@@ -201,46 +201,35 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   infoBoxWrapper: {
+    borderBottomColor: '#dddddd',
+    borderBottomWidth: 1,
+    borderTopColor: '#dddddd',
+    borderTopWidth: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: 100,
+    height: 60,
   },
   infoBox: {
     width: '50%',
     alignItems: 'center',
     justifyContent: 'center',
-    margin:8,
-    paddingHorizontal:3,
-    elevation:5,
-    width:100,
-    height:100,
-    borderRadius:1000,
-    backgroundColor: "#f9ce40",
-    transform:[
-      {translateX:0},
-      {translateY:0},
-      {rotate:"0deg"},
-    ]
   },
   userBtnWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
     marginBottom: 10,
-    marginTop:3,
+    marginTop:10,
   },
   userBtn: {
-    backgroundColor: '#1a1918',
-    color: "#FFFFF",
-    borderRadius:25,
-    justifyContent:"center",
-    height: 30,
-    elevation:5,
+    borderColor: '#2e64e5',
+    borderWidth: 2,
+    borderRadius: 3,
+    paddingVertical: 10,
     paddingHorizontal: 10,
-    marginHorizontal: 3,
+    marginHorizontal: 5,
   },
   userBtnTxt: {
-    color: '#FFFFFF'
+    color: '#2e64e5'
   },
 
   reviewForm:{
@@ -248,14 +237,5 @@ const styles = StyleSheet.create({
     paddingTop:3,
     marginTop:10,
     paddingBottom:60
-  },
-  title2:{
-    flexDirection: 'column',
-    fontSize:16,
-    alignItems:'center',
-    justifyContent:'center',
-    marginBottom:2,
-    textAlign:'center',
-    fontFamily:"sans-serif-medium"
   }
 });

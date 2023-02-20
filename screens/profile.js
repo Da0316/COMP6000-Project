@@ -1,12 +1,18 @@
 import  React, {useState, useEffect} from 'react';
-import { View,SafeAreaView,StyleSheet, ScrollView} from 'react-native';
+import { View,SafeAreaView,StyleSheet, ScrollView,Image} from 'react-native';
 import { Avatar,Title,Caption,Text, TouchableRipple, TextInput} from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Login from '../chatroom_testing/Login';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
+import axios from "axios";
+import { FlatList } from "react-native-gesture-handler";
 
 const Profile=({navigation}) =>{
       //const {userID, setUserID} = useState(null);
       const [username, setUsername] = useState('');
+      const [userID, setUserID] = useState("");
+      const isFocused = useIsFocused();
       const [firstname, setFirstname] = useState(null);
       const [lastname, setLastname] = useState(null);
       const [date_of_birth, setDate_of_birth] = useState(null);
@@ -15,6 +21,107 @@ const Profile=({navigation}) =>{
       const [phone_number, setPhone_number] = useState(null);
       const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
       const [jobsCompleted, setJobsCompleted] = useState(null);
+      const [reviews, setReview] = useState([]);
+      
+      const readData = async () => {
+        try {
+          const value = await AsyncStorage.getItem("user_id");
+    
+          if (value !== null) {
+            setUserID(value);
+          }
+        } catch (e) {
+          alert("Failed to fetch the input from storage");
+        }
+      };
+      const renderItem = ({ item }) => {
+        return (
+          <View
+            style={{
+              marginBottom: 20,
+              elevation: 1,
+              padding: 10,
+              backgroundColor: "lightgray",
+              flex: 1,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
+              <Image
+                source={{
+                  uri: item?.image
+                  ? "https://raptor.kent.ac.uk/proj/comp6000/project/08/" +
+                    item?.image
+                  : "https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/2846608f-203f-49fe-82f6-844a3f485510.png",
+                }}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50 / 2,
+                  overflow: "hidden",
+                  borderWidth: 1,
+                }}
+              />
+              <View>
+                <Text
+                  style={{
+                    width: "70%",
+                    marginLeft: 10,
+                    fontSize: 16,
+                  }}
+                >
+                  {item?.username}
+                </Text>
+                <Text
+                  style={{
+                    width: "70%",
+                    marginLeft: 10,
+                    fontSize: 16,
+                  }}
+                >
+                  Ratings {item?.rating}
+                </Text>
+                <Text
+                  style={{
+                    width: "90%",
+                    marginLeft: 10,
+                    fontSize: 16,
+                  }}
+                >
+                  {item?.timestamp}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                backgroundColor: "white",
+              }}
+            >
+              <Text style={{ width: "70%", textAlign: "center", padding: 10 }}>
+                {item?.review_text}
+              </Text>
+            </View>
+          </View>
+        );
+      };
+      const fetchReview = async () => {
+        const params = new FormData();
+        params.append("userID", userID);
+        console.log("params", params);
+        const res = await axios.post(
+          `https://raptor.kent.ac.uk/proj/comp6000/project/08/userreviews.php`,
+          params
+        );
+        setReview(res?.data);
+        console.log("res", res.data);
+      };
+      useEffect(() => {
+        readData();
+        fetchReview();
+      }, [isFocused]);
 
       useEffect(() => { 
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
@@ -30,6 +137,7 @@ const Profile=({navigation}) =>{
         })
         .then((response) => response.json())
         .then((responseJson) => {
+          
           //console.log(responseJson[0]);
           //setUserID(responseJson[0])
           setUsername(responseJson[1])
@@ -49,7 +157,7 @@ const Profile=({navigation}) =>{
         .catch((error) => {
             console.log(error);
         })  
-    }, []);
+    }, [userID, isFocused]);
     // console.log(userID);
     // console.log(firstname);
     // console.log(lastname);
@@ -84,7 +192,7 @@ const Profile=({navigation}) =>{
               <View style={{flexDirection:'row', marginTop: 15}}>
                   <Avatar.Image
                       source={{
-                          uri: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName,
+                          uri: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/'+ selectedImageName,
                       }}
                       size={90} />
                   <View style= {{marginLeft:20}}>
@@ -140,8 +248,15 @@ const Profile=({navigation}) =>{
           </View>
 
           <View style={styles.reviewSection}>
-            
-          </View >
+          <FlatList
+            data={reviews}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            inverted={true}
+            style={{ flex: 1, width: "95%" }}
+          />
+        </View>
           </ScrollView>
       </SafeAreaView>
   );
@@ -241,6 +356,9 @@ const styles = StyleSheet.create({
     elevation:5,
     paddingHorizontal: 10,
     marginHorizontal: 3,
-
+  },
+  reviewSection: {
+    alignItems: "center",
+    flex: 1,
   }
 });

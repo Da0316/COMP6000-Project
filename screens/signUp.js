@@ -25,8 +25,7 @@ const SignUp = ({navigation}) =>{
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-    
-  handelSubmit = () =>{
+    handelSubmit = () =>{
     //onChangeText={(userName) => setuserName(userName)}
     
     if(password != conPasswrod){

@@ -11,10 +11,13 @@ import * as ImagePicker from 'expo-image-picker';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-
+import axios from "axios";
+import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditProfile = ({navigation}) => {
     const [username, setUsername] = useState('');
+    const [userID, setUserID] = useState("");
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [email,setEmail] = useState('');
@@ -25,7 +28,23 @@ const EditProfile = ({navigation}) => {
     const [selectedImageType, setSelectedImageType] = useState('');
     const [selected, setSelected] = useState(false);
 
+    const isFocused = useIsFocused();
 
+    const [image, setImage] = useState(null);
+    const readData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("user_id");
+
+      if (value !== null) {
+        setUserID(value);
+      }
+    } catch (e) {
+      alert("Failed to fetch the input from storage");
+    }
+  };
+  useEffect(() => {
+    readData();
+  }, [isFocused]);
     useEffect(() => {
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
             method: 'post',
@@ -53,81 +72,49 @@ const EditProfile = ({navigation}) => {
           else{
             setSelectedImageName (responseJson[8]);
           }
-          
-        
         })
         .catch((error) => {
             console.log(error);
             //console.log("1");
         });
-    }, []);
+    }, [userID]);
     
-    const handelSubmit = () => {
-      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/editProfile.php', {
-        method: 'patch',
-        headers:{
-          Accept: 'application/json',
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          
-          username: username,
-          firstname: firstname,
-          lastname: lastname,
-          email: email,
-          address: address,
-          phone: phone_number,
-        }),
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        if(responseJson == "success"){
-          alert("Updated");
-        }
-        if(responseJson == "error"){
-          alert("Not Updated");
-        }
-
-
-      })
-        .catch((error) => {
-          alert(error);
-        });
-        if (selected == true){
-        const formData = new FormData();
-        formData.append('name', {
-          name: selectedImageName, 
-          type: selectedImageType, 
-          uri: selectedImage });
-          //console.log (formData);
-          fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
-            method: 'POST',
-            
-            // body: JSON.stringify({
-            //   name: filename, 
-            //   type: type, 
-            //   uri: localUri
-            // }),
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            body: formData
-        }).then((response) => response.text())
-          .then((responseJson) => {
-            console.log(responseJson);
-          
-        }).catch((error) => {
-          console.error(error);
-        });
-      };
+    const handelSubmit = async () => {
+    const params = new FormData();
+    params.append("username", username);
+    params.append("firstname", firstname);
+    params.append("lastname", lastname);
+    params.append("email", email);
+    params.append("address", address);
+    params.append("phone_number", phone_number);
+    params.append("userID", userID);
+    image &&
+      params.append("user_image", {
+        uri: image,
+        type: "image/jpeg",
+        name: Math.floor(Math.random() * 100) + 1 + "photo.jpg",
+      });
+    console.log("params", params);
+    const res = await axios.post(
+      `https://raptor.kent.ac.uk/proj/comp6000/project/08/edit.php`,
+      params
+    );
+    if (res.data === "success") {
+      alert("profile updated successfully");
+    } else {
+      alert("something went wrong");
     }
+    console.log("res", res.data);
+
+
+  };
 
     const pickImageAsync = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
         quality: 1,
       });
-  
+      setImage(result.uri);
       if (!result.canceled) {
         //setSelectedImage(result.assets[0].uri);
         //console.log(result);
@@ -172,7 +159,9 @@ const EditProfile = ({navigation}) => {
                         }}>
                             <ImageBackground
                                 source={{
-                                uri:'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName,
+                                  uri: image
+                                   ? image
+                                   :'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName,
                                 }}
                                 style={{height:100, width:100}}
                                 imageStyle={{borderRadius:100/2}}
@@ -183,7 +172,7 @@ const EditProfile = ({navigation}) => {
                                          alignItems: 'center',
                                      }}>
 
-                                        <Icon name="camera" size={35} color="#f9ce40" style={{
+                                        <Icon name="camera" size={35} color="#fff" style={{
                                             opacity: 0.7,
                                             alignItems: 'center',
                                             justifyContent: 'center',
@@ -200,10 +189,10 @@ const EditProfile = ({navigation}) => {
                     </Text>
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="user-o" size={20} color="#1a1918" />
+                    <FontAwesome name="user-o" size={20} />
                     <TextInput 
                     placeholder= {firstname}
-                    placeholderTextColor="#ead184"
+                    placeholderTextColor="#666666"
                     autoCorrect={false}
                     style={styles.textInput}
                     value={firstname}
@@ -211,7 +200,7 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="user-o" size={20} color="#1a1918" />
+                    <FontAwesome name="user-o" size={20} />
                     <TextInput 
                     placeholder="Last Name"
                     placeholderTextColor="#666666"
@@ -222,7 +211,7 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="user-o" size={20} color="#1a1918" />
+                    <FontAwesome name="user-o" size={20} />
                     <TextInput 
                     placeholder="Username"
                     placeholderTextColor="#666666"
@@ -233,7 +222,7 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="phone" size={20} color="#1a1918" />
+                    <FontAwesome name="phone" size={20} />
                     <TextInput 
                     placeholder="Phone"
                     placeholderTextColor="#666666"
@@ -245,7 +234,7 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="envelope-o" size={20} color="#1a1918" />
+                    <FontAwesome name="envelope-o" size={20} />
                     <TextInput 
                     placeholder="Email"
                     placeholderTextColor="#666666"
@@ -257,7 +246,7 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <Icon name="map-marker-outline" size={20} color="#1a1918" />
+                    <Icon name="map-marker-outline" size={20} />
                     <TextInput 
                     placeholder="Address"
                     placeholderTextColor="#666666"
@@ -280,12 +269,11 @@ export default EditProfile;
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor:"#FFFFFF"
     },
     commandButton: {
       padding: 15,
       borderRadius: 10,
-      backgroundColor: '#1a1918',
+      backgroundColor: '#FF6347',
       alignItems: 'center',
       marginTop: 10,
     },
@@ -356,6 +344,6 @@ const styles = StyleSheet.create({
       flex: 1,
       marginTop: Platform.OS === 'android' ? -2 : -12,
       paddingLeft: 10,
-      color: '#1a1918',
+      color: '#055a39',
     },
   });
