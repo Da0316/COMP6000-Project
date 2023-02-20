@@ -248,15 +248,17 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   ratingSection: {
+    flexDirection: "row",
+    justifyContent: "center",
   },
   reviewSection: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
-    width: '100%',
-    backgroundColor: 'white',
+    width: "100%",
+    backgroundColor: "white",
     padding: 10,
     borderTopLeftRadius: 20,
-    borderTopRightRadius: 20
+    borderTopRightRadius: 20,
   },
   submitButton: {
     width: "90%",
@@ -267,7 +269,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    alignSelf:"center",
+    alignSelf: "center",
     elevation: 5,
-  }
+  },
 });
