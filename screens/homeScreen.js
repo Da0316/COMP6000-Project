@@ -143,9 +143,7 @@ const HomeScreen =({ navigation, route })=> {
               </ScrollView>
             </View>
         </ScrollView>
-        
     );
-  
 }
 
 export default HomeScreen;
