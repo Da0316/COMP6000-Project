@@ -56,6 +56,8 @@ const SignUp = ({navigation}) =>{
             alert("Please fill in details ")
           } else if (responseJson === "email already exists"){
             alert("Account already signed up with this email")
+          } else if (responseJson === "username already exists"){
+            alert("Username already exists");
           } else {
             alert("Signup Successful!");
             const newUserObj = {
