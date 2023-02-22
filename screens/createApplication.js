@@ -7,9 +7,33 @@ function CreateApplication({route, navigation}){
     const [transformedDate, setTransformedDate] = useState('');
     const [priceOffer, setPriceOffer] = useState('');
     
+    const checkOutstandingJob = () => {
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/checkOutstandingJob.php', {
+        method: 'post',
+        header: {
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          jobID: jobID,
+          applyingID: global.userID
+        }),
+        })
+        .then((response) => response.text())
+        .then((responseJson) => {
+          if (responseJson == 'true'){
+            alert("You have an outstanding job with this user");
+          } else if (responseJson == 'false'){
+            submit();
+          }
+        })
+        .catch((error)=> {
+          console.error(error);
+        });
+
+    }
+
     const submit = () => {
-      console.log(jobID);
-      console.log(userID);
         if (priceOffer != ''){
             fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/createApplication.php', {
                 method: 'post',
@@ -45,7 +69,7 @@ function CreateApplication({route, navigation}){
         </Text>
         <SafeAreaView style={styles.formView}>
             <TextInput placeholder={"Price Offer*"} placeholderTextColor='#fff' onChangeText={(price_offer) => setPriceOffer(price_offer)} style={styles.TextInput}/>
-            <TouchableOpacity style={styles.buttonsView} onPress={()=>submit()}>
+            <TouchableOpacity style={styles.buttonsView} onPress={()=>checkOutstandingJob()}>
               <Text style={styles.buttonText}>Apply</Text>
             </TouchableOpacity>
           </SafeAreaView>

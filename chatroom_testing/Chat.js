@@ -176,7 +176,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, navigation
     }
   }
 
-  useEffect(() => { 
+  //useEffect(() => { 
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
         method: 'post',
         header: {
@@ -199,7 +199,8 @@ export default function Chat({onBack, myData, selectedUser, viewUser, navigation
     .catch((error) => {
         console.log(error);
     })  
-  }, []);
+  //}, []);
+  if (jobID != null){
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php', {
           method: 'post',
           header: {
@@ -221,10 +222,57 @@ export default function Chat({onBack, myData, selectedUser, viewUser, navigation
       .catch((error) => {
           console.log(error);
       });
-
-  console.log(jobCompleted);
-  if (hostUser == true){
-    if (jobCompleted == false){
+  }
+  if (jobCompleted != null){
+    if (hostUser == true){ 
+      if (jobCompleted == false){
+        return (
+          <>
+            <View style={styles.actionBar}>
+              <TouchableOpacity onPress={onBack}>
+                <Image source={require('./assets/back.png')}/>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={viewUser}>
+                  <Text style={styles.text}>{selectedUser.username}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={showConfirmationPopup}>
+                  <Text style={styles.text}>Completed?</Text>
+              </TouchableOpacity>
+            </View>
+            <GiftedChat
+              messages={messages}
+              onSend={newMessage => onSend(newMessage)}
+              user={{
+                _id: myData.username,
+              }}
+            />
+          </>
+        );
+      } else if (jobCompleted == true){
+        return (
+          <>
+            <View style={styles.actionBar}>
+              <TouchableOpacity onPress={onBack}>
+                <Image source={require('./assets/back.png')}/>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={viewUser}>
+                  <Text style={styles.text}>{selectedUser.username}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>navigation.navigate('Reviews')}>
+                  <Text style={styles.text}>Leave a Review?</Text>
+              </TouchableOpacity>
+            </View>
+            <GiftedChat
+              messages={messages}
+              onSend={newMessage => onSend(newMessage)}
+              user={{
+                _id: myData.username,
+              }}
+            />
+          </>
+        );
+      }
+    } else if (hostUser == false){
       return (
         <>
           <View style={styles.actionBar}>
@@ -233,32 +281,6 @@ export default function Chat({onBack, myData, selectedUser, viewUser, navigation
             </TouchableOpacity>
             <TouchableOpacity onPress={viewUser}>
                 <Text style={styles.text}>{selectedUser.username}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={showConfirmationPopup}>
-                <Text style={styles.text}>Completed?</Text>
-            </TouchableOpacity>
-          </View>
-          <GiftedChat
-            messages={messages}
-            onSend={newMessage => onSend(newMessage)}
-            user={{
-              _id: myData.username,
-            }}
-          />
-        </>
-      );
-    } else if (jobCompleted == true){
-      return (
-        <>
-          <View style={styles.actionBar}>
-            <TouchableOpacity onPress={onBack}>
-              <Image source={require('./assets/back.png')}/>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={viewUser}>
-                <Text style={styles.text}>{selectedUser.username}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>navigation.navigate('Reviews')}>
-                <Text style={styles.text}>Completed?</Text>
             </TouchableOpacity>
           </View>
           <GiftedChat
@@ -271,26 +293,6 @@ export default function Chat({onBack, myData, selectedUser, viewUser, navigation
         </>
       );
     }
-  } else if (hostUser == false){
-    return (
-      <>
-        <View style={styles.actionBar}>
-          <TouchableOpacity onPress={onBack}>
-            <Image source={require('./assets/back.png')}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={viewUser}>
-              <Text style={styles.text}>{selectedUser.username}</Text>
-          </TouchableOpacity>
-        </View>
-        <GiftedChat
-          messages={messages}
-          onSend={newMessage => onSend(newMessage)}
-          user={{
-            _id: myData.username,
-          }}
-        />
-      </>
-    );
   }
 }
 

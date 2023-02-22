@@ -22,15 +22,23 @@ export default function Users({
       </Pressable>
     );
   };
-  return (
-    <>
-      <FlatList
-        data={users}
-        renderItem={renderUser}
-        keyExtractor={item => item.username.toString()}
-      />
-    </>
-  );
+  if (users == null){
+    return (
+      <View>
+        <Text>No Chats Active</Text>
+      </View>
+    );
+  } else {
+    return (  
+      <>
+        <FlatList
+          data={users}
+          renderItem={renderUser}
+          keyExtractor={item => item.username.toString()}
+        />
+      </>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
