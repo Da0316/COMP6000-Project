@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import {
   View,
   SafeAreaView,
@@ -25,6 +26,7 @@ const Reviews = ({ navigation, route }) => {
   const [reviews, setReview] = useState([]);
   const [write, setWrite] = useState([]);
   const [userID, setUserID] = useState("");
+  const [userPostedID,setUserPostedID]=useState(route?.params?.userPostedID)
   const isFocused = useIsFocused();
 
   const [jobid, setJobId] = useState(route?.params?.jobId);
@@ -45,6 +47,8 @@ const Reviews = ({ navigation, route }) => {
   const fetchReview = async () => {
     const params = new FormData();
     params.append("jobid", jobid);
+    params.append("type", "post");
+    params.append("userposted",jobid)
     console.log("params", params);
     const res = await axios.post(
       `https://raptor.kent.ac.uk/proj/comp6000/project/08/reviews.php`,
@@ -58,6 +62,7 @@ const Reviews = ({ navigation, route }) => {
     params.append("jobid", jobid);
     params.append("userID", userid);
     params.append("review_text", reviewtxt);
+    params.append("userposted",userPostedID)
     params.append("rating", rating);
 
     console.log("params", params);

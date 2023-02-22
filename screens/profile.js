@@ -9,7 +9,6 @@ import axios from "axios";
 import { FlatList } from "react-native-gesture-handler";
 
 const Profile=({navigation}) =>{
-      //const {userID, setUserID} = useState(null);
       const [username, setUsername] = useState('');
       const [userID, setUserID] = useState("");
       const isFocused = useIsFocused();
@@ -22,7 +21,8 @@ const Profile=({navigation}) =>{
       const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
       const [jobsCompleted, setJobsCompleted] = useState(null);
       const [reviews, setReview] = useState([]);
-      
+      const [placeholder, setImagePlaceholder] = useState(false);
+
       const readData = async () => {
         try {
           const value = await AsyncStorage.getItem("user_id");
@@ -109,10 +109,12 @@ const Profile=({navigation}) =>{
       };
       const fetchReview = async () => {
         const params = new FormData();
-        params.append("userID", userID);
+        params.append("jobid", userID);
+        params.append("type", "user");
+
         console.log("params", params);
         const res = await axios.post(
-          `https://raptor.kent.ac.uk/proj/comp6000/project/08/userreviews.php`,
+          `https://raptor.kent.ac.uk/proj/comp6000/project/08/reviews.php`,
           params
         );
         setReview(res?.data);
@@ -120,7 +122,6 @@ const Profile=({navigation}) =>{
       };
       useEffect(() => {
         readData();
-        fetchReview();
       }, [isFocused]);
 
       useEffect(() => { 
@@ -138,8 +139,6 @@ const Profile=({navigation}) =>{
         .then((response) => response.json())
         .then((responseJson) => {
           
-          //console.log(responseJson[0]);
-          //setUserID(responseJson[0])
           setUsername(responseJson[1])
           setFirstname(responseJson[2]);
           setLastname(responseJson[3]);
@@ -147,24 +146,25 @@ const Profile=({navigation}) =>{
           setAddress(responseJson[5]);
           setEmail(responseJson[6]);
           setPhone_number(responseJson[7]);
-          if(responseJson[8] == null){
+          if(responseJson[8] === null){
+            setImagePlaceholder(true)
           }
           else{
+            if(responseJson[8]==="blank"){
+              setImagePlaceholder(true)
+
+            }else{
+              setImagePlaceholder(false)
             setSelectedImageName (responseJson[8]);
+            }
           }
-          
+          fetchReview();
         })
         .catch((error) => {
             console.log(error);
         })  
     }, [userID, isFocused]);
-    // console.log(userID);
-    // console.log(firstname);
-    // console.log(lastname);
-    // console.log(address);
-    // console.log(phone_number);
-    // console.log(email);
-    // console.log(date_of_birth);
+
 
 
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateJobsCompleted.php', {
@@ -192,7 +192,8 @@ const Profile=({navigation}) =>{
               <View style={{flexDirection:'row', marginTop: 15}}>
                   <Avatar.Image
                       source={{
-                          uri: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/'+ selectedImageName,
+
+                          uri:placeholder? 'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/'+ selectedImageName,
                       }}
                       size={90} />
                   <View style= {{marginLeft:20}}>

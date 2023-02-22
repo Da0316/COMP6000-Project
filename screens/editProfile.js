@@ -116,12 +116,8 @@ const EditProfile = ({navigation}) => {
       });
       setImage(result.uri);
       if (!result.canceled) {
-        //setSelectedImage(result.assets[0].uri);
-        //console.log(result);
-        //setSelectedImage(result);
-  
         
-        //
+  
         //handleSubmit();
         let localUri = result.assets[0].uri;
         let filename = localUri.split('/').pop();

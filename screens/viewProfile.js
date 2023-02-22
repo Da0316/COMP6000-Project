@@ -11,6 +11,8 @@ const ViewProfile=({navigation,route}) =>{
       const [lastname, setLastname] = useState(null);
       const [phone_number, setPhone_number] = useState(null);
       const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
+      const [placeholder, setImagePlaceholder] = useState(false);
+
       try {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
             method: 'post',
@@ -31,16 +33,20 @@ const ViewProfile=({navigation,route}) =>{
         })
         .then((response) => response.json())
         .then((responseJson) => {
-          //console.log(responseJson[0]);
-          //setUserID(responseJson[0])
           setUsername(responseJson[1])
           setFirstname(responseJson[2]);
           setLastname(responseJson[3]);
           setPhone_number(responseJson[7]);
           if(responseJson[8] == null){
+            setImagePlaceholder(true)
           }
           else{
+            if(responseJson[8]==="blank"){
+                setImagePlaceholder(true)
+            }else{
+              setImagePlaceholder(false)
             setSelectedImageName (responseJson[8]);
+            }
           }
         })
         .catch((error) => {
@@ -105,21 +111,14 @@ const ViewProfile=({navigation,route}) =>{
 
    
    
- 
-    // console.log(userID);
-    // console.log(firstname);
-    // console.log(lastname);
-    // console.log(address);
-    // console.log(phone_number);
-    // console.log(email);
-    // console.log(date_of_birth);
   return (
       <SafeAreaView style={styles.container}>
           <View style={styles.userInfoSection}>
               <View style={{flexDirection:'row', marginTop: 15}}>
                   <Avatar.Image
                       source={{
-                        uri: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName,
+                        uri:placeholder?
+                         'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/'+ selectedImageName,
                       }}
                       size={90} />
                   <View style= {{marginLeft:20}}>
@@ -142,7 +141,7 @@ const ViewProfile=({navigation,route}) =>{
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Chat')}>
                   <Text style={styles.userBtnTxt}>Message</Text>
                 </TouchableRipple>
-                <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Reviews', { jobId: route?.params?.jobID })}>
+                <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Reviews', { jobId: route?.params?.jobID,userPostedID: route.params.paramKey })}>
                   <Text style={styles.userBtnTxt}>View/Write Reviews</Text>
                 </TouchableRipple>
               </View>
