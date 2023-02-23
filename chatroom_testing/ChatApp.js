@@ -13,6 +13,8 @@ export default function ChatApp(navigation){
     const [userToAdd, setUserToAdd] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [myData, setMyData] = useState(null);
+    const [jobID, setJobID] = useState(null);
+    const [userPostedID, setUserPostedID] = useState(null);
     //const onLogin = async () => {
     if (currentPage == null){
         try {
@@ -82,6 +84,12 @@ export default function ChatApp(navigation){
 
     const viewUser = () => {
         setCurrentPage('viewUser');
+    }
+
+    const leaveReview = (jobID, userPostedID) => {
+        setJobID(jobID);
+        setUserPostedID(userPostedID);
+        setCurrentPage('leaveReview');
     }
 
     const onAddFriend = async name => {
@@ -154,7 +162,7 @@ export default function ChatApp(navigation){
             );
         case 'chat':
             return (
-                <Chat myData={myData} selectedUser={selectedUser} onBack={onBack} viewUser={viewUser} navigation={navigation}/>
+                <Chat myData={myData} selectedUser={selectedUser} onBack={onBack} viewUser={viewUser} leaveReview={leaveReview}/>
             );
         case 'viewUser':
             return (
