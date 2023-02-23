@@ -133,8 +133,8 @@ const ViewProfile=({navigation,route}) =>{
 
           <View style={styles.userInfoSection}>
               <View style={styles.row}>
-              <Icon name="phone"color="#777777" size={20}/>
-              <Text style={{color:"#777777", marginLeft:20}}>{phone_number}</Text>
+              <Icon name="phone"color="#777777" size={20} color="#1A1918"/>
+              <Text style={{color:"#1A1918", marginLeft:20}}>{phone_number}</Text>
               </View>
 
               <View style={styles.userBtnWrapper}>
@@ -142,7 +142,7 @@ const ViewProfile=({navigation,route}) =>{
                   <Text style={styles.userBtnTxt}>Message</Text>
                 </TouchableRipple>
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Reviews', { jobId: route?.params?.jobID,userPostedID: route.params.paramKey })}>
-                  <Text style={styles.userBtnTxt}>View/Write Reviews</Text>
+                  <Text style={styles.userBtnTxt}>Reviews</Text>
                 </TouchableRipple>
               </View>
           <View style={styles.infoBoxWrapper}>
@@ -150,11 +150,11 @@ const ViewProfile=({navigation,route}) =>{
               borderRightColor: '#dddddd',
               borderRightWidth: 1
                }]}>
-               <Title>Ratings Level</Title>
+               <Title style={styles.title2}>Ratings Level</Title>
                <Caption>1</Caption>
             </View>
          <View style={styles.infoBox}>
-          <Title>Jobs Completed</Title>
+          <Title style={styles.title2}>Jobs Completed</Title>
           <Caption>1</Caption>
          </View>
            </View>
@@ -179,12 +179,12 @@ export default ViewProfile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#F3F3F3",
+    backgroundColor:"#FFFFFF",
     
   },
   userInfoSection: {
     paddingHorizontal: 30,
-    marginBottom: 25,
+    marginBottom: 15,
   },
   title: {
     fontSize: 24,
@@ -200,35 +200,56 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   infoBoxWrapper: {
-    borderBottomColor: '#dddddd',
-    borderBottomWidth: 1,
-    borderTopColor: '#dddddd',
-    borderTopWidth: 1,
+    // borderBottomColor: '#dddddd',
+    // borderBottomWidth: 1,
+    // borderTopColor: '#dddddd',
+    // borderTopWidth: 1,
     flexDirection: 'row',
-    height: 60,
+    //height: 60,
+    justifyContent:"space-between",
+    height:100
+
   },
   infoBox: {
     width: '50%',
     alignItems: 'center',
     justifyContent: 'center',
+    margin:8,
+    paddingHorizontal:3,
+    elevation:5,
+    width:100,
+    height:100,
+    borderRadius:1000,
+    backgroundColor: "#f9ce40",
+    transform:[
+      {translateX:0},
+      {translateY:0},
+      {rotate:"0deg"},
+    ]
   },
   userBtnWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
     marginBottom: 10,
-    marginTop:10,
+    marginTop:3,
   },
   userBtn: {
-    borderColor: '#2e64e5',
-    borderWidth: 2,
-    borderRadius: 3,
-    paddingVertical: 10,
+    // borderColor: '#2e64e5',
+    // borderWidth: 2,
+    // borderRadius: 3,
+    // paddingVertical: 10,
+    backgroundColor: '#1a1918',
+    color: "#FFFFF",
+    borderRadius:25,
+    justifyContent:"center",
+    height: 30,
+    elevation:5,
     paddingHorizontal: 10,
-    marginHorizontal: 5,
+    marginHorizontal: 3,
   },
   userBtnTxt: {
-    color: '#2e64e5'
+    color: '#FFFFFF'
   },
 
   reviewForm:{
@@ -236,5 +257,16 @@ const styles = StyleSheet.create({
     paddingTop:3,
     marginTop:10,
     paddingBottom:60
+  },
+  title2:{
+    flexDirection: 'column',
+    fontSize:16,
+    alignItems:'center',
+    justifyContent:'center',
+    marginBottom:2,
+    textAlign:'center',
+    fontFamily:"sans-serif-medium"
+
   }
+  
 });
