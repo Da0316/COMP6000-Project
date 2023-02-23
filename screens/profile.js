@@ -192,7 +192,6 @@ const Profile=({navigation}) =>{
               <View style={{flexDirection:'row', marginTop: 15}}>
                   <Avatar.Image
                       source={{
-
                           uri:placeholder? 'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/'+ selectedImageName,
                       }}
                       size={90} />
