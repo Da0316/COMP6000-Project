@@ -11,6 +11,12 @@ const SearchScreen =({ navigation, route })=> {
     
     const query = route.params;
     const [jobs, setJobs] = useState([]);
+    const [filter, setFilter] = useState('Most relevant');
+    const [filterChoices, setFilterChoices] = useState([{key:'1', value:'Most relevant'},
+    {key:'2', value:'Price: Low to High'},
+    {key:'3', value:'Price: High to Low'},
+    {key:'4', value:'Newest'},
+    {key:'5', value:'Oldest'}]);
   
     useEffect(() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php', {
@@ -26,21 +32,58 @@ const SearchScreen =({ navigation, route })=> {
           .then((response) => response.json())
           .then((responseJson) => {
             const ids = [];
+            //console.log(responseJson);
             for (let i = 0; i < responseJson.length; i++){
               let object = {
-                id: responseJson[i],
+                id: responseJson[i].jobID,
+                date: responseJson[i].posted_date,
+                price: responseJson[i].price,
               }
+              
               ids.push(object);
             }
             setJobs(ids);
+            // console.log(jobs);
+            // console.log();
+            // setJobs(jobs.sort((a, b) => b.price - a.price));
+            // console.log(jobs);
           })
           .catch((error) => {
             alert(error)
           })
-          
-    }, [route]);
+          sortJobs();
+    }, [route, filter]);
 
     //look into adding a back button to get back to the home screen
+    // useEffect(() => {
+    //   // fetch jobs and set jobs state
+    //   sortJobs();
+    // }, [route, filter]);
+
+    const sortJobs = () => {
+      //console.log(jobs);
+      switch(filter) {
+        case 'Price: Low to High':
+          setJobs(jobs.sort((a, b) => a.price - b.price));
+          console.log(filter);
+          break;
+        case 'Price: High to Low':
+          setJobs(jobs.sort((a, b) => b.price - a.price));
+          console.log(filter);
+          break;
+        case 'Newest':
+          setJobs(jobs.sort((a, b) => new Date(b.posted_date).getTime - new Date(a.posted_date).getTime));
+          console.log(filter);
+          break;
+        case 'Oldest':
+          setJobs(jobs.sort((a, b) => new Date(a.posted_date).getTime - new Date(b.posted_date).getTime));
+          console.log(filter);
+          break;
+        default:
+          setJobs(jobs);
+      }
+      console.log(jobs);
+    };
         
     
     //console.log(jobsID[0]);
@@ -48,6 +91,19 @@ const SearchScreen =({ navigation, route })=> {
         <View style={styles.container}>
               <ScrollView>
                 <Text style={styles.title}> Results for: "{query}" </Text>
+                <SelectList
+                  setSelected={(val) => setFilter(val)}
+                  data={filterChoices}
+                  save="value"
+                  label="Categories"
+                  onSelect={()=> handelFilter}
+                  style={styles.sortBox}
+                  boxStyles={{marginRight:10}}
+                  
+                  
+                />
+
+                  
                 <ScrollView 
                 style={styles.ScrollView}
                 pagingEnabled={true}

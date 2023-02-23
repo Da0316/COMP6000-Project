@@ -15,11 +15,7 @@ const HomeScreen =({ navigation, route })=> {
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('Most relevant');
     const [location, setLocation] = useState(false);
-    const [filterChoices, setFilterChoices] = useState([{key:'1', value:'Most relevant'},
-    {key:'2', value:'price low to high'},
-    {key:'3', value:'price high to low'},
-    {key:'4', value:'Newest'},
-    {key:'5', value:'Oldest'}]);
+    
     const [query, setQuery] = useState('');
     
     useEffect(() => {
