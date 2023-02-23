@@ -22,6 +22,7 @@ const Profile=({navigation}) =>{
       const [jobsCompleted, setJobsCompleted] = useState(null);
       const [reviews, setReview] = useState([]);
       const [placeholder, setImagePlaceholder] = useState(false);
+      const [score, setScore] = useState(false);
 
       const readData = async () => {
         try {
@@ -167,7 +168,26 @@ const Profile=({navigation}) =>{
 
 
 
-    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateJobsCompleted.php', {
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateReviewScore.php', {
+      method: 'post',
+      header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+         userID: global.userID,
+      })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+          setScore(responseJson);
+       })
+      .catch((error) => {
+          alert(error);
+      });
+
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateJobsCompleted.php', {
       method: 'post',
       header: {
           Accept: 'application/json',
@@ -238,7 +258,7 @@ const Profile=({navigation}) =>{
           <View style={styles.infoBoxWrapper}>
              <View style={styles.infoBox}>
                <Text style={styles.title2}>Ratings Level</Text>
-               <Caption style={styles.titlenum}>1</Caption>
+               <Caption style={styles.titlenum}>{rating}</Caption>
             </View>
             <View style={styles.infoBox}>
               <Text style={styles.title2} >Jobs Completed</Text>
