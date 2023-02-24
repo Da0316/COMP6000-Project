@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {Image, TouchableOpacity, StyleSheet, Text, View, Alert} from 'react-native';
 import {getDatabase, get, ref, onValue, off, update, remove, child, set} from 'firebase/database'
-import LeaveReview from './LeaveReview';
 
 export default function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
   const [messages, setMessages] = useState([]);
@@ -154,7 +153,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
 
   const review = async () => {
     console.log("hello");
-    await checkPriorReview();
+    checkPriorReview();
     if (reviewLeft == true) {
       return (
         <Text>Review Left</Text>
@@ -232,7 +231,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
       console.log(error);
     })
   }
-  checkPriorReview();
+
   fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
     method: 'post',
     header: {
@@ -316,7 +315,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
               <TouchableOpacity onPress={viewUser}>
                   <Text style={styles.text}>{selectedUser.username}</Text>
               </TouchableOpacity>
-              <View>{review()}</View>
+              <View>{review}</View>
             </View>
             <GiftedChat
               messages={messages}
@@ -359,7 +358,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
               <TouchableOpacity onPress={viewUser}>
                   <Text style={styles.text}>{selectedUser.username}</Text>
               </TouchableOpacity>
-              <View>{review()}</View>
+              <View>{review}</View>
             </View>
             <GiftedChat
               messages={messages}

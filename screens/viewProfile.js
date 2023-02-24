@@ -133,7 +133,7 @@ const ViewProfile=({navigation,route}) =>{
 
           <View style={styles.userInfoSection}>
               <View style={styles.row}>
-              <Icon name="phone"color="#777777" size={20} color="#1A1918"/>
+              <Icon name="phone"color="#777777" size={20}/>
               <Text style={{color:"#1A1918", marginLeft:20}}>{phone_number}</Text>
               </View>
 
