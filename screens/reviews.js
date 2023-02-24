@@ -151,89 +151,91 @@ const Reviews = ({ navigation, route }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ height: "52%", backgroundColor: "lightgray" }}>
-        <FlatList
-          data={reviews}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          inverted={true}
-        />
-      </View>
-      <View style={styles.reviewSection}>
-        <Title style={{ fontWeight: "bold", marginLeft: 20 }}>
-          Write a Review
-        </Title>
-        <Text>Your Rating:</Text>
-        <View style={styles.ratingSection}>
-          <TouchableRipple onPress={() => setRating(1)}>
-            <Avatar.Icon
-              style={
-                rating >= 1
-                  ? { backgroundColor: "orange" }
-                  : { backgroundColor: "gray" }
-              }
-              icon="star"
-            />
-          </TouchableRipple>
-          <TouchableRipple onPress={() => setRating(2)}>
-            <Avatar.Icon
-              style={
-                rating >= 2
-                  ? { backgroundColor: "orange" }
-                  : { backgroundColor: "gray" }
-              }
-              icon="star"
-            />
-          </TouchableRipple>
-          <TouchableRipple onPress={() => setRating(3)}>
-            <Avatar.Icon
-              style={
-                rating >= 3
-                  ? { backgroundColor: "orange" }
-                  : { backgroundColor: "gray" }
-              }
-              icon="star"
-            />
-          </TouchableRipple>
-          <TouchableRipple onPress={() => setRating(4)}>
-            <Avatar.Icon
-              style={
-                rating >= 4
-                  ? { backgroundColor: "orange" }
-                  : { backgroundColor: "gray" }
-              }
-              icon="star"
-            />
-          </TouchableRipple>
-          <TouchableRipple onPress={() => setRating(5)}>
-            <Avatar.Icon
-              style={
-                rating >= 5
-                  ? { backgroundColor: "orange" }
-                  : { backgroundColor: "gray" }
-              }
-              icon="star"
-            />
-          </TouchableRipple>
-        </View>
-        <TextInput
-          style={styles.reviewForm}
-          placeholder="Write Review"
-          placeholderTextColor={"#777777"}
-          value={reviewText}
-          onChangeText={(text) => setReviewText(text)}
-        />
-        <TouchableRipple
-          style={styles.submitButton}
-          onPress={() => {
-            readData();
-            writeReview(jobid, userID, rating, reviewText);
-          }}
-        >
-          <Text>Submit</Text>
-        </TouchableRipple>
-      </View>
+        <View style={styles.main}>
+          <View style={{ height: "52%", backgroundColor: "lightgray" }}>
+              <FlatList
+                data={reviews}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                showsVerticalScrollIndicator={false}
+                inverted={true}
+              />
+            </View>
+            <View style={styles.reviewSection}>
+              <Title style={{ fontWeight: "bold", marginLeft: 20 }}>
+                Write a Review
+              </Title>
+              <Text>Your Rating:</Text>
+              <View style={styles.ratingSection}>
+                <TouchableRipple onPress={() => setRating(1)}>
+                  <Avatar.Icon
+                    style={
+                      rating >= 1
+                        ? { backgroundColor: "#ffa534" }
+                        : { backgroundColor: "#939394" }
+                    }
+                    icon="star"
+                  />
+                </TouchableRipple>
+                <TouchableRipple onPress={() => setRating(2)}>
+                  <Avatar.Icon
+                    style={
+                      rating >= 2
+                        ? { backgroundColor: "#ffa534" }
+                        : { backgroundColor: "#939394" }
+                    }
+                    icon="star"
+                  />
+                </TouchableRipple>
+                <TouchableRipple onPress={() => setRating(3)}>
+                  <Avatar.Icon
+                    style={
+                      rating >= 3
+                        ? { backgroundColor: "#ffa534" }
+                        : { backgroundColor: "#939394" }
+                    }
+                    icon="star"
+                  />
+                </TouchableRipple>
+                <TouchableRipple onPress={() => setRating(4)}>
+                  <Avatar.Icon
+                    style={
+                      rating >= 4
+                        ? { backgroundColor: "#ffa534" }
+                        : { backgroundColor: "#939394" }
+                    }
+                    icon="star"
+                  />
+                </TouchableRipple>
+                <TouchableRipple onPress={() => setRating(5)}>
+                  <Avatar.Icon
+                    style={
+                      rating >= 5
+                        ? { backgroundColor: "#ffa534" }
+                        : { backgroundColor: "#939394" }
+                    }
+                    icon="star"
+                  />
+                </TouchableRipple>
+              </View>
+              <TextInput
+                style={styles.reviewForm}
+                placeholder="Write Review"
+                placeholderTextColor={"#777777"}
+                value={reviewText}
+                onChangeText={(text) => setReviewText(text)}
+              />
+              <TouchableRipple
+                style={styles.submitButton}
+                onPress={() => {
+                  readData();
+                  writeReview(jobid, userID, rating, reviewText);
+                }}
+              >
+                <Text>Submit</Text>
+              </TouchableRipple>
+            </View>
+          </View>
     </SafeAreaView>
   );
 };
@@ -241,7 +243,17 @@ const Reviews = ({ navigation, route }) => {
 export default Reviews;
 
 const styles = StyleSheet.create({
-  container: {
+  main:{
+    flex:1,
+    //height:"50%",
+    //position:"absolute",
+    //justifyContent:"flex-start",
+    justifyContent: "center",
+    alignItems: "center",
+    margin:5,
+
+  }
+  ,container: {
     flex: 1,
     justifyContent: "space-between",
     backgroundColor: "#F3F3F3",
@@ -255,6 +267,7 @@ const styles = StyleSheet.create({
   ratingSection: {
     flexDirection: "row",
     justifyContent: "center",
+    marginVertical:5
   },
   reviewSection: {
     position: "absolute",
@@ -264,6 +277,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    borderBottomRightRadius:20,
+    borderBottomLeftRadius:20
   },
   submitButton: {
     width: "90%",

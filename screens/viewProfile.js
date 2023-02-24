@@ -114,14 +114,14 @@ const ViewProfile=({navigation,route}) =>{
   return (
       <SafeAreaView style={styles.container}>
           <View style={styles.userInfoSection}>
-              <View style={{flexDirection:'row', marginTop: 15}}>
+              <View style={{flexDirection:'row', marginTop: 2}}>
                   <Avatar.Image
                       source={{
                         uri:placeholder?
                          'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/'+ selectedImageName,
                       }}
-                      size={90} />
-                  <View style= {{marginLeft:20}}>
+                      size={60} />
+                  <View style= {{marginLeft:12}}>
                       <Title style={[styles.title,{
                           marginTop:15,
                           marginBottom:5,
@@ -133,8 +133,8 @@ const ViewProfile=({navigation,route}) =>{
 
           <View style={styles.userInfoSection}>
               <View style={styles.row}>
-              <Icon name="phone"color="#777777" size={20}/>
-              <Text style={{color:"#777777", marginLeft:20}}>{phone_number}</Text>
+              <Icon name="phone"color="#777777" size={20} color="#1A1918"/>
+              <Text style={{color:"#1A1918", marginLeft:20}}>{phone_number}</Text>
               </View>
 
               <View style={styles.userBtnWrapper}>
@@ -142,7 +142,7 @@ const ViewProfile=({navigation,route}) =>{
                   <Text style={styles.userBtnTxt}>Message</Text>
                 </TouchableRipple>
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Reviews', { jobId: route?.params?.jobID,userPostedID: route.params.paramKey })}>
-                  <Text style={styles.userBtnTxt}>View/Write Reviews</Text>
+                  <Text style={styles.userBtnTxt}>Reviews</Text>
                 </TouchableRipple>
               </View>
           <View style={styles.infoBoxWrapper}>
@@ -150,22 +150,24 @@ const ViewProfile=({navigation,route}) =>{
               borderRightColor: '#dddddd',
               borderRightWidth: 1
                }]}>
-               <Title>Ratings Level</Title>
+               <Title style={styles.title2}>Ratings Level</Title>
                <Caption>1</Caption>
             </View>
          <View style={styles.infoBox}>
-          <Title>Jobs Completed</Title>
+          <Title style={styles.title2}>Jobs Completed</Title>
           <Caption>1</Caption>
          </View>
            </View>
           </View>
-        <ScrollView>
-        <ScrollView horizontal = {true}>
-                {jobID.map(object => {
-                  return <ViewJob key = {object.id} ID={object.id}/>
-                })}
-              </ScrollView>
-        </ScrollView>
+          <View style={styles.scrollViewContainer}>
+            <ScrollView>
+            <ScrollView horizontal = {true}>
+                      {jobID.map(object => {
+                        return <ViewJob key = {object.id} ID={object.id} />
+                      })}
+                  </ScrollView>
+            </ScrollView>
+          </View>
 
           
         
@@ -179,12 +181,12 @@ export default ViewProfile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#F3F3F3",
+    backgroundColor:"#FFFFFF",
     
   },
   userInfoSection: {
     paddingHorizontal: 30,
-    marginBottom: 25,
+    marginBottom: 5,
   },
   title: {
     fontSize: 24,
@@ -200,35 +202,56 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   infoBoxWrapper: {
-    borderBottomColor: '#dddddd',
-    borderBottomWidth: 1,
-    borderTopColor: '#dddddd',
-    borderTopWidth: 1,
+    // borderBottomColor: '#dddddd',
+    // borderBottomWidth: 1,
+    // borderTopColor: '#dddddd',
+    // borderTopWidth: 1,
     flexDirection: 'row',
-    height: 60,
+    //height: 60,
+    justifyContent:"space-between",
+    height:90
+
   },
   infoBox: {
-    width: '50%',
+    width: '40%',
     alignItems: 'center',
     justifyContent: 'center',
+    marginHorizontal:20,
+    paddingHorizontal:3,
+    elevation:5,
+    width:100,
+    height:100,
+    borderRadius:200,
+    backgroundColor: "#f9ce40",
+    transform:[
+      {translateX:0},
+      {translateY:0},
+      {rotate:"0deg"},
+    ]
   },
   userBtnWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
     marginBottom: 10,
-    marginTop:10,
+    marginTop:3,
   },
   userBtn: {
-    borderColor: '#2e64e5',
-    borderWidth: 2,
-    borderRadius: 3,
-    paddingVertical: 10,
+    // borderColor: '#2e64e5',
+    // borderWidth: 2,
+    // borderRadius: 3,
+    // paddingVertical: 10,
+    backgroundColor: '#1a1918',
+    color: "#FFFFF",
+    borderRadius:25,
+    justifyContent:"center",
+    height: 30,
+    elevation:5,
     paddingHorizontal: 10,
-    marginHorizontal: 5,
+    marginHorizontal: 3,
   },
   userBtnTxt: {
-    color: '#2e64e5'
+    color: '#FFFFFF'
   },
 
   reviewForm:{
@@ -236,5 +259,19 @@ const styles = StyleSheet.create({
     paddingTop:3,
     marginTop:10,
     paddingBottom:60
+  },
+  title2:{
+    flexDirection: 'column',
+    fontSize:16,
+    alignItems:'center',
+    justifyContent:'center',
+    marginBottom:2,
+    textAlign:'center',
+    fontFamily:"sans-serif-medium"
+
+  },
+  scrollViewContainer:{
+    
   }
+  
 });

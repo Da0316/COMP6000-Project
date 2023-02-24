@@ -85,6 +85,12 @@ function Application({route, navigation}){
                                 update(ref(database, "chatrooms/" + childSnapshot.key), {
                                     jobID: jobID
                                 });
+                                if (chatroom.firstUser != userLoggedIn.username){
+                                    update(ref(database, "chatrooms/" + childSnapshot.key), {
+                                        firstUser: userLoggedIn.username,
+                                        secondUser: userApplied.username
+                                    });
+                                }
                             }
                         })
 

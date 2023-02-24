@@ -2,13 +2,16 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {Image, TouchableOpacity, StyleSheet, Text, View, Alert} from 'react-native';
 import {getDatabase, get, ref, onValue, off, update, remove, child, set} from 'firebase/database';
+import LeaveReview from './leaveReview';
 
-export default function Chat({onBack, myData, selectedUser, viewUser, navigation}) {
+export default function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
   const [messages, setMessages] = useState([]);
   const [hostUser, setHostUser] = useState(null);
   const [jobCompleted, setJobCompleted] = useState(null);
   const [jobID, setJobID] = useState(null);
   const [firstUser, setFirstUser] = useState(null);
+  const [secondUser, setSecondUser] = useState(null);
+  const [userPostingReview, setUserPostingReview] = useState(null);
   
   useEffect(() => {
     const database = getDatabase();
@@ -19,6 +22,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, navigation
       
       setJobID(myChatroom.jobID)
       setFirstUser(myChatroom.firstUser);
+      setSecondUser(myChatroom.secondUser);
       setMessages(renderMessages(myChatroom.messages));
     };
     
@@ -176,6 +180,22 @@ export default function Chat({onBack, myData, selectedUser, viewUser, navigation
     }
   }
 
+  const findUserID = () => {
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/chatViewUser.php', {
+            method: 'post',
+            header : {
+                Accept: 'application/json',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: secondUser,
+            })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            setUserPostingReview(responseJson);
+        })
+  }
   //useEffect(() => { 
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
         method: 'post',
@@ -192,8 +212,10 @@ export default function Chat({onBack, myData, selectedUser, viewUser, navigation
     .then((responseJson) => {
       if (responseJson[1] == firstUser){
         setHostUser(true);
+        setUserPostingReview(global.userID);
       } else {
         setHostUser(false);
+        findUserID();
       }
     })
     .catch((error) => {
@@ -258,7 +280,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, navigation
               <TouchableOpacity onPress={viewUser}>
                   <Text style={styles.text}>{selectedUser.username}</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={()=>navigation.navigate('Reviews')}>
+              <TouchableOpacity onPress={() => leaveReview(jobID, userPostingReview)}>
                   <Text style={styles.text}>Leave a Review?</Text>
               </TouchableOpacity>
             </View>
