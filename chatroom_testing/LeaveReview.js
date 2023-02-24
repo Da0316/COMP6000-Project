@@ -1,20 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import { View, SafeAreaView, StyleSheet, ScrollView, TextInput, Image, FlatList } from 'react-native';
+import { View, SafeAreaView, StyleSheet, ScrollView, TextInput, Image, FlatList, TouchableOpacity } from 'react-native';
 import { Avatar, Title, Caption, Text, TouchableRipple} from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 
-export default function LeaveReview({jobID, userPostedID}){
+export default function LeaveReview({jobID, userPostedID, onBack}){
     const [rating, setRating] = useState(0);
     const [reviewText, setReviewText] = useState("");
     const [reviews, setReview] = useState([]);
     const [write, setWrite] = useState([]);
     const [userID, setUserID] = useState("");
-    const [userPostedID,setUserPostedID]=useState(route?.params?.userPostedID)
     const isFocused = useIsFocused();
-    const [jobid, setJobId] = useState(route?.params?.jobId);
-
+    
     const readData = async () => {
         try {
           const value = await AsyncStorage.getItem("user_id");
@@ -28,26 +26,22 @@ export default function LeaveReview({jobID, userPostedID}){
       };
       const fetchReview = async () => {
         const params = new FormData();
-        params.append("jobid", jobid);
+        params.append("jobid", jobID);
         params.append("type", "post");
-        params.append("userposted",jobid)
-        console.log("params", params);
+        params.append("userposted",jobID)
         const res = await axios.post(
           `https://raptor.kent.ac.uk/proj/comp6000/project/08/reviews.php`,
           params
         );
         setReview(res?.data);
-        console.log("res", res.data);
       };
-      const writeReview = async (jobid, userid, rating, reviewtxt) => {
+      const writeReview = async (userid, rating, reviewtxt) => {
         const params = new FormData();
-        params.append("jobid", jobid);
+        params.append("jobid", jobID);
         params.append("userID", userid);
         params.append("review_text", reviewtxt);
         params.append("userposted",userPostedID)
         params.append("rating", rating);
-    
-        console.log("params", params);
         const res = await axios.post(
           `https://raptor.kent.ac.uk/proj/comp6000/project/08/writereviews.php`,
           params
@@ -133,6 +127,11 @@ export default function LeaveReview({jobID, userPostedID}){
       };
       return (
         <SafeAreaView style={styles.container}>
+            <View style={styles.actionBar}>
+            <TouchableOpacity onPress={onBack}>
+                <Image source={require('./assets/back.png')}/>
+            </TouchableOpacity>
+            </View>
             <View style={styles.main}>
               <View style={{ height: "52%", backgroundColor: "lightgray" }}>
                   <FlatList
@@ -211,7 +210,7 @@ export default function LeaveReview({jobID, userPostedID}){
                     style={styles.submitButton}
                     onPress={() => {
                       readData();
-                      writeReview(jobid, userID, rating, reviewText);
+                      writeReview(userID, rating, reviewText);
                     }}
                   >
                     <Text>Submit</Text>
@@ -268,5 +267,13 @@ export default function LeaveReview({jobID, userPostedID}){
         alignItems: "center",
         alignSelf: "center",
         elevation: 5,
+      },
+      actionBar: {
+        backgroundColor: '#cacaca',
+        height: 41,
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
       },
     });

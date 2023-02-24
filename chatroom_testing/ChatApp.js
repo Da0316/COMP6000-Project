@@ -3,6 +3,7 @@ import Chat from './Chat';
 import Login from './Login';
 import Users from './Users';
 import ViewUser from './ViewUser';
+import LeaveReview from './LeaveReview';
 import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/database'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -65,7 +66,7 @@ export default function ChatApp(navigation){
     //};
 
     const onBack = () => {
-        if (currentPage == 'viewUser'){
+        if (currentPage == 'viewUser' || currentPage == 'leaveReview'){
             setCurrentPage('chat')
         } else if (currentPage == 'chat'){
             setCurrentPage('users');
@@ -167,6 +168,10 @@ export default function ChatApp(navigation){
         case 'viewUser':
             return (
                 <ViewUser selectedUser={selectedUser} onBack={onBack}></ViewUser>
+            );
+        case 'leaveReview':
+            return (
+              <LeaveReview jobID={jobID} userPostedID={userPostedID} onBack={onBack}></LeaveReview>  
             );
         default:
             return null;

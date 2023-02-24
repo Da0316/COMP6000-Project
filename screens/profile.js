@@ -2,7 +2,6 @@ import  React, {useState, useEffect} from 'react';
 import { View,SafeAreaView,StyleSheet, ScrollView,Image} from 'react-native';
 import { Avatar,Title,Caption,Text, TouchableRipple, TextInput} from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Login from '../chatroom_testing/Login';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
@@ -258,7 +257,7 @@ const Profile=({navigation}) =>{
           <View style={styles.infoBoxWrapper}>
              <View style={styles.infoBox}>
                <Text style={styles.title2}>Ratings Level</Text>
-               <Caption style={styles.titlenum}>{rating}</Caption>
+               <Caption style={styles.titlenum}>1</Caption>
             </View>
             <View style={styles.infoBox}>
               <Text style={styles.title2} >Jobs Completed</Text>
