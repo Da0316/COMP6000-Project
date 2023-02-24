@@ -3,7 +3,7 @@ import {GiftedChat} from 'react-native-gifted-chat';
 import {Image, TouchableOpacity, StyleSheet, Text, View, Alert} from 'react-native';
 import {getDatabase, get, ref, onValue, off, update, remove, child, set} from 'firebase/database'
 
-export default function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
+function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
   const [messages, setMessages] = useState([]);
   const [hostUser, setHostUser] = useState(null);
   const [jobCompleted, setJobCompleted] = useState(null);
@@ -124,8 +124,8 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
     );
   };
 
-  const checkPriorReview = () => {
-    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/checkPriorReview.php', {
+  const checkPriorReview = async () => {
+    await fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/checkPriorReview.php', {
       method: 'post',
       header: {
         Accept: 'application/json',
@@ -139,7 +139,6 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
     })    
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson);
       if (responseJson == true){
         setReviewLeft(true);
       } else if (responseJson == false){
@@ -151,21 +150,19 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
     });
   }
 
-  const review = async () => {
-    console.log("hello");
+  const review = () => {
     checkPriorReview();
-    if (reviewLeft == true) {
-      return (
-        <Text>Review Left</Text>
-      );
-    } else if (reviewLeft == false){
-      return (
-        <TouchableOpacity onPress={() => leaveReview(jobID, userPostingReview)}>
+    if (reviewLeft) {
+      return ([<Text key="1">Review Left</Text>]);
+    } else {
+      return ([
+        <TouchableOpacity key="1" onPress={() => leaveReview(jobID, userPostingReview)}>
           <Text style={styles.text}>Leave a Review?</Text>
         </TouchableOpacity>
-      );
+      ]);
     }
-  }
+  };
+  
 
   const handleJobCompleted = async () => {
 
@@ -256,6 +253,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
     console.log(error);
   })  
 
+
   if (jobID != null){
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php', {
       method: 'post',
@@ -315,7 +313,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
               <TouchableOpacity onPress={viewUser}>
                   <Text style={styles.text}>{selectedUser.username}</Text>
               </TouchableOpacity>
-              <View>{review}</View>
+              <View>{review()}</View>
             </View>
             <GiftedChat
               messages={messages}
@@ -358,7 +356,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
               <TouchableOpacity onPress={viewUser}>
                   <Text style={styles.text}>{selectedUser.username}</Text>
               </TouchableOpacity>
-              <View>{review}</View>
+              <View>{review()}</View>
             </View>
             <GiftedChat
               messages={messages}
@@ -372,7 +370,9 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
       }
     }
   }
-}
+};
+
+export default Chat;
 
 const styles = StyleSheet.create({
   actionBar: {
