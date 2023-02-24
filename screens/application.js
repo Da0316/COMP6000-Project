@@ -237,27 +237,29 @@ function Application({route, navigation}){
         } else if (applicationStatus == 1) {
             return (
                 <View style={styles.mainView}>
-                    <View>
-                        <Text>Username: {usernameApplied}</Text>
-                        <Text>Application Date: {applicationDate}</Text>
-                        <Text>Price Offered: ${priceOffer}</Text>
+                    <View style={styles.infoBox}>
+                        <Text style={styles.infoTxt}>Username: {usernameApplied}</Text>
+                        <Text style={styles.infoTxt}>Application Date: {applicationDate}</Text>
+                        <Text style={styles.infoTxt}>Price Offered: ${priceOffer}</Text>
+                        <Text style={styles.infoTxt}>Accepted</Text>
                     </View>
-                    <View style={styles.buttonContainer}>
+                    {/* <View style={styles.buttonContainer}>
                         <Text>Accepted</Text>
-                    </View>
+                    </View> */}
                 </View>
             );
         } else if (applicationStatus == -1){
             return (
                 <View style={styles.mainView}>
-                    <View>
-                        <Text>Username: {usernameApplied}</Text>
-                        <Text>Application Date: {applicationDate}</Text>
-                        <Text>Price Offered: ${priceOffer}</Text>
+                    <View style={styles.infoBox}>
+                        <Text style={styles.infoTxt} >Username: {usernameApplied}</Text>
+                        <Text style={styles.infoTxt}>Application Date: {applicationDate}</Text>
+                        <Text style={styles.infoTxt}>Price Offered: ${priceOffer}</Text>
+                        <Text style={styles.infoTxt}>Rejected</Text>
                     </View>
-                    <View style={styles.buttonContainer}>
+                    {/* <View style={styles.buttonContainer}>
                         <Text>Rejected</Text>
-                    </View>
+                    </View> */}
                 </View>
             );
         }
@@ -268,7 +270,7 @@ export default Application;
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        flex: 1,
+        //flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -280,8 +282,36 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     mainView: {
-        marginTop: 40,
-        flex: 1,
-        flexDirection: 'column',
+        flex:1,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor:"#fff"
+        //justifyContent: 'flex-end',
+        // marginTop: 40,
+        // flex: 1,
+        // flexDirection: 'column',
+    },
+    infoBox:{
+        //flex:1,
+        width: '60%',
+        height: '40%',
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        paddingHorizontal:10,
+        //alignItems: "center",
+        backgroundColor:"#f9ce40",
+        borderTopEndRadius:70,
+        borderTopLeftRadius:70,
+        borderBottomLeftRadius:70,
+        borderBottomRightRadius:70,
+        elevation:30
+        //alignItems: 'center',
+
+    },
+    infoTxt:{
+        fontSize:16,
+        
+        paddingVertical:5,
     }
 });
