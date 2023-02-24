@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {Image, TouchableOpacity, StyleSheet, Text, View, Alert} from 'react-native';
-import {getDatabase, get, ref, onValue, off, update, remove, child, set} from 'firebase/database';
-import LeaveReview from './LeaveReview';
+import {getDatabase, get, ref, onValue, off, update, remove, child, set} from 'firebase/database'
 
 export default function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
   const [messages, setMessages] = useState([]);
@@ -12,11 +11,11 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
   const [firstUser, setFirstUser] = useState(null);
   const [secondUser, setSecondUser] = useState(null);
   const [userPostingReview, setUserPostingReview] = useState(null);
+  const [reviewLeft, setReviewLeft] = useState(null);
   
   useEffect(() => {
     const database = getDatabase();
     const chatroomRef = ref(database, `chatrooms/${selectedUser.chatroomId}`);
-    //load old messages
     const loadData = async () => {
       const myChatroom = await fetchMessages();
       
@@ -42,16 +41,6 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
 
   const renderMessages = useCallback(
     msgs => {
-      //structure for chat library:
-      // msg = {
-      //   _id: '',
-      //   user: {
-      //     avatar:'',
-      //     name: '',
-      //     _id: ''
-      //   }
-      // }
-
       return msgs
         ? msgs.reverse().map((msg, index) => ({
             ...msg,
@@ -135,6 +124,49 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
     );
   };
 
+  const checkPriorReview = () => {
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/checkPriorReview.php', {
+      method: 'post',
+      header: {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        jobID: jobID,
+        userID: global.userID,
+        userPostedID: userPostingReview
+      }),
+    })    
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson);
+      if (responseJson == true){
+        setReviewLeft(true);
+      } else if (responseJson == false){
+        setReviewLeft(false);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const review = async () => {
+    console.log("hello");
+    checkPriorReview();
+    if (reviewLeft == true) {
+      return (
+        <Text>Review Left</Text>
+      );
+    } else if (reviewLeft == false){
+      return (
+        <TouchableOpacity onPress={() => leaveReview(jobID, userPostingReview)}>
+          <Text style={styles.text}>Leave a Review?</Text>
+        </TouchableOpacity>
+      );
+    }
+  }
+
   const handleJobCompleted = async () => {
 
       const database = getDatabase();
@@ -180,71 +212,74 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
     }
   }
 
-  const findUserID = () => {
+  const findUserID = (uname) => {
     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/chatViewUser.php', {
-            method: 'post',
-            header : {
-                Accept: 'application/json',
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: secondUser,
-            })
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
-            setUserPostingReview(responseJson);
-        })
-  }
-  //useEffect(() => { 
-    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
-        method: 'post',
-        header: {
-            Accept: 'application/json',
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-            //userID: 1
-            userID: global.userID
-        }),
+      method: 'post',
+      header : {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: uname,
+      })
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      if (responseJson[1] == firstUser){
-        setHostUser(true);
-        setUserPostingReview(global.userID);
-      } else {
-        setHostUser(false);
-        findUserID();
+      setUserPostingReview(responseJson);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+  fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
+    method: 'post',
+    header: {
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      userID: global.userID
+    }),
+  })
+  .then((response) => response.json())
+  .then((responseJson) => {
+    if (responseJson[1] == firstUser){
+      setHostUser(true);
+      findUserID(secondUser);
+    } else {
+      setHostUser(false);
+      findUserID(firstUser);
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+  })  
+
+  if (jobID != null){
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php', {
+      method: 'post',
+      header: {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        jobID: jobID
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if (responseJson[6] == 1){
+        setJobCompleted(true);
+      } else if (responseJson[6] == 0){
+        setJobCompleted(false);
       }
     })
     .catch((error) => {
-        console.log(error);
-    })  
-  //}, []);
-  if (jobID != null){
-    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php', {
-          method: 'post',
-          header: {
-              Accept: 'application/json',
-              'Content-type': 'application/json',
-          },
-          body: JSON.stringify({
-              jobID: jobID
-          }),
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        if (responseJson[6] == 1){
-          setJobCompleted(true);
-        } else if (responseJson[6] == 0){
-          setJobCompleted(false);
-        }
-      })
-      .catch((error) => {
-          console.log(error);
-      });
+      console.log(error);
+    });
   }
+
   if (jobCompleted != null){
     if (hostUser == true){ 
       if (jobCompleted == false){
@@ -280,9 +315,7 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
               <TouchableOpacity onPress={viewUser}>
                   <Text style={styles.text}>{selectedUser.username}</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => leaveReview(jobID, userPostingReview)}>
-                  <Text style={styles.text}>Leave a Review?</Text>
-              </TouchableOpacity>
+              <View>{review}</View>
             </View>
             <GiftedChat
               messages={messages}
@@ -295,25 +328,48 @@ export default function Chat({onBack, myData, selectedUser, viewUser, leaveRevie
         );
       }
     } else if (hostUser == false){
-      return (
-        <>
-          <View style={styles.actionBar}>
-            <TouchableOpacity onPress={onBack}>
-              <Image source={require('./assets/back.png')}/>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={viewUser}>
-                <Text style={styles.text}>{selectedUser.username}</Text>
-            </TouchableOpacity>
-          </View>
-          <GiftedChat
-            messages={messages}
-            onSend={newMessage => onSend(newMessage)}
-            user={{
-              _id: myData.username,
-            }}
-          />
-        </>
-      );
+      if (jobCompleted == false){
+        return (
+          <>
+            <View style={styles.actionBar}>
+              <TouchableOpacity onPress={onBack}>
+                <Image source={require('./assets/back.png')}/>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={viewUser}>
+                  <Text style={styles.text}>{selectedUser.username}</Text>
+              </TouchableOpacity>
+            </View>
+            <GiftedChat
+              messages={messages}
+              onSend={newMessage => onSend(newMessage)}
+              user={{
+                _id: myData.username,
+              }}
+            />
+          </>
+        );
+      } else if (jobCompleted == true){
+        return (
+          <>
+            <View style={styles.actionBar}>
+              <TouchableOpacity onPress={onBack}>
+                <Image source={require('./assets/back.png')}/>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={viewUser}>
+                  <Text style={styles.text}>{selectedUser.username}</Text>
+              </TouchableOpacity>
+              <View>{review}</View>
+            </View>
+            <GiftedChat
+              messages={messages}
+              onSend={newMessage => onSend(newMessage)}
+              user={{
+                _id: myData.username,
+              }}
+            />
+          </>
+        );
+      }
     }
   }
 }

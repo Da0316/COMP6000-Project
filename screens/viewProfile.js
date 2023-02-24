@@ -133,7 +133,7 @@ const ViewProfile=({navigation,route}) =>{
 
           <View style={styles.userInfoSection}>
               <View style={styles.row}>
-              <Icon name="phone"color="#777777" size={20} color="#1A1918"/>
+              <Icon name="phone"color="#777777" size={20}/>
               <Text style={{color:"#1A1918", marginLeft:20}}>{phone_number}</Text>
               </View>
 
@@ -160,6 +160,9 @@ const ViewProfile=({navigation,route}) =>{
            </View>
           </View>
           <View style={styles.scrollViewContainer}>
+            <Text style={{fontSize: 24,
+              fontWeight: 'bold',
+              marginLeft:15}}>Needed Tasks</Text>
             <ScrollView>
             <ScrollView horizontal = {true}>
                       {jobID.map(object => {
@@ -186,6 +189,7 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingHorizontal: 30,
+    paddingVertical:10,
     marginBottom: 5,
   },
   title: {
@@ -207,6 +211,7 @@ const styles = StyleSheet.create({
     // borderTopColor: '#dddddd',
     // borderTopWidth: 1,
     flexDirection: 'row',
+    paddingVertical:10,
     //height: 60,
     justifyContent:"space-between",
     height:90
@@ -216,8 +221,9 @@ const styles = StyleSheet.create({
     width: '40%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal:20,
+    marginHorizontal:30,
     paddingHorizontal:3,
+    //paddingVertical:10,
     elevation:5,
     width:100,
     height:100,
@@ -235,6 +241,9 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 10,
     marginTop:3,
+    paddingVertical:10,
+    
+    
   },
   userBtn: {
     // borderColor: '#2e64e5',
@@ -248,10 +257,11 @@ const styles = StyleSheet.create({
     height: 30,
     elevation:5,
     paddingHorizontal: 10,
-    marginHorizontal: 3,
+    marginHorizontal: 30,
   },
   userBtnTxt: {
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    marginHorizontal:15
   },
 
   reviewForm:{
@@ -271,6 +281,9 @@ const styles = StyleSheet.create({
 
   },
   scrollViewContainer:{
+    paddingVertical:40,
+    flexGrow:2
+    //flex:2,
     
   }
   
