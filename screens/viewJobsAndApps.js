@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {Text, View, useWindowDimensions, ScrollView, StyleSheet} from 'react-native';
+import {Text, View, useWindowDimensions, ScrollView, StyleSheet,FlatList } from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import ViewJob from "../components/ViewJob";
 import ViewApplication from "../components/ViewApplication";
@@ -21,20 +21,36 @@ export default ViewJobsAndApps = ({navigation}) => {
     const [isJobEmpty, setIsJobEmpty] = useState(false);
 
     const JobView = () => (
-        <ScrollView>
-            {jobID.map(object => {
-                return <ViewJob key={object.id} ID={object.id}/>
-            })}
-        </ScrollView>
+        <FlatList
+        data={jobID}
+        numColumns={2}
+        renderItem={({ item }) => (
+            <View style={styles.item}>
+              <ViewJob key={item.id} ID={item.id}/>
+            </View>
+          )}
+          keyExtractor={item => item.id.toString()}
+        />
+
+        // <ScrollView>
+        //     {jobID.map(object => {
+        //         return <ViewJob key={object.id} ID={object.id}/>
+        //     })}
+        // </ScrollView>
     );
 
     const ApplicationView = () => (
-        <ScrollView>
-            {applicationID.map(object => {
-                return <ViewApplication key={object.id} ID={object.id} type={"userApps"}/>
-            })}
-        </ScrollView>
-    );
+        <FlatList
+          data={applicationID}
+          numColumns={2} // set the number of columns in the grid
+          renderItem={({ item }) => (
+            <View style={styles.item}>
+              <ViewApplication key={item.id} ID={item.id} type={"userApps"} />
+            </View>
+          )}
+          keyExtractor={item => item.id.toString()}
+        />
+      );
     
     const emptyJobView = () => (
         <View>
@@ -121,7 +137,7 @@ export default ViewJobsAndApps = ({navigation}) => {
                     second: emptyApplicationView,
                     })}
                 onIndexChange={setIndex}
-                initialLayout={{width: layout.width}}
+                initialLayout={{width: layout.width,}}
                 renderTabBar={props => (
                     <TabBar
                       {...props}
@@ -218,6 +234,13 @@ export default ViewJobsAndApps = ({navigation}) => {
 
 const styles = StyleSheet.create({
     tabView: {
-        color: "#FFFFE0",
+        backgroundColor:"#fff"
+        //color: "#FFFFE0",
+
+    },
+    item:{
+    flex: 1,
+    margin: 5,
+
     }
 })

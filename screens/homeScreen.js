@@ -95,7 +95,7 @@ const HomeScreen =({ navigation, route })=> {
         <ScrollView style={styles.container}>
           <View style={styles.upperView}>
               <Text style={styles.header}><Text style={{fontWeight:"bold",fontSize:30,paddingHorizontal:5}}>Hi! </Text>
-                  Search..</Text>
+              Search up for tasks that you're good at!</Text>
               <View style= {styles.searchContainer}>
                 <SearchBar searchText={query} setSearchText={setQuery} style={styles.searchBox} />
                 <TouchableOpacity onPress={handelSearch}><Text style={styles.searchTxt}>Search</Text></TouchableOpacity>
