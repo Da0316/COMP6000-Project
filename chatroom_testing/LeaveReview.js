@@ -11,7 +11,6 @@ export default function LeaveReview({jobID, userPostedID}){
     const [reviews, setReview] = useState([]);
     const [write, setWrite] = useState([]);
     const [userID, setUserID] = useState("");
-    const [userPostedID,setUserPostedID]=useState(route?.params?.userPostedID)
     const isFocused = useIsFocused();
     const [jobid, setJobId] = useState(route?.params?.jobId);
 
