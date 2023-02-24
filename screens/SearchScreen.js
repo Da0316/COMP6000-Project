@@ -11,15 +11,56 @@ const SearchScreen =({ navigation, route })=> {
     
     const query = route.params;
     const [jobs, setJobs] = useState([]);
-    const [filter, setFilter] = useState('Most relevant');
+    const [filter, setFilter] = useState([]);
     const [filterChoices, setFilterChoices] = useState([{key:'1', value:'Most relevant'},
     {key:'2', value:'Price: Low to High'},
     {key:'3', value:'Price: High to Low'},
     {key:'4', value:'Newest'},
     {key:'5', value:'Oldest'}]);
+    const [fetched, setFetched] = useState(true);
   
     useEffect(() => {
-        fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php', {
+        if (fetched){
+          initalFetch();
+        }
+        
+        const sortJobs = () => {
+          //console#
+          var array = [{id: "1", date: "2023-02-23"},
+                        {id: "2", date: "Mon Feb  6 17:51:00 2023"}];
+          switch(filter) {
+            case 'Price: Low to High':
+              setJobs(jobs.sort((a, b) => a.price - b.price));
+              console.log(filter);
+              //console.log(Date(jobs[2].date).getTime);
+              break;
+              
+            case 'Price: High to Low':
+              setJobs(jobs.sort((a, b) => b.price - a.price));
+              console.log(filter);
+              break;
+            case 'Newest':
+              setJobs(jobs.sort((a, b) => new Date(b.date) - new Date(a.date)));
+              console.log(new Date(jobs[0].date));
+              console.log(new Date(array[1].date))
+              console.log(filter);
+              break;
+            case 'Oldest':
+              setJobs(jobs.sort((a, b) => new Date(a.date) - new Date(b.date)));
+              console.log(filter);
+              break;
+            default:
+              setJobs(jobs);
+          }
+          console.log(jobs);
+          //setFilter(filter);
+        };
+          //setFilter(filter);
+          sortJobs();
+    }, [route, filter]);
+    useEffect(() => {});
+    const initalFetch = () => {
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php', {
             method: 'post',
             header: {
               Accept: 'application/json',
@@ -34,9 +75,10 @@ const SearchScreen =({ navigation, route })=> {
             const ids = [];
             //console.log(responseJson);
             for (let i = 0; i < responseJson.length; i++){
+              const formatDateed = formatDate(responseJson[i].posted_date);
               let object = {
                 id: responseJson[i].jobID,
-                date: responseJson[i].posted_date,
+                date: formatDateed,
                 price: responseJson[i].price,
               }
               
@@ -51,39 +93,54 @@ const SearchScreen =({ navigation, route })=> {
           .catch((error) => {
             alert(error)
           })
-          sortJobs();
-    }, [route, filter]);
+          setFetched(false);
+    }
 
-    //look into adding a back button to get back to the home screen
+    function formatDate(dateString) {
+      const date = new Date(dateString.replace(/-/g, '/'));
+      const options = { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric', 
+      hour: 'numeric', 
+      minute: 'numeric', 
+      hour12: true 
+      };
+      return date.toLocaleString('en-US', options);
+    }
     // useEffect(() => {
-    //   // fetch jobs and set jobs state
-    //   sortJobs();
-    // }, [route, filter]);
-
-    const sortJobs = () => {
-      //console.log(jobs);
-      switch(filter) {
-        case 'Price: Low to High':
-          setJobs(jobs.sort((a, b) => a.price - b.price));
-          console.log(filter);
-          break;
-        case 'Price: High to Low':
-          setJobs(jobs.sort((a, b) => b.price - a.price));
-          console.log(filter);
-          break;
-        case 'Newest':
-          setJobs(jobs.sort((a, b) => new Date(b.posted_date).getTime - new Date(a.posted_date).getTime));
-          console.log(filter);
-          break;
-        case 'Oldest':
-          setJobs(jobs.sort((a, b) => new Date(a.posted_date).getTime - new Date(b.posted_date).getTime));
-          console.log(filter);
-          break;
-        default:
-          setJobs(jobs);
-      }
-      console.log(jobs);
-    };
+    //   const sortJobs = () => {
+    //     //console#
+    //     var array = [{id: "1", date: "2023-02-23"},
+    //                   {id: "2", date: "Mon Feb  6 17:51:00 2023"}];
+    //     switch(filter) {
+    //       case 'Price: Low to High':
+    //         setJobs(jobs.sort((a, b) => a.price - b.price));
+    //         console.log(filter);
+    //         //console.log(Date(jobs[2].date).getTime);
+    //         break;
+            
+    //       case 'Price: High to Low':
+    //         setJobs(jobs.sort((a, b) => b.price - a.price));
+    //         console.log(filter);
+    //         break;
+    //       case 'Newest':
+    //         setJobs(jobs.sort((a, b) => new Date(b.date) - new Date(a.date)));
+    //         console.log(new Date(jobs[0].date));
+    //         console.log(new Date(array[1].date))
+    //         console.log(filter);
+    //         break;
+    //       case 'Oldest':
+    //         setJobs(jobs.sort((a, b) => new Date(a.date) - new Date(b.date)));
+    //         console.log(filter);
+    //         break;
+    //       default:
+    //         setJobs(jobs);
+    //     }
+    //     console.log(jobs);
+    //   };
+    // }, []);
+    
         
     
     //console.log(jobsID[0]);

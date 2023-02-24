@@ -258,7 +258,7 @@ const Profile=({navigation}) =>{
           <View style={styles.infoBoxWrapper}>
              <View style={styles.infoBox}>
                <Text style={styles.title2}>Ratings Level</Text>
-               <Caption style={styles.titlenum}>{rating}</Caption>
+               <Caption style={styles.titlenum}>{1}</Caption>
             </View>
             <View style={styles.infoBox}>
               <Text style={styles.title2} >Jobs Completed</Text>
