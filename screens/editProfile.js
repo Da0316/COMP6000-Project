@@ -185,7 +185,7 @@ const EditProfile = ({navigation}) => {
                     </Text>
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="user-o" size={20} color="#1a1918" />
+                    <FontAwesome name="user-o" size={20} color="#ead184" />
                     <TextInput 
                     placeholder= {firstname}
                     placeholderTextColor="#ead184"
@@ -196,10 +196,10 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="user-o" size={20} color="#1a1918" />
+                    <FontAwesome name="user-o" size={20} color="#ead184" />
                     <TextInput 
                     placeholder="Last Name"
-                    placeholderTextColor="#666666"
+                    placeholderTextColor="#ead184"
                     autoCorrect={false}
                     style={styles.textInput}
                     value={lastname}
@@ -207,10 +207,10 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="user-o" size={20} color="#1a1918" />
+                    <FontAwesome name="user-o" size={20} color="#ead184" />
                     <TextInput 
                     placeholder="Username"
-                    placeholderTextColor="#666666"
+                    placeholderTextColor="#ead184"
                     autoCorrect={false}
                     style={styles.textInput}
                     value={username}
@@ -218,10 +218,10 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="phone" size={20} color="#1a1918" />
+                    <FontAwesome name="phone" size={20} color="#ead184" />
                     <TextInput 
                     placeholder="Phone"
-                    placeholderTextColor="#666666"
+                    placeholderTextColor="#ead184"
                     keyboardType="number-pad"
                     autoCorrect={false}
                     style={styles.textInput}
@@ -230,10 +230,10 @@ const EditProfile = ({navigation}) => {
                     />
                 </View>
                 <View style={styles.action}>
-                    <FontAwesome name="envelope-o" size={20} color="#1a1918" />
+                    <FontAwesome name="envelope-o" size={20} color="#ead184" />
                     <TextInput 
                     placeholder="Email"
-                    placeholderTextColor="#666666"
+                    placeholderTextColor="#ead184"
                     keyboardType="email-address"
                     autoCorrect={false}
                     style={styles.textInput}
@@ -245,7 +245,7 @@ const EditProfile = ({navigation}) => {
                     <Icon name="map-marker-outline" size={20} color="#1a1918" />
                     <TextInput 
                     placeholder="Address"
-                    placeholderTextColor="#666666"
+                    placeholderTextColor="#ead184"
                     autoCorrect={false}
                     style={styles.textInput}
                     value={address}
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     commandButton: {
       padding: 15,
       borderRadius: 10,
-      backgroundColor: '#FF6347',
+      backgroundColor: '#1a1918',
       alignItems: 'center',
       marginTop: 10,
     },
@@ -341,6 +341,6 @@ const styles = StyleSheet.create({
       flex: 1,
       marginTop: Platform.OS === 'android' ? -2 : -12,
       paddingLeft: 10,
-      color: '#055a39',
+      color: '#1a1918',
     },
   });

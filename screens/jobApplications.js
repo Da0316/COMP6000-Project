@@ -2,7 +2,6 @@ import {useState, useEffect} from 'react';
 import { ScrollView, View, Text, StyleSheet} from 'react-native';
 import ViewApplication from '../components/ViewApplication';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
 function JobApplications ({route}) {
     const {jobID:jobID} = route.params;
     const [applications, setApplications] = useState([]);
@@ -115,8 +114,6 @@ const styles = StyleSheet.create({
         paddingHorizontal:2,
         width:'100%',
         height:'84%',
-
-
     }
     ,noApplications:{
         marginTop:15,

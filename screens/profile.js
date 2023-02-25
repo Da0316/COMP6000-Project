@@ -41,13 +41,18 @@ const Profile=({navigation}) =>{
               marginBottom: 20,
               elevation: 1,
               padding: 10,
-              backgroundColor: "lightgray",
+              backgroundColor: "#EBEBEB",
               flex: 1,
+              borderBottomLeftRadius:20,
+              borderBottomRightRadius:20,
+              borderTopLeftRadius:20,
+              borderTopRightRadius:20
             }}
           >
             <View
               style={{
                 flexDirection: "row",
+                justifyContent:"flex-start"
               }}
             >
               <Image
@@ -58,9 +63,9 @@ const Profile=({navigation}) =>{
                   : "https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/2846608f-203f-49fe-82f6-844a3f485510.png",
                 }}
                 style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50 / 2,
+                  width: 60,
+                  height: 60,
+                  borderRadius: 60 / 2,
                   overflow: "hidden",
                   borderWidth: 1,
                 }}
@@ -68,39 +73,48 @@ const Profile=({navigation}) =>{
               <View>
                 <Text
                   style={{
-                    width: "70%",
-                    marginLeft: 10,
+                    width: "40%",
+                    marginLeft: 15,
                     fontSize: 16,
+                    fontWeight:"bold"
                   }}
                 >
-                  {item?.username}
+                {item?.username}
                 </Text>
-                <Text
+                <Caption
                   style={{
-                    width: "70%",
-                    marginLeft: 10,
-                    fontSize: 16,
-                  }}
-                >
-                  Ratings {item?.rating}
-                </Text>
-                <Text
-                  style={{
-                    width: "90%",
-                    marginLeft: 10,
-                    fontSize: 16,
+                    width: "100%",
+                    marginLeft: 15,
+                    fontSize: 12,
+                    marginBottom:3,
+                    marginTop:-1
                   }}
                 >
                   {item?.timestamp}
+                </Caption>
+                <Text
+                  style={{
+                    width: "90%",
+                    marginLeft: 15,
+                    marginBottom:5,
+                    fontSize: 16,
+                  }}
+                >
+                  Rating : {item?.rating} /5
                 </Text>
               </View>
             </View>
             <View
               style={{
-                backgroundColor: "white",
+                backgroundColor: "#fff",
+                elevation:4,
+                borderBottomLeftRadius:10,
+                borderBottomRightRadius:10,
+                borderTopLeftRadius:10,
+                borderTopRightRadius:10
               }}
             >
-              <Text style={{ width: "70%", textAlign: "center", padding: 10 }}>
+              <Text style={{ width: "80%", textAlign:"justify", padding: 10 }}>
                 {item?.review_text}
               </Text>
             </View>
@@ -267,6 +281,7 @@ const Profile=({navigation}) =>{
           </View>
 
           <View style={styles.reviewSection}>
+            <Text style={styles.title3}>Reviews</Text>
           <FlatList
             data={reviews}
             renderItem={renderItem}
@@ -379,5 +394,16 @@ const styles = StyleSheet.create({
   reviewSection: {
     alignItems: "center",
     flex: 1,
+  },
+  title3:{
+    fontSize:24,
+    fontWeight:"bold",
+    alignSelf:"flex-start",
+    marginLeft:10,
+    marginVertical:5
+    //alignItems:"flex-start",
+    //justifyContent:"flex-start",
+   // marginLeft:10
+    //fontWeight:"bold",
   }
 });

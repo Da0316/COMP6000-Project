@@ -263,6 +263,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     marginTop: 20,
     paddingBottom: 50,
+
+    
+
   },
   ratingSection: {
     flexDirection: "row",
