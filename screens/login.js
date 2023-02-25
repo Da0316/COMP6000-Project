@@ -26,6 +26,12 @@ const Login = ({navigation}) =>{
       alert("Failed to save the data to the storage");
     }
   };
+
+  const onForgetPassword = () => {
+      // Navigate to the ForgotPassword screen/modal
+     navigation.navigate('ForgotPassword');
+
+  }
     signIn = () => {
       
       if (userName == '') {
@@ -102,7 +108,7 @@ const Login = ({navigation}) =>{
         <Text style={styles.LoginText}>Login</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity >
+      <TouchableOpacity onPress={onForgetPassword}>
         <Text style={styles.forgotPassBtn}>Forgot Password?</Text>
       </TouchableOpacity>
 
