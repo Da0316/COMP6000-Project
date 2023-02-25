@@ -206,7 +206,7 @@ const Post = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.main}>
       <View style={styles.container}>
         <View style={styles.taskContainer}>
           <Text style={styles.baseText}>Task title:</Text>
@@ -269,7 +269,12 @@ const Post = ({ navigation }) => {
 export default Post;
 
 const styles = StyleSheet.create({
-  container: {
+  main:{
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+
+  }
+  ,container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
     alignItems: "center",

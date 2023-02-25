@@ -12,6 +12,7 @@ import {
   Image,
   FlatList,
 } from "react-native";
+import LinearGradient from 'react-native-linear-gradient';
 import {
   Avatar,
   Title,
@@ -19,6 +20,14 @@ import {
   Text,
   TouchableRipple,
 } from "react-native-paper";
+
+// const MyScreen = () => {
+//   return (
+//     <LinearGradient colors={['#ff7f50', '#ff6b98']} style={styles.container}>
+//       {/* Add your screen content here */}
+//     </LinearGradient>
+//   );
+// };
 
 const Reviews = ({ navigation, route }) => {
   const [rating, setRating] = useState(0);
@@ -84,10 +93,26 @@ const Reviews = ({ navigation, route }) => {
   }, [write, isFocused]);
   const renderItem = ({ item }) => {
     return (
-      <View style={{ marginBottom: 20, elevation: 1, padding: 10 }}>
+      <View style={{
+        width: "90%",
+        //justifyContent:"center",
+        //alignItems:"center",
+        //alignContent:"center",
+        alignSelf:"center",
+        marginVertical: 10,
+        elevation: 1,
+        padding: 10,
+        backgroundColor: "#EBEBEB",
+        //flex: 1,
+        borderBottomLeftRadius:20,
+        borderBottomRightRadius:20,
+        borderTopLeftRadius:20,
+        borderTopRightRadius:20
+          }}>
         <View
           style={{
             flexDirection: "row",
+            //justifyContent:"flex-start"
           }}
         >
           <Image
@@ -98,9 +123,9 @@ const Reviews = ({ navigation, route }) => {
                 : "https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/2846608f-203f-49fe-82f6-844a3f485510.png",
             }}
             style={{
-              width: 50,
-              height: 50,
-              borderRadius: 50 / 2,
+              width: 60,
+              height: 60,
+              borderRadius: 60 / 2,
               overflow: "hidden",
               borderWidth: 1,
             }}
@@ -108,41 +133,48 @@ const Reviews = ({ navigation, route }) => {
           <View>
             <Text
               style={{
-                width: "70%",
-                marginLeft: 10,
+                width: "45%",
+                marginLeft: 15,
                 fontSize: 16,
+                fontWeight:"bold"
               }}
             >
               {item?.username}
             </Text>
-            <Text
+            <Caption
               style={{
-                width: "70%",
-                marginLeft: 10,
-                fontSize: 16,
-              }}
-            >
-              Ratings {item?.rating}
-            </Text>
-            <Text
-              style={{
-                width: "90%",
-                marginLeft: 10,
-                fontSize: 16,
+                width: "100%",
+                marginLeft: 15,
+                fontSize: 12,
+                marginBottom:3,
+                marginTop:-1
               }}
             >
               {item?.timestamp}
+            </Caption>
+            <Text
+              style={{
+                width: "90%",
+                marginLeft: 15,
+                marginBottom:5,
+                fontSize: 16,
+              }}
+            >
+              Rating :{item?.rating} /5
             </Text>
           </View>
         </View>
         <View
           style={{
-            backgroundColor: "white",
-            marginTop: 10,
-            marginHorizontal: 40,
+            backgroundColor: "#fff",
+                elevation:4,
+                borderBottomLeftRadius:10,
+                borderBottomRightRadius:10,
+                borderTopLeftRadius:10,
+                borderTopRightRadius:10
           }}
         >
-          <Text style={{ width: "70%", textAlign: "center", padding: 10 }}>
+          <Text style={{ width: "80%", textAlign:"justify", padding: "auto" }}>
             {item?.review_text}
           </Text>
         </View>
@@ -151,21 +183,12 @@ const Reviews = ({ navigation, route }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-        <View style={styles.main}>
-          <View style={{ height: "52%", backgroundColor: "lightgray" }}>
-              <FlatList
-                data={reviews}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                showsVerticalScrollIndicator={false}
-                inverted={true}
-              />
-            </View>
+        <View style={{ alignItems: "center",marginBottom:50,backgroundColor:"#f9ce40"}}>
             <View style={styles.reviewSection}>
               <Title style={{ fontWeight: "bold", marginLeft: 20 }}>
                 Write a Review
               </Title>
-              <Text>Your Rating:</Text>
+              <Text style={{marginBottom:5}}>Your Rating:</Text>
               <View style={styles.ratingSection}>
                 <TouchableRipple onPress={() => setRating(1)}>
                   <Avatar.Icon
@@ -218,12 +241,14 @@ const Reviews = ({ navigation, route }) => {
                   />
                 </TouchableRipple>
               </View>
+              <Text>Write review:</Text>
               <TextInput
                 style={styles.reviewForm}
-                placeholder="Write Review"
+                placeholder="Your Thoughts"
                 placeholderTextColor={"#777777"}
                 value={reviewText}
                 onChangeText={(text) => setReviewText(text)}
+                //style={{backgroundColor:"#EBEBEB"}}
               />
               <TouchableRipple
                 style={styles.submitButton}
@@ -232,10 +257,21 @@ const Reviews = ({ navigation, route }) => {
                   writeReview(jobid, userID, rating, reviewText);
                 }}
               >
-                <Text>Submit</Text>
+                <Text style={{color:"#fff", fontWeight:"bold"}}>Submit</Text>
               </TouchableRipple>
             </View>
           </View>
+          <View style={styles.pastReviews}>
+            <Text style={{color:"#fff",fontSize:20,fontWeight:"bold", marginLeft:20}}>Reviews:</Text>
+              <FlatList
+                data={reviews}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                showsVerticalScrollIndicator={false}
+                inverted={true}
+                style={styles.reviewList}
+              />
+            </View>
     </SafeAreaView>
   );
 };
@@ -243,26 +279,38 @@ const Reviews = ({ navigation, route }) => {
 export default Reviews;
 
 const styles = StyleSheet.create({
-  main:{
-    flex:1,
-    //height:"50%",
-    //position:"absolute",
-    //justifyContent:"flex-start",
-    justifyContent: "center",
-    alignItems: "center",
-    margin:5,
+  // main:{
+  //   //flex:1,
+  //   //height:"50%",
+  //   //position:"absolute",
+  //   //justifyContent:"flex-start",
+  //   backgroundColor:"green",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   margin:5,
 
-  }
-  ,container: {
+  // }
+  container: {
     flex: 1,
-    justifyContent: "space-between",
-    backgroundColor: "#F3F3F3",
+    //justifyContent: "space-between",
+    backgroundColor: "#f9ce40",
+    //paddingVertical:20
+    //justifyContent:"center",
+    //justifyContent:"space-evenly",
+    //alignItems: "center",
+    //margin:5,
   },
   reviewForm: {
-    backgroundColor: "white",
-    paddingTop: 10,
-    marginTop: 20,
-    paddingBottom: 50,
+    backgroundColor: "#EBEBEB",
+    paddingTop: 5,
+    marginTop: 10,
+    //marginLeft:10,
+    paddingLeft:10,
+    paddingBottom: 40,
+    borderBottomLeftRadius:20,
+    borderBottomRightRadius:20,
+    borderTopLeftRadius:20,
+    borderTopRightRadius:20
 
     
 
@@ -273,20 +321,21 @@ const styles = StyleSheet.create({
     marginVertical:5
   },
   reviewSection: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
+    //position: "absolute",
+    //bottom: 10,
+    width: "90%",
     backgroundColor: "white",
     padding: 10,
+    marginVertical:10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderBottomRightRadius:20,
     borderBottomLeftRadius:20
   },
   submitButton: {
-    width: "90%",
+    width: "100%",
     height: 50,
-    backgroundColor: "#f9ce40",
+    backgroundColor: "#1a1918",
     borderRadius: 10,
     marginVertical: 15,
     display: "flex",
@@ -295,4 +344,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     elevation: 5,
   },
+  pastReviews:{
+    marginTop:-50,
+    height:"auto",
+    
+    backgroundColor:"#f9ce40"
+  },
+  reviewList:{
+    
+  }
 });
