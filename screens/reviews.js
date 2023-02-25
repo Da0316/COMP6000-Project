@@ -100,7 +100,7 @@ const Reviews = ({ navigation, route }) => {
         //alignContent:"center",
         alignSelf:"center",
         marginVertical: 10,
-        elevation: 1,
+        elevation: 10,
         padding: 10,
         backgroundColor: "#EBEBEB",
         //flex: 1,
@@ -174,7 +174,7 @@ const Reviews = ({ navigation, route }) => {
                 borderTopRightRadius:10
           }}
         >
-          <Text style={{ width: "80%", textAlign:"justify", padding: "auto" }}>
+          <Text style={{ width: "80%", textAlign:"auto", paddingVertical: 20, paddingHorizontal:8 }}>
             {item?.review_text}
           </Text>
         </View>
@@ -183,11 +183,11 @@ const Reviews = ({ navigation, route }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
+      <Title style={{ fontWeight: "bold", marginLeft: 25 }}>
+                Write a Review
+           </Title>
         <View style={{ alignItems: "center",marginBottom:50,backgroundColor:"#f9ce40"}}>
             <View style={styles.reviewSection}>
-              <Title style={{ fontWeight: "bold", marginLeft: 20 }}>
-                Write a Review
-              </Title>
               <Text style={{marginBottom:5}}>Your Rating:</Text>
               <View style={styles.ratingSection}>
                 <TouchableRipple onPress={() => setRating(1)}>
@@ -262,7 +262,12 @@ const Reviews = ({ navigation, route }) => {
             </View>
           </View>
           <View style={styles.pastReviews}>
-            <Text style={{color:"#fff",fontSize:20,fontWeight:"bold", marginLeft:20}}>Reviews:</Text>
+            <Text style={{fontSize:20,fontWeight:"bold", marginLeft:20}}>Reviews:</Text>
+            {reviews.length === 0 ? (
+              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}>
+                  No reviews available
+              </Text>
+              ) : (
               <FlatList
                 data={reviews}
                 renderItem={renderItem}
@@ -271,6 +276,7 @@ const Reviews = ({ navigation, route }) => {
                 inverted={true}
                 style={styles.reviewList}
               />
+              )}
             </View>
     </SafeAreaView>
   );
@@ -304,6 +310,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EBEBEB",
     paddingTop: 5,
     marginTop: 10,
+    elevation:5,
     //marginLeft:10,
     paddingLeft:10,
     paddingBottom: 40,
@@ -311,9 +318,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius:20,
     borderTopLeftRadius:20,
     borderTopRightRadius:20
-
-    
-
   },
   ratingSection: {
     flexDirection: "row",
@@ -326,6 +330,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "white",
     padding: 10,
+    elevation:10,
     marginVertical:10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -345,6 +350,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   pastReviews:{
+    //height:"100%",
     marginTop:-50,
     height:"auto",
     
