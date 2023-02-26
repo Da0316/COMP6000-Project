@@ -91,6 +91,20 @@ const SignUp = ({navigation}) =>{
     setDOB(fDate);
     hideDatePicker();
   };
+
+  const renderCustomHeader = () => {
+    return (
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, backgroundColor: 'lightblue' }}>
+        <TouchableOpacity onPress={handleCancel}>
+          <Text style={{ fontSize: 18 }}>Cancel</Text>
+        </TouchableOpacity>
+        <Text style={{ fontSize: 20 }}>Select a Date</Text>
+        <TouchableOpacity onPress={() => setDatePickerVisibility(false)}>
+          <Text style={{ fontSize: 18 }}>Done</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
   
   return (
 
@@ -106,13 +120,38 @@ const SignUp = ({navigation}) =>{
             <TextInput placeholder={"Set Username*"}  onChangeText={(userName) => setuserName(userName)} style={styles.TextInput}/>
             
             <View>
-              <Button title="Date of Birth" onPress={showDatePicker} />
+              <Button title="Date of Birth" onPress={showDatePicker} style={{color:"green" , padding:10}} />
               <DateTimePickerModal
+                  // customStyles={{
+                  //   datePicker: { backgroundColor: "green" },
+                  //   datePickerCon: { backgroundColor: "green" },
+                  //   dateInput: { borderWidth: 0 },
+                  //   dateText: { color: "green" },
+                  //   btnTextConfirm: { color: "green" },
+                  //   btnTextCancel: { color: "green" }
+                  // }}
                 isVisible={isDatePickerVisible}
-                mode="date"
+                //mode="date"
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
-                style={styles.datePickerModal}
+
+
+               // pickerContainerStyleIOS={{ backgroundColor: 'green', padding: 16 }}
+                datePickerModeAndroid="default"
+
+                //customHeaderIOS={renderCustomHeader}
+                //style={{ borderRadius: 8 }}
+                // headerTextIOS="Pick a Date"
+                // cancelTextIOS="Cancel"
+                // confirmTextIOS="Confirm"
+                // datePickerModeAndroid="spinner"
+                //  style={{ borderRadius: 8 }}
+                //  customCancelButtonIOS={{ color: "red", fontSize: 20 }}
+                //  customConfirmButtonIOS={{ color: "green", fontSize: 20 }}
+                //  customTitleContainerIOS={{ backgroundColor: "pink" }}
+                // customTitleIOS="Select a Date"
+                // locale="en_GB"
+                
               />
             </View>
             <TextInput placeholder={"Email address*"}  onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>

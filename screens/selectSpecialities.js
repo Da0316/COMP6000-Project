@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, FlatList, Button} from 'react-native';
+import {Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 //import CheckBox from '@react-native-community/checkbox';
 import {Card, Checkbox} from 'react-native-paper';
@@ -52,13 +52,14 @@ export default SelectSpecialities = ({route, navigation}) => {
       <FlatList
         data={renderData}
         renderItem={({item}) => (
-          <Card style={{margin: 5}}>
+          <Card style={{margin: 5,backgroundColor:"#fff"}}>
             <View style={styles.card}>
 		        <View
                 style={{
                   flexDirection: 'row',
                   flex: 1,
                   justifyContent: 'space-between',
+                  //backgroundColor:"yellow"
                 }}>
                 <Checkbox
                   status={item.checked ? 'checked' : 'unchecked'}
@@ -110,10 +111,17 @@ export default SelectSpecialities = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={{flex: 1}}>{renderList(options)}</View>
-      <Text style={styles.text}>Selected</Text>
-      <View style={{flex: 1}}>{renderList(selected)}</View>
-      <Button onPress={handleSubmit} title="Submit"/> 
+      <View style={{flex: 4, backgroundColor:"#f9ce40"}}>
+      <Text style={{fontSize:18, fontWeight:"bold", paddingVertical:6, marginHorizontal:7,borderRadius:20}}>Select your specialities from the list below: </Text>
+        {renderList(options)}
+        </View>
+      <Text style={styles.text}>Selected:</Text>
+      <View style={{flex: 2,backgroundColor:"#f9ce40",marginBottom:5}}>{renderList(selected)}</View>
+      <View style={{marginBottom:10}}>
+      <TouchableOpacity style={styles.buttonsView} onPress={()=>handleSubmit()}>
+              <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -123,7 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
+    backgroundColor: '#f9ce40',
     padding: 8,
   },
 
@@ -135,7 +143,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     borderRadius: 20,
     padding: 5,
     justifyContent: 'space-between',
@@ -145,5 +153,31 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     fontWeight: 'bold',
+    fontSize:18,
+    fontWeight:"bold", 
+    paddingVertical:5, 
+    marginHorizontal:7
   },
+  buttonsView:{
+    width:'100%',
+    color:'#000',
+    height:50,
+    backgroundColor:'black',
+    borderRadius:10,
+    marginVertical:10,
+    display:'flex',
+    justifyContent:"center",
+    marginBottom:-10
+    //alignSelf:"center"
+    //alignItems:"stretch"
+  },
+  buttonText:{
+      fontWeight:'bold',
+      fontSize:18,
+      color:"#fff",
+      alignSelf:"center",
+      //alignContent:"center"
+
+  }
+  
 });
