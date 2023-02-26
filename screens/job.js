@@ -59,13 +59,13 @@ function Job({route, navigation}){
         if (sameUser == false){
             return (
                 <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('CreateApplication', {jobID})}>
-                    <Text>Create Application</Text>
+                    <Text style={styles.btnTxt}>Create Application</Text>
                 </TouchableOpacity>
             )
         } else if (sameUser == true) {
             return (
                 <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('JobApplications', {jobID, jobTitle})}>
-                    <Text>View Applications</Text>
+                    <Text style={styles.btnTxt}>View Applications</Text>
                 </TouchableOpacity>        
             );  
         }
@@ -75,15 +75,13 @@ function Job({route, navigation}){
         if (sameUser == false){
             return (
                 <TouchableOpacity styles={styles.applicationButton} onPress = {() => navigation.navigate('ViewProfile', {paramKey: userPostedID,jobID: jobID})}>
-                    <Text styles={styles.row}>Posted By:{username}</Text>
+                    <Text style={styles.answer}>{username}</Text>
                 </TouchableOpacity>
             )
         }
         else{
-            return(
-                <View styles={styles.row}>
-                    <Text styles={styles.row} >Posted By: {username}</Text>
-                </View>
+            return(      
+                    <Text style={styles.answer}> You</Text>   
             )
 
         }
@@ -92,34 +90,40 @@ function Job({route, navigation}){
     
 
     return (
-        <View styles={{backgroundColor:"#FFFFFF",flex:1}}>
-            <View styles={styles.information}>
-                <View styles={styles.row}>
+        <View style={styles.container}>
+            <View style={styles.information}>
+                {/* <View style={styles.row}> */}
 
                     <Text style={styles.title}>{jobTitle}</Text>
+                {/* </View> */}
+                <View style={styles.row}>
+                    <Text style={styles.des}>{jobDescription}</Text>
                 </View>
-                <View styles={styles.row}>{profileView()}</View>
-                <View styles={styles.row}>
-                    <Text style={styles.baseText}>Speciality: {speciality}</Text>
+                <View style={styles.row}>
+                    <Text style={styles.baseText}> Posted by:{profileView()}</Text>
+                    </View>
+                <View style={styles.row}>
+                    <Text style={styles.baseText}>Speciality: <Text style={styles.answer}>{speciality}</Text></Text>
                 </View>
-                <View styles={styles.row}>
-                    <Text style={styles.baseText}>Description: {jobDescription}</Text>
+                <View style={styles.row}>
+                    <Text style={styles.baseText}>Date Posted: <Text style={styles.answer}>{postedDate}</Text></Text>
                 </View>
-                <View styles={styles.row}>
-                    <Text style={styles.baseText}>Date Posted: {postedDate}</Text>
+                <View style={styles.row}>
+                    <Text style={styles.baseText}>Location:</Text>
                 </View>
-                <View styles={styles.row}>
+                {/* <View style={styles.row}>
                     <Text style={styles.baseText}>Has the Job Been Accepted: {accepted}</Text>
                 </View>
-                <View styles={styles.row}>
+                <View style={styles.row}>
                     <Text style={styles.baseText}>Has the Job Been Completed: {completed}</Text>
+                </View> */}
+                <View style={styles.row}>
+                    <Text style={styles.baseText}>Hourly rate: <Text style={styles.answer}> £{price}</Text></Text>
                 </View>
-                <View styles={styles.row}>
-                    <Text style={styles.baseText}>Price: ${price}</Text>
-                </View>
+            </View>
+            <View style={styles.lower}>
                 <View style={styles.applicationButton}>{renderButton()}</View>
             </View>
-            
         </View>
     );
     }
@@ -128,12 +132,18 @@ function Job({route, navigation}){
 export default Job;
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 24, 
+    container:{
+        flex:1,
+        backgroundColor:"#fff"
+
+    }
+    ,title: {
+        fontSize: 26, 
         fontWeight: 'bold',
-        alignContent:'center',
-        alignItems:'center',
+        //alignContent:'center',
+        //alignItems:'center',
         textAlign: 'center',
+        marginTop:10
 
     },
     applicationButton: {
@@ -143,31 +153,38 @@ const styles = StyleSheet.create({
         // paddingVertical: 10,
         // paddingHorizontal: 50,
         // marginHorizontal: 5,
+        //justifyContent:"center",
+        //alignSelf:"center",
+        alignItems:"center",
         width: "90%",
+        flex: 1,
+        //flex:1,
         //color: "#000",
-        height: 50,
-        backgroundColor: "#f9ce40",
-        borderRadius: 10,
+        height: 30,
+        backgroundColor: "#1a1918",
+        borderRadius: 20,
         marginVertical: 15,
-        display: "flex",
+       // display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        //alignItems: "center",
         alignSelf:"center",
         elevation: 5,
     },
-    container: {
-        flex: 1,
-        backgroundColor:"#FFFFFF"
-    },
     information: {
+       flex:12,
+       justifyContent:"flex-start",
         paddingHorizontal: 30,
-        marginBottom: 25,
-        backgroundColor:"#FFFFFF"
+        paddingTop:30,
+        //marginBottom: 25,
+        backgroundColor:"#f9ce40",
+        borderBottomEndRadius:100,
+        borderBottomLeftRadius:100,
+        //borderRadius:50,
         //alignSelf:"center",
         //alignContent:"stretch"
     },
     row: {
-        marginVertical:20,
+        marginVertical:10,
         //paddingHorizontal:10,
         //paddingVertical:20,
         // alignContent:"stretch",
@@ -175,12 +192,31 @@ const styles = StyleSheet.create({
         //marginBottom: 10,
         //textAlign: "center",
         //alignItems: 'center',
-
         //justifyContent:"space-between",
         //marginHorizontal:5
     },
     baseText:{
-        alignContent:"center"
+        alignContent:"center",
+        fontWeight:"bold"
+
+    },
+    des:{
+        alignSelf:"center",
+        marginVertical:-3,
+        opacity:0.5,
+        paddingBottom:20
+    },
+    lower:{
+        flex:2,
+        backgroundColor:"#fff"
+    },
+    btnTxt:{
+        color:"white",
+        fontSize:16,
+        fontWeight:"bold"
+    },
+    answer:{
+        fontWeight:"400"
 
     }
 });

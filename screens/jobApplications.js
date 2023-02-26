@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     title: {
         //padding: 10,
         fontSize: 25,
-        marginVertical: 15,
+        marginVertical: 30,
         justifyContent: 'center',
         alignItems: 'center',
         textAlign:"center",
