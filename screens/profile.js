@@ -126,13 +126,13 @@ const Profile=({navigation}) =>{
         params.append("jobid", userID);
         params.append("type", "user");
 
-        console.log("params", params);
+        //console.log("params", params);
         const res = await axios.post(
           `https://raptor.kent.ac.uk/proj/comp6000/project/08/reviews.php`,
           params
         );
         setReview(res?.data);
-        console.log("res", res.data);
+        //console.log("res", res.data);
       };
       useEffect(() => {
         readData();

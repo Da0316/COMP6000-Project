@@ -58,13 +58,13 @@ const Reviews = ({ navigation, route }) => {
     params.append("jobid", jobid);
     params.append("type", "post");
     params.append("userposted",jobid)
-    console.log("params", params);
+    //console.log("params", params);
     const res = await axios.post(
       `https://raptor.kent.ac.uk/proj/comp6000/project/08/reviews.php`,
       params
     );
     setReview(res?.data);
-    console.log("res", res.data);
+    //console.log("res", res.data);
   };
   const writeReview = async (jobid, userid, rating, reviewtxt) => {
     const params = new FormData();
@@ -74,7 +74,7 @@ const Reviews = ({ navigation, route }) => {
     params.append("userposted",userPostedID)
     params.append("rating", rating);
 
-    console.log("params", params);
+    //console.log("params", params);
     const res = await axios.post(
       `https://raptor.kent.ac.uk/proj/comp6000/project/08/writereviews.php`,
       params
@@ -85,7 +85,7 @@ const Reviews = ({ navigation, route }) => {
     } else {
       alert("something went wrong");
     }
-    console.log("res", res.data);
+    //console.log("res", res.data);
   };
   useEffect(() => {
     readData();

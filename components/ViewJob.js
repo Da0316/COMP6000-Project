@@ -29,8 +29,7 @@ const ViewJob = ({ID}) => {
           })
             .then((response) => response.json())
             .then((responseJson) => {
-              //sets the variables
-              //console.log(responseJson);
+              
               setjobID(responseJson[0]);
               setjobTilte(responseJson[1]);
               setjobDescription(responseJson[2]);
@@ -46,7 +45,7 @@ const ViewJob = ({ID}) => {
               console.error(error);
             });
           }, []);
-          //console.log(image);
+          
         const nav = useNavigation();
         const showJob = () => nav.navigate('Job', {jobID}); //passes data to the job page using a route
         

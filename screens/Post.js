@@ -53,9 +53,10 @@ const Post = ({ navigation }) => {
       .catch((error) => {
         alert(error);
       });
+      
     }, []);
 
-
+    
   handleSubmit = () => {
     
     if (price == 0) {
@@ -84,7 +85,7 @@ const Post = ({ navigation }) => {
       })
         .then((response) => response.text())
         .then((responseJson) => {
-          console.log(responseJson);
+          
           if (responseJson == 1){
             
             
@@ -102,13 +103,13 @@ const Post = ({ navigation }) => {
           console.error(error);
         });
         
-        //console.log(selectedImage);
+        
         const formData = new FormData();
         formData.append('name', {
           name: selectedImageName, 
           type: selectedImageType, 
           uri: selectedImage });
-          //console.log (formData);
+          
           fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
             method: 'POST',
             
@@ -123,7 +124,7 @@ const Post = ({ navigation }) => {
             body: formData
         }).then((response) => response.text())
           .then((responseJson) => {
-            console.log(responseJson);
+            
           
         }).catch((error) => {
           console.error(error);
@@ -150,9 +151,7 @@ const Post = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      //setSelectedImage(result.assets[0].uri);
-      //console.log(result);
-      //setSelectedImage(result);
+      
 
 
 
@@ -164,7 +163,7 @@ const Post = ({ navigation }) => {
 
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
-      //console.log(localUri);
+      
       setSelectedImage(localUri);
       setSelectedImageName(filename);
       setSelectedImageType(type);
@@ -176,29 +175,7 @@ const Post = ({ navigation }) => {
           uri: localUri });
       
 
-      //console.log(localUri);
-      //console.log(formData);
-      //useEffect(() => {
-    //   fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
-    //     method: 'POST',
-        
-    //     // body: JSON.stringify({
-    //     //   name: filename, 
-    //     //   type: type, 
-    //     //   uri: localUri
-    //     // }),
-    //     headers: {
-    //         'Content-Type': 'multipart/form-data'
-    //     },
-    //     body: formData
-    // }).then((response) => response.text())
-    //   .then((responseJson) => {
-    //     console.log(responseJson);
       
-    // }).catch((error) => {
-    //   console.error(error);
-    // });
- //});
     } else {
       alert('You did not select any image.');
     }
@@ -206,7 +183,7 @@ const Post = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.main}>
+    <ScrollView>
       <View style={styles.container}>
         <View style={styles.taskContainer}>
           <Text style={styles.baseText}>Task title:</Text>
@@ -269,12 +246,7 @@ const Post = ({ navigation }) => {
 export default Post;
 
 const styles = StyleSheet.create({
-  main:{
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-
-  }
-  ,container: {
+  container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
     alignItems: "center",

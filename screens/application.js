@@ -72,7 +72,7 @@ function Application({route, navigation}){
                             (userApplied.username == chatroom.secondUser && userLoggedIn.username ==chatroom.firstUser)){
                                 found = true;
                                 const lastMessages = chatroom.messages || [];
-                                console.log(lastMessages);
+                                //console.log(lastMessages);
                                 update(ref(database, 'chatrooms/' + childSnapshot.key), {
                                     messages: [
                                         ...lastMessages,
@@ -216,7 +216,7 @@ function Application({route, navigation}){
             </View>
         );
     } else {
-        console.log(applicationStatus);
+        
         if (applicationStatus == 0){
             return (
                 <View style={styles.mainView}>

@@ -36,28 +36,25 @@ const SearchScreen =({ navigation, route })=> {
       switch(filter) {
         case 'Price: Low to High':
           setJobs(jobs.sort((a, b) => a.price - b.price));
-          console.log(filter);
-          //console.log(Date(jobs[2].date).getTime);
+          
           break;
           
         case 'Price: High to Low':
           setJobs(jobs.sort((a, b) => b.price - a.price));
-          console.log(filter);
+         
           break;
         case 'Newest':
           setJobs(jobs.sort((a, b) => new Date(b.date) - new Date(a.date)));
-          console.log(new Date(jobs[0].date));
-          console.log(new Date(array[1].date))
-          console.log(filter);
+          
           break;
         case 'Oldest':
           setJobs(jobs.sort((a, b) => new Date(a.date) - new Date(b.date)));
-          console.log(filter);
+          
           break;
         default:
           setJobs(jobs);
       }
-      console.log(jobs);
+      
       //setFilter(filter);
       //this.forceUpdate();
       
@@ -81,8 +78,7 @@ const SearchScreen =({ navigation, route })=> {
           .then((response) => response.json())
           .then((responseJson) => {
             const ids = [];
-            console.log(responseJson);
-            //console.log(responseJson);
+            
             for (let i = 0; i < responseJson.length; i++){
               const formatDateed = formatDate(responseJson[i].posted_date);
               let object = {
@@ -96,10 +92,7 @@ const SearchScreen =({ navigation, route })=> {
               }
             }
             setJobs(ids);
-            // console.log(jobs);
-            // console.log();
-            // setJobs(jobs.sort((a, b) => b.price - a.price));
-            // console.log(jobs);
+            
           })
           .catch((error) => {
             SystemMessage.out.println(error);
@@ -121,42 +114,7 @@ const SearchScreen =({ navigation, route })=> {
       };
       return date.toLocaleString('en-US', options);
     }
-    // useEffect(() => {
-    //   const sortJobs = () => {
-    //     //console#
-    //     var array = [{id: "1", date: "2023-02-23"},
-    //                   {id: "2", date: "Mon Feb  6 17:51:00 2023"}];
-    //     switch(filter) {
-    //       case 'Price: Low to High':
-    //         setJobs(jobs.sort((a, b) => a.price - b.price));
-    //         console.log(filter);
-    //         //console.log(Date(jobs[2].date).getTime);
-    //         break;
-            
-    //       case 'Price: High to Low':
-    //         setJobs(jobs.sort((a, b) => b.price - a.price));
-    //         console.log(filter);
-    //         break;
-    //       case 'Newest':
-    //         setJobs(jobs.sort((a, b) => new Date(b.date) - new Date(a.date)));
-    //         console.log(new Date(jobs[0].date));
-    //         console.log(new Date(array[1].date))
-    //         console.log(filter);
-    //         break;
-    //       case 'Oldest':
-    //         setJobs(jobs.sort((a, b) => new Date(a.date) - new Date(b.date)));
-    //         console.log(filter);
-    //         break;
-    //       default:
-    //         setJobs(jobs);
-    //     }
-    //     console.log(jobs);
-    //   };
-    // }, []);
     
-        
-    
-    //console.log(jobsID[0]);
     return (
         <View style={styles.container}>
               <ScrollView>

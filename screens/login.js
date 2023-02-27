@@ -21,7 +21,7 @@ const Login = ({navigation}) =>{
   const saveData = async (id) => {
     try {
       await AsyncStorage.setItem("user_id", id);
-      console.log("id", id);
+      
     } catch (e) {
       alert("Failed to save the data to the storage");
     }

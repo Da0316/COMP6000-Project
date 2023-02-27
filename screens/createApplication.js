@@ -50,7 +50,7 @@ function CreateApplication({route, navigation}){
             })
             .then((response) => response.text())
             .then((responseJson) => {
-              console.log(responseJson);
+              
               alert("Application Sent!");
               navigation.navigate('HomeScreen')
             })
