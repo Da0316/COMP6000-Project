@@ -24,40 +24,46 @@ const SearchScreen =({ navigation, route })=> {
           initalFetch();
         }
         
-        const sortJobs = () => {
-          //console#
-          var array = [{id: "1", date: "2023-02-23"},
-                        {id: "2", date: "Mon Feb  6 17:51:00 2023"}];
-          switch(filter) {
-            case 'Price: Low to High':
-              setJobs(jobs.sort((a, b) => a.price - b.price));
-              console.log(filter);
-              //console.log(Date(jobs[2].date).getTime);
-              break;
-              
-            case 'Price: High to Low':
-              setJobs(jobs.sort((a, b) => b.price - a.price));
-              console.log(filter);
-              break;
-            case 'Newest':
-              setJobs(jobs.sort((a, b) => new Date(b.date) - new Date(a.date)));
-              console.log(new Date(jobs[0].date));
-              console.log(new Date(array[1].date))
-              console.log(filter);
-              break;
-            case 'Oldest':
-              setJobs(jobs.sort((a, b) => new Date(a.date) - new Date(b.date)));
-              console.log(filter);
-              break;
-            default:
-              setJobs(jobs);
-          }
-          console.log(jobs);
-          //setFilter(filter);
-        };
-          //setFilter(filter);
+        
           sortJobs();
+          
     }, [route, filter]);
+
+    const sortJobs = () => {
+      //console#
+      var array = [{id: "1", date: "2023-02-23"},
+                    {id: "2", date: "Mon Feb  6 17:51:00 2023"}];
+      switch(filter) {
+        case 'Price: Low to High':
+          setJobs(jobs.sort((a, b) => a.price - b.price));
+          console.log(filter);
+          //console.log(Date(jobs[2].date).getTime);
+          break;
+          
+        case 'Price: High to Low':
+          setJobs(jobs.sort((a, b) => b.price - a.price));
+          console.log(filter);
+          break;
+        case 'Newest':
+          setJobs(jobs.sort((a, b) => new Date(b.date) - new Date(a.date)));
+          console.log(new Date(jobs[0].date));
+          console.log(new Date(array[1].date))
+          console.log(filter);
+          break;
+        case 'Oldest':
+          setJobs(jobs.sort((a, b) => new Date(a.date) - new Date(b.date)));
+          console.log(filter);
+          break;
+        default:
+          setJobs(jobs);
+      }
+      console.log(jobs);
+      //setFilter(filter);
+      //this.forceUpdate();
+      
+    };
+      //setFilter(filter);
+    
     useEffect(() => {});
     const initalFetch = () => {
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php', {
@@ -93,6 +99,7 @@ const SearchScreen =({ navigation, route })=> {
           .catch((error) => {
             alert(error)
           })
+          
           setFetched(false);
     }
 
@@ -153,7 +160,7 @@ const SearchScreen =({ navigation, route })=> {
                   data={filterChoices}
                   save="value"
                   label="Categories"
-                  onSelect={()=> handelFilter}
+                  onSelect={()=> sortJobs()}
                   style={styles.sortBox}
                   boxStyles={{marginRight:10}}
                   
