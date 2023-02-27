@@ -14,7 +14,7 @@ const HomeScreen = ({ navigation, route })=> {
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('Most relevant');
     const [location, setLocation] = useState(false);
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState('');  
     
     useEffect(() => {
       try {
