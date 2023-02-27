@@ -12,6 +12,8 @@ const ViewProfile=({navigation,route}) =>{
       const [phone_number, setPhone_number] = useState(null);
       const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
       const [placeholder, setImagePlaceholder] = useState(false);
+      const [jobsCompleted, setJobsCompleted] = useState(null);
+      const [score, setScore] = useState(null);
 
       try {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
@@ -109,7 +111,41 @@ const ViewProfile=({navigation,route}) =>{
         });
     }, []);
 
-   
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateReviewScore.php', {
+      method: 'post',
+      header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+         userID: route.params.paramKey,
+      })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+          setScore(responseJson);
+       })
+      .catch((error) => {
+          alert(error);
+      });
+
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateJobsCompleted.php', {
+      method: 'post',
+      header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+         userID: route.params.paramKey,
+      })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+          setJobsCompleted(responseJson);
+       })
+      .catch((error) => {
+          alert(error);
+      });
    
   return (
       <SafeAreaView style={styles.container}>
@@ -151,11 +187,11 @@ const ViewProfile=({navigation,route}) =>{
               borderRightWidth: 1
                }]}>
                <Title style={styles.title2}>Ratings Level</Title>
-               <Caption>1</Caption>
+               <Caption>{score}</Caption>
             </View>
          <View style={styles.infoBox}>
           <Title style={styles.title2}>Jobs Completed</Title>
-          <Caption>1</Caption>
+          <Caption>{jobsCompleted}</Caption>
          </View>
            </View>
           </View>
