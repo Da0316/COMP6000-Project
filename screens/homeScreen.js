@@ -3,19 +3,17 @@ import {useEffect} from "react";
 import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert, PermissionsAndroid} from "react-native";
 import SearchBar from "../components/SearchBar";
 import ViewJob from "../components/ViewJob";
-import { SelectList } from "react-native-dropdown-select-list";
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Geolocation from  "react-native-geolocation-service";
 
 //import{ StackNavigator } from "react-navigation";
 
-const HomeScreen =({ navigation, route })=> {
+const HomeScreen = ({ navigation, route })=> {
     const [searchText, setSearchText] = useState("");
     const [recentJobIDs, setRecentJobIDs] = useState([]);
     const [recommendedJobs, setRecommendedJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('Most relevant');
     const [location, setLocation] = useState(false);
-    
     const [query, setQuery] = useState('');
     
     useEffect(() => {
