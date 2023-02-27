@@ -33,11 +33,15 @@ const HomeScreen =({ navigation, route })=> {
           .then((response) => response.json())
           .then((responseJson) => {
             const ids = [];
+            
             for (let i = 0; i < responseJson.length; i++){
                 let object = {
-                  id: responseJson[i],
+                  id: responseJson[i].jobID,
+
                 }
-                ids.push(object)
+                if(responseJson[i].job_completed != 1){  
+                  ids.push(object)
+                }
             }
             setRecentJobIDs(ids);
             setLoading(false);
@@ -72,7 +76,9 @@ const HomeScreen =({ navigation, route })=> {
             let object = {
               id: responseJson[i],
             }
-            ids.push(object);
+            if(responseJson[i].job_completed != 1){
+              ids.push(object);
+            }
           }
         }
         setRecommendedJobs(ids);
