@@ -49,6 +49,7 @@ export default function LeaveReview({jobID, userPostedID, onBack}){
         setWrite(res?.data);
         if (res?.data === 1) {
           alert("Review posted successfully");
+          onBack()
         } else {
           alert("something went wrong");
         }

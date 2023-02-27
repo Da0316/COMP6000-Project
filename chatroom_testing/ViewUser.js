@@ -11,6 +11,7 @@ export default function ViewUser({selectedUser, onBack}){
     const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
     const [jobsCompleted, setJobsCompleted] = useState(null);
     const [score, setScore] = useState(null);
+    const [placeholder, setImagePlaceholder] = useState(false);
 
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/chatViewUser.php', {
             method: 'post',
@@ -42,8 +43,15 @@ export default function ViewUser({selectedUser, onBack}){
             setFirstname(responseJson[2]);
             setLastname(responseJson[3]);
             setPhone_number(responseJson[7]);
-            if(responseJson[8] != null){
-                setSelectedImageName (responseJson[8]);
+            if(responseJson[8] === null){
+              setImagePlaceholder(true)
+            } else { 
+              if(responseJson[8]==="blank"){
+                setImagePlaceholder(true)
+              } else {
+                setImagePlaceholder(false)
+              setSelectedImageName (responseJson[8]);
+              }
             }
         })
       }
@@ -131,7 +139,7 @@ export default function ViewUser({selectedUser, onBack}){
               <View style={{flexDirection:'row', marginTop: 15}}>
                   <Avatar.Image
                       source={{
-                        uri: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName,
+                        uri:placeholder? 'https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/'+ selectedImageName: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/'+ selectedImageName,
                       }}
                       size={90} />
                   <View style= {{marginLeft:20}}>
