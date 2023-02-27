@@ -153,7 +153,7 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
   const review = () => {
     checkPriorReview();
     if (reviewLeft) {
-      return ([<Text key="1">Review Left</Text>]);
+      return ([<Text key="1" style={styles.text}>Review Left</Text>]);
     } else {
       return ([
         <TouchableOpacity key="1" onPress={() => leaveReview(jobID, userPostingReview)}>

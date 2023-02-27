@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native';
 import {getDatabase, get, ref, set, onValue, update, push, child} from 'firebase/database'
+import ViewProfile from './viewProfile';
 
 function Application({route, navigation}){
     const {ID:applicationID} = route.params;
@@ -191,6 +192,14 @@ function Application({route, navigation}){
         });
     }
 
+    const profileView = () => {
+        return (
+            <TouchableOpacity onPress = {() => navigation.navigate('ViewProfile', {paramKey: userAppID,jobID: jobID})}>
+                <Text>{usernameApplied}</Text>
+            </TouchableOpacity>
+        );
+    }
+
     let status;
     if (applicationStatus == -1){
         status = "Rejected";
@@ -212,7 +221,7 @@ function Application({route, navigation}){
             return (
                 <View style={styles.mainView}>
                     <View>
-                        <Text>Username: {usernameApplied}</Text>
+                        <Text>Username: {profileView()}</Text>
                         <Text>Application Date: {applicationDate}</Text>
                         <Text>Price Offered: ${priceOffer}</Text>
                     </View>
@@ -238,7 +247,7 @@ function Application({route, navigation}){
             return (
                 <View style={styles.mainView}>
                     <View style={styles.infoBox}>
-                        <Text style={styles.infoTxt}>Username: {usernameApplied}</Text>
+                        <Text style={styles.infoTxt}>Username: {profileView()}</Text>
                         <Text style={styles.infoTxt}>Application Date: {applicationDate}</Text>
                         <Text style={styles.infoTxt}>Price Offered: ${priceOffer}</Text>
                         <Text style={styles.infoTxt}>Accepted</Text>
@@ -252,7 +261,7 @@ function Application({route, navigation}){
             return (
                 <View style={styles.mainView}>
                     <View style={styles.infoBox}>
-                        <Text style={styles.infoTxt} >Username: {usernameApplied}</Text>
+                        <Text style={styles.infoTxt} >Username: {profileView()}</Text>
                         <Text style={styles.infoTxt}>Application Date: {applicationDate}</Text>
                         <Text style={styles.infoTxt}>Price Offered: ${priceOffer}</Text>
                         <Text style={styles.infoTxt}>Rejected</Text>

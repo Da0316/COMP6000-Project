@@ -193,7 +193,6 @@ const Profile=({navigation}) =>{
       })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson);
           setScore(responseJson);
        })
       .catch((error) => {
@@ -271,7 +270,7 @@ const Profile=({navigation}) =>{
           <View style={styles.infoBoxWrapper}>
              <View style={styles.infoBox}>
                <Text style={styles.title2}>Ratings Level</Text>
-               <Caption style={styles.titlenum}>1</Caption>
+               <Caption style={styles.titlenum}>{score}</Caption>
             </View>
             <View style={styles.infoBox}>
               <Text style={styles.title2} >Jobs Completed</Text>

@@ -9,6 +9,8 @@ export default function ViewUser({selectedUser, onBack}){
     const [lastname, setLastname] = useState(null);
     const [phone_number, setPhone_number] = useState(null);
     const [selectedImageName, setSelectedImageName] = useState('2846608f-203f-49fe-82f6-844a3f485510.png');
+    const [jobsCompleted, setJobsCompleted] = useState(null);
+    const [score, setScore] = useState(null);
 
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/chatViewUser.php', {
             method: 'post',
@@ -49,22 +51,6 @@ export default function ViewUser({selectedUser, onBack}){
     const [jobID, setJobID] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isJobEmpty, setIsJobEmpty] = useState(false);
-
-    const JobView = () => (
-        <ScrollView>
-            {jobID.map(object => {
-                return <ViewJob key={object.id} ID={object.id}/>
-            })}
-        </ScrollView>
-    );
-
-    
-    const emptyJobView = () => (
-        <View>
-            <Text>No Jobs Posted</Text>
-        </View>
-    )
-
     
    useEffect(() => {
         fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/getJobs.php', {
@@ -98,6 +84,41 @@ export default function ViewUser({selectedUser, onBack}){
         });
     }, []);
 
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateReviewScore.php', {
+      method: 'post',
+      header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+         userID: userID,
+      })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+          setScore(responseJson);
+       })
+      .catch((error) => {
+          alert(error);
+      });
+
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateJobsCompleted.php', {
+      method: 'post',
+      header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+         userID: userID,
+      })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+          setJobsCompleted(responseJson);
+       })
+      .catch((error) => {
+          alert(error);
+      });
 
   return (
       <SafeAreaView style={styles.container}>
@@ -128,33 +149,20 @@ export default function ViewUser({selectedUser, onBack}){
               <Icon name="phone"color="#777777" size={20}/>
               <Text style={{color:"#777777", marginLeft:20}}>{phone_number}</Text>
               </View>
-
-              <View style={styles.userBtnWrapper}>
-                <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Reviews')}>
-                  <Text style={styles.userBtnTxt}>View Reviews</Text>
-                </TouchableRipple>
-              </View>
           <View style={styles.infoBoxWrapper}>
              <View style={[styles.infoBox, {
               borderRightColor: '#dddddd',
               borderRightWidth: 1
                }]}>
                <Title>Ratings Level</Title>
-               <Caption>1</Caption>
+               <Caption>{score}</Caption>
             </View>
          <View style={styles.infoBox}>
           <Title>Jobs Completed</Title>
-          <Caption>1</Caption>
+          <Caption>{jobsCompleted}</Caption>
          </View>
            </View>
           </View>
-        <ScrollView>
-        <ScrollView horizontal = {true}>
-                {jobID.map(object => {
-                  return <ViewJob key = {object.id} ID={object.id}/>
-                })}
-              </ScrollView>
-        </ScrollView>
       </SafeAreaView>
   );
 };
