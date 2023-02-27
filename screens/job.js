@@ -56,7 +56,7 @@ function Job({route, navigation}){
     }
 
     const renderButton = () => {
-        if (sameUser == false){
+        if (sameUser == false && completed == "No" && accepted == "No"){
             return (
                 <TouchableOpacity styles={styles.applicationButton} onPress={()=>navigation.navigate('CreateApplication', {jobID})}>
                     <Text style={styles.btnTxt}>Create Application</Text>
