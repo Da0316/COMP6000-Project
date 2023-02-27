@@ -73,12 +73,15 @@ const SearchScreen =({ navigation, route })=> {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              searchInput: query
+              searchInput: query,
+              id: global.userID,
+
             })
           })
           .then((response) => response.json())
           .then((responseJson) => {
             const ids = [];
+            console.log(responseJson);
             //console.log(responseJson);
             for (let i = 0; i < responseJson.length; i++){
               const formatDateed = formatDate(responseJson[i].posted_date);
@@ -88,7 +91,9 @@ const SearchScreen =({ navigation, route })=> {
                 price: responseJson[i].price,
               }
               
-              ids.push(object);
+              if(responseJson[i].userID != global.userID){
+                ids.push(object);
+              }
             }
             setJobs(ids);
             // console.log(jobs);
@@ -97,6 +102,7 @@ const SearchScreen =({ navigation, route })=> {
             // console.log(jobs);
           })
           .catch((error) => {
+            SystemMessage.out.println(error);
             alert(error)
           })
           
