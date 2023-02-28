@@ -4,6 +4,7 @@ import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert, Permi
 import SearchBar from "../components/SearchBar";
 import ViewJob from "../components/ViewJob";
 import * as Location from 'expo-location';
+import axios from 'axios';
 
 //import{ StackNavigator } from "react-navigation";
 
@@ -13,27 +14,64 @@ const HomeScreen = ({ navigation, route })=> {
     const [recommendedJobs, setRecommendedJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('Most relevant');
-    const [location, setLocation] = useState(false);
     const [query, setQuery] = useState('');  
     const [errorMsg, setErrorMsg] = useState(null);
+    const [userLongAndLat, setUserLongAndLat] = useState({});
+    const [userAddress, setUserAddress] = useState(null);
+
+    const componentDidMount = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return true;
+      } else {
+        return false; 
+      }
+    }
+
+    const getLocation = async (address) => {
+      if (componentDidMount()) {
+        let location = await Location.geocodeAsync(address);
+        if (location.length > 0) {
+          return location[0];
+        } else {
+          throw new Error('Address not found');
+        }
+      }
+    }
+
+    if (userAddress != null){
+        getLocation(userAddress).then(location => {
+          let object = {
+            latitude: location.latitude,
+            longitude: location.longitude,
+          };
+          setUserLongAndLat(object);
+        }).catch(error => {
+          console.log(error);
+        });
+    }
 
     useEffect(() => {
-      (async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          setErrorMsg('Permission to access location was denied');
-          return;
-        }
-  
-        let location = await Location.getCurrentPositionAsync();
-        setLocation(location);
-      })();
-    }, []);
-    
-    if (location != false){
-      console.log(location);
-    }
-    
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
+        method: 'post',
+        header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userID: global.userID,
+        })
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setUserAddress(responseJson[5]);
+      })
+      .catch((error) => {
+        alert(error)
+      })
+    })
+
     useEffect(() => {
       try {
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobsDate.php', { //needs to be changed to your own ip
