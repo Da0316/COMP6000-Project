@@ -5,9 +5,8 @@ import { StyleSheet, Text, ScrollView, ImageBackground, View, SafeAreaView, Text
 import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/database'
 
 //package for calander picker 
-//import an images file with pictures in for images 
-0
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+//import an images file with pictures in for images
+import DatePicker from 'react-native-modern-datepicker';
 //date field to be changed 
 //export default function App() {
 const SignUp = ({navigation}) =>{ 
@@ -22,8 +21,9 @@ const SignUp = ({navigation}) =>{
     const [address,setAddress] =useState(''); //need to discuss with group what address we are taking
     const [password,setPassword] =useState('');
     const [conPasswrod,setConPassword] =useState('');
+    
 
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [showCompleted, setShowCompleted] = useState(false);
 
     handelSubmit = () =>{
     //onChangeText={(userName) => setuserName(userName)}
@@ -76,20 +76,24 @@ const SignUp = ({navigation}) =>{
 
   }
   
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
+
+  const showDatepicker = () => {
+    
+      setShowCompleted(!showCompleted);
+    
+    
   };
 
   const handleConfirm = (date) => {
     let tempDate = date;
-    let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
+    let new_str = tempDate.replace("/", "-");
+    let new_str1 = new_str.replace("/", "-");
+    //let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
     //date = fDate;
-    setDOB(fDate);
-    hideDatePicker();
+    setDOB(new_str1);
+    showDatepicker();
+    //hideDatePicker();
   };
 
   const renderCustomHeader = () => {
@@ -119,9 +123,39 @@ const SignUp = ({navigation}) =>{
             <TextInput placeholder={"Last name*"}  onChangeText={(lastName) => setLastName(lastName)} style={styles.TextInput}/>
             <TextInput placeholder={"Set Username*"}  onChangeText={(userName) => setuserName(userName)} style={styles.TextInput}/>
             
-            <View>
-              <Button title="Date of Birth" onPress={showDatePicker} style={{color:"green" , padding:10}} />
-              <DateTimePickerModal
+            
+              
+              <TouchableOpacity style={styles.LoginBtn} onPress={showDatepicker}>
+                <Text style={styles.LoginText}>Date of birth:{DOB}</Text>
+              </TouchableOpacity>
+              
+                {showCompleted && (
+                <DatePicker
+                  options={{
+                    
+                    backgroundColor: '#090C08',
+                    textHeaderColor: '#FFA25B',
+                    textDefaultColor: '#F6E7C1',
+                    selectedTextColor: '#fff',
+                    mainColor: '#F4722B',
+                    textSecondaryColor: '#D6C7A1',
+                    borderColor: 'rgba(122, 146, 165, 0.1)',
+                  }}
+                  onDateChange={handleConfirm}
+                  current="1990-07-23"
+                  selected="1990-07-23"
+                  mode="datepicker"
+                  minuteInterval={30}
+                  style={
+                    { borderRadius: 10 }
+                  
+                  }
+                  containerStyle={{width: '100%'}}
+                />
+                )}
+                
+              
+              {/* <DateTimePickerModal
                   // customStyles={{
                   //   datePicker: { backgroundColor: "green" },
                   //   datePickerCon: { backgroundColor: "green" },
@@ -152,8 +186,8 @@ const SignUp = ({navigation}) =>{
                 // customTitleIOS="Select a Date"
                 // locale="en_GB"
                 
-              />
-            </View>
+              /> */}
+            
             <TextInput placeholder={"Email address*"}  onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>
             <TextInput placeholder={"Phone Number*"} keyboardType='numeric'  maxLength={11} onChangeText={(pNumber) => setPNumber(pNumber)}  style={styles.TextInput}/>
             <TextInput placeholder={"address*"}  onChangeText={(address) => setAddress(address)} style={styles.TextInput}/>
@@ -213,7 +247,7 @@ const styles = StyleSheet.create({
 
   },
   formView:{
-    wifth:'100%',
+    width:'100%',
     display:'flex',
     flexDirection:'column',
     alignItems:'center',
@@ -250,5 +284,16 @@ const styles = StyleSheet.create({
   datePickerModal:{
     backgroundColor:"black",
     color:"white"
+  }, LoginBtn:{
+    width: "70%",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 1,
+    backgroundColor: "#1A1918",
+  },
+  LoginText:{
+    color: "#C2C3C4",
   }
 });
