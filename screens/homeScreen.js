@@ -5,6 +5,7 @@ import SearchBar from "../components/SearchBar";
 import ViewJob from "../components/ViewJob";
 import * as Location from 'expo-location';
 import axios from 'axios';
+import {getDistance, getPreciseDistance} from 'geolib';
 
 //import{ StackNavigator } from "react-navigation";
 
@@ -16,8 +17,9 @@ const HomeScreen = ({ navigation, route })=> {
     const [filter, setFilter] = useState('Most relevant');
     const [query, setQuery] = useState('');  
     const [errorMsg, setErrorMsg] = useState(null);
-    const [userLongAndLat, setUserLongAndLat] = useState({});
+    const [userLongAndLat, setUserLongAndLat] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
+    const [nearbyJobs, setNearbyJobs] = useState([]);
 
     const componentDidMount = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -35,22 +37,18 @@ const HomeScreen = ({ navigation, route })=> {
         if (location.length > 0) {
           return location[0];
         } else {
-          throw new Error('Address not found');
+          throw new Error('rip');
         }
       }
     }
 
-    if (userAddress != null){
-        getLocation(userAddress).then(location => {
-          let object = {
-            latitude: location.latitude,
-            longitude: location.longitude,
-          };
-          setUserLongAndLat(object);
-        }).catch(error => {
-          console.log(error);
-        });
-    }
+    const calculateDistance = (lat, long) => {
+      const dis = getDistance(
+        {latitude: userLongAndLat.latitude, longitude: userLongAndLat.longitude},
+        {latitude: lat, longitude: long},
+      );
+      return dis;
+    };
 
     useEffect(() => {
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
@@ -66,11 +64,28 @@ const HomeScreen = ({ navigation, route })=> {
       .then((response) => response.json())
       .then((responseJson) => {
         setUserAddress(responseJson[5]);
+
+       
       })
       .catch((error) => {
         alert(error)
       })
-    })
+    }, []);
+
+    useEffect(() => {
+      if (userAddress != null){
+        getLocation(userAddress).then(location => {
+          let object = {
+            latitude: location.latitude,
+            longitude: location.longitude,
+          };
+          setUserLongAndLat(object);
+        }).catch(error => {
+          console.log(error);
+        });
+      }
+    }, [userAddress])
+    
 
     useEffect(() => {
       try {
@@ -104,12 +119,7 @@ const HomeScreen = ({ navigation, route })=> {
           console.log("error")
         }
           
-          // .catch((error) => {
-          //   console.error(error);
-          // });
-           handelFilter = () =>{}
-          
-    }, [route]);
+    }, []);
 
     useEffect(() => {
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/recommendedJobs.php', {
@@ -141,10 +151,59 @@ const HomeScreen = ({ navigation, route })=> {
         alert(error)
       })
     }, [])
+    
+    useEffect(() =>{
+      if (userLongAndLat != null){
+        fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/nearbyJobs.php', {
+        method: 'post',
+        header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userID: global.userID,
+        })
+        })
+        .then((response) => response.json())
+        .then(async (responseJson) => {
+          let ids = []
+          for (let i = 0; i < responseJson.length; i += 2) {
+            try {
+              const location =  await getLocation(responseJson[i + 1]);
+              //const [location] = await Promise.all([locationPromise]);
+              if (location) {
+                let object = {
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }
+                // console.log(responseJson[i])
+                // console.log(responseJson[i+1])
+                // console.log(object);
+                const distance = calculateDistance(object.latitude, object.longitude);
+                //console.log(distance);
+                if (distance < 2500) {
+                  //console.log("Yes");
+                  ids.push({
+                    id: responseJson[i]
+                  });
+                }
+              }
+            } catch {
+              console.log("Lol");
+            }
+          }
+          setNearbyJobs(ids);
+        })
+        .catch((error) => {
+          alert(error)
+          setLoading(false);
+        })
+      }
+    }, [userLongAndLat])
 
-    handelSearch = async () =>{
+    const handelSearch = async () =>{
       navigation.navigate('SearchScreen', query);
-    }
+    } 
 
         
     if(loading){
@@ -188,6 +247,12 @@ const HomeScreen = ({ navigation, route })=> {
                 <Text style={styles.title}>Recommended For You</Text>
                 <ScrollView horizontal = {true}>
                   {recommendedJobs.map(object => {
+                    return <ViewJob key = {object.id} ID={object.id}/>
+                  })}
+                </ScrollView>
+                <Text style={styles.title}>Nearby Your Address</Text>
+                <ScrollView horizontal = {true}>
+                  {nearbyJobs.map(object => {
                     return <ViewJob key = {object.id} ID={object.id}/>
                   })}
                 </ScrollView>
