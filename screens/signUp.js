@@ -4,6 +4,7 @@ import { useState } from "react";
 import { StyleSheet, Text, ScrollView, ImageBackground, View, SafeAreaView, TextInput, TouchableOpacity, Button, DatePickerAndroid  } from 'react-native';
 import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/database'
 
+
 //package for calander picker 
 //import an images file with pictures in for images
 import DatePicker from 'react-native-modern-datepicker';
@@ -27,6 +28,17 @@ const SignUp = ({navigation}) =>{
 
     handelSubmit = () =>{
     //onChangeText={(userName) => setuserName(userName)}
+    const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+
+    if (!strongRegex.test(email)) {
+        alert("email is not valid");
+        return false;
+    } else if (password.length < 8) {
+        alert("password is not of valid form, must containt at least 1 upper 1 lowercase 1 special and 8 characters long");
+        return false;
+    } else if (DOB == ''){
+      alert("please select DOB");
+    }
     
     if(password != conPasswrod){
       alert("Passwords must match!");
@@ -191,6 +203,11 @@ const SignUp = ({navigation}) =>{
             <TextInput placeholder={"Email address*"}  onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>
             <TextInput placeholder={"Phone Number*"} keyboardType='numeric'  maxLength={11} onChangeText={(pNumber) => setPNumber(pNumber)}  style={styles.TextInput}/>
             <TextInput placeholder={"address*"}  onChangeText={(address) => setAddress(address)} style={styles.TextInput}/>
+            <Text >Password must containt at least:</Text>
+            <Text >1 UpperCase Character</Text>
+            <Text >1 LowerCase Character</Text>
+            <Text >1 Special Character</Text>
+            <Text >at least 8 characters long</Text>
             <TextInput placeholder={"Password*"}  onChangeText={(password) => setPassword(password)} secureTextEntry={true} style={styles.TextInput}/>
             <TextInput placeholder={"Confirm password*"}  onChangeText={(conPasswrod) => setConPassword(conPasswrod)} secureTextEntry={true} style={styles.TextInput}/>
             <TouchableOpacity style={styles.buttonsView} onPress={()=>handelSubmit()}>
