@@ -9,11 +9,7 @@ import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/databa
 //import an images file with pictures in for images
 import DatePicker from 'react-native-modern-datepicker';
 
-//import smartyStreets API 
-import SmartyStreetsSDK from 'smartystreets-javascript-sdk';
-//imports goolge places for address verification
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-//AIzaSyCz4_Krs6lMNkE0Vwu3YGosiE5x9qQpFNQ //AIzaSyBQYUCrOif7EYND6cWkSYdOt4pg8wcPVww
+
 const SignUp = ({navigation}) =>{ 
     const [userName,setuserName] =useState('');
     const [firstName,setFirstName] =useState('');
@@ -37,6 +33,7 @@ const SignUp = ({navigation}) =>{
 
     const checkAddress = async (address) => {
       const formattedAddress = `${address.name}, ${address.road}, ${address.city} ${address.postcode}, ${address.country}`;
+      //need to make api key more secure on server
       const apiKey = 'AIzaSyCM8-6wAN_bMyyyq7Hp_kecmqwX8MbqFKk';
       const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(formattedAddress)}&key=${apiKey}`;
         console.log(url);
