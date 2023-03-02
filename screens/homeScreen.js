@@ -1,25 +1,23 @@
 import React, { useState } from "react";
 import {useEffect} from "react";
-import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert, PermissionsAndroid} from "react-native";
+import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Modal, Pressable} from "react-native";
 import SearchBar from "../components/SearchBar";
 import ViewJob from "../components/ViewJob";
 import * as Location from 'expo-location';
-import axios from 'axios';
-import {getDistance, getPreciseDistance} from 'geolib';
-
-//import{ StackNavigator } from "react-navigation";
+import {getDistance} from 'geolib';
+import _ from 'lodash';
+import { Picker } from '@react-native-picker/picker';
 
 const HomeScreen = ({ navigation, route })=> {
-    const [searchText, setSearchText] = useState("");
     const [recentJobIDs, setRecentJobIDs] = useState([]);
     const [recommendedJobs, setRecommendedJobs] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState('Most relevant');
     const [query, setQuery] = useState('');  
-    const [errorMsg, setErrorMsg] = useState(null);
     const [userLongAndLat, setUserLongAndLat] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
     const [nearbyJobs, setNearbyJobs] = useState([]);
+    const [radius, setRadius] = useState(5000);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const componentDidMount = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -153,57 +151,57 @@ const HomeScreen = ({ navigation, route })=> {
     }, [])
     
     useEffect(() =>{
-      if (userLongAndLat != null){
-        fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/nearbyJobs.php', {
-        method: 'post',
-        header: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userID: global.userID,
-        })
-        })
-        .then((response) => response.json())
-        .then(async (responseJson) => {
-          let ids = []
-          for (let i = 0; i < responseJson.length; i += 2) {
-            try {
-              const location =  await getLocation(responseJson[i + 1]);
-              //const [location] = await Promise.all([locationPromise]);
-              if (location) {
-                let object = {
-                  latitude: location.latitude,
-                  longitude: location.longitude,
+        if (userLongAndLat != null){
+          setModalVisible(false);
+          fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/nearbyJobs.php', {
+          method: 'post',
+          header: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userID: global.userID,
+          })
+          })
+          .then((response) => response.json())
+          .then(async (responseJson) => {
+            let ids = []
+            for (let i = 0; i < responseJson.length; i += 2) {
+              try {
+                const location =  await getLocation(responseJson[i + 1]);
+                if (location) {
+                  let object = {
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                  }
+                  const distance = calculateDistance(object.latitude, object.longitude);
+                  if (distance < radius) {
+                    ids.push({
+                      id: responseJson[i]
+                    });
+                  }
                 }
-                // console.log(responseJson[i])
-                // console.log(responseJson[i+1])
-                // console.log(object);
-                const distance = calculateDistance(object.latitude, object.longitude);
-                //console.log(distance);
-                if (distance < 2500) {
-                  //console.log("Yes");
-                  ids.push({
-                    id: responseJson[i]
-                  });
-                }
+              } catch {
+                console.log("Lol");
               }
-            } catch {
-              console.log("Lol");
             }
-          }
-          setNearbyJobs(ids);
-        })
-        .catch((error) => {
-          alert(error)
-          setLoading(false);
-        })
-      }
-    }, [userLongAndLat])
+            setNearbyJobs(_.shuffle(ids));
+          })
+          .catch((error) => {
+            alert(error)
+            setLoading(false);
+          })
+        }
+    }, [userLongAndLat, radius])
 
     const handelSearch = async () =>{
       navigation.navigate('SearchScreen', query);
     } 
+
+    const convert = () => { 
+      return radius / 1000;
+    }
+
 
         
     if(loading){
@@ -212,34 +210,57 @@ const HomeScreen = ({ navigation, route })=> {
 
     return (
         <ScrollView style={styles.container}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setRadius(2000)}>
+                  <Text style={styles.textStyle}>2 Km</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setRadius(5000)}>
+                  <Text style={styles.textStyle}>5 Km</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setRadius(10000)}>
+                  <Text style={styles.textStyle}>10 Km</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setRadius(25000)}>
+                  <Text style={styles.textStyle}>25 Km</Text>
+                </Pressable>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}>
+                    <Text style={styles.textStyle}>Close</Text>
+                  </Pressable>
+              </View>
+            </View>
+          </Modal>
           <View style={styles.upperView}>
               <Text style={styles.header}><Text style={{fontWeight:"bold",fontSize:30,paddingHorizontal:5}}>Hi! </Text>
               Search up for tasks that you're good at!</Text>
               <View style= {styles.searchContainer}>
                 <SearchBar searchText={query} setSearchText={setQuery} style={styles.searchBox} />
-                <TouchableOpacity onPress={handelSearch}><Text style={styles.searchTxt}>Search</Text></TouchableOpacity>
-                {/* <SelectList
-                  setSelected={(val) => setFilter(val)}
-                  data={filterChoices}
-                  save="value"
-                  label="Categories"
-                  onSelect={()=> handelFilter}
-                  style={styles.sortBox}
-                  boxStyles={{marginRight:10}}
-                  
-                /> */}
+                <TouchableOpacity onPress={handelSearch}>
+                  <Text style={styles.searchTxt}>Search</Text>
+                </TouchableOpacity>
               </View>
           </View>
             <View style={styles.bottomView}>
               <ScrollView>
                 <Text style={styles.title}> Recent Tasks </Text>
-                <ScrollView 
-                style={styles.ScrollView}
-                horizontal ={true}
-                //alwaysBounceVertical={true}
-                //showsHorizontalScrollIndicator={true}
-                pagingEnabled={true}
-                >
+                <ScrollView horizontal ={true} pagingEnabled={true}>
                   {recentJobIDs.map(object => {
                     return <ViewJob key ={object.id} ID={object.id}/>
                   })}
@@ -250,7 +271,14 @@ const HomeScreen = ({ navigation, route })=> {
                     return <ViewJob key = {object.id} ID={object.id}/>
                   })}
                 </ScrollView>
-                <Text style={styles.title}>Nearby Your Address</Text>
+                <View>
+                  <Text style={styles.title}>Nearby Your Stored Address:</Text>
+                  <Pressable
+                    style={[styles.button, styles.buttonOpen]}
+                    onPress={() => setModalVisible(true)}>
+                    <Text style={styles.textStyle}>{convert()} Km</Text>
+                  </Pressable>
+                </View>
                 <ScrollView horizontal = {true}>
                   {nearbyJobs.map(object => {
                     return <ViewJob key = {object.id} ID={object.id}/>
@@ -353,6 +381,47 @@ const styles = StyleSheet.create({
       display:'flex',
       justifyContent:'center',
       alignItems:'center'
+    },
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 35,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    button: {
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2,
+    },
+    buttonOpen: {
+      backgroundColor: '#F194FF',
+    },
+    buttonClose: {
+      backgroundColor: '#2196F3',
+    },
+    textStyle: {
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: 'center',
     },
 });
 

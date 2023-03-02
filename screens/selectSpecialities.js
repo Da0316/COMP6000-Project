@@ -176,8 +176,6 @@ const styles = StyleSheet.create({
       fontSize:18,
       color:"#fff",
       alignSelf:"center",
-      //alignContent:"center"
-
   }
   
 });
