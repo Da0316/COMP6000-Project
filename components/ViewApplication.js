@@ -85,10 +85,10 @@ const ViewApplication = ({ID, type}) => {
                     }}
                     style={styles.image}
                     />
-                    <View style={{padding: 20}}>
+                    <View style={styles.info}>
                         <Text style={styles.title}>{jobTitle}</Text>
                         <Text style={styles.description}>Status: {status}</Text>
-                        <Text style={styles.amount}>Price offer: £{price}/h</Text>
+                        <Text style={styles.amount}>Offer: £{price}/h</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -121,34 +121,43 @@ const styles = StyleSheet.create({
         elevation:10
     },
     userApplicationContainer: {
-        width:"90%",
+        width:150,
         alignSelf: "center",
         borderRadius: 40,
-        backgroundColor: "#D0D0D0",
-        marginTop: 20
+        backgroundColor: "#EBEBEB",
+        marginVertical: 15,
+        marginHorizontal:8
     },
     image:{
-        height:200,
-        width: "100%",
+        height:150,
+        width: 150,
         borderTopLeftRadius:40,
         borderTopRightRadius:40
 
     },
     title:{
-        fontSize:18,
+        fontSize:14,
         fontWeight:"600",
         marginTop: 10
     },
     description:{
-        fontSize:14,
+        fontSize:12,
         fontWeight:"400",
-        marginTop: 10
+        marginTop: 6
     },
     amount:{
         fontSize:14,
         alignSelf: 'flex-end',
         fontWeight: "bold",
-        color:"black",
-        marginTop:10
-    }
+        marginBottom:10,
+        marginEnd:15
+    },
+    
+    info:{
+        padding: 10,
+        height:100,
+        backgroundColor:"#EBEBEB",
+        borderBottomLeftRadius:40,
+        borderBottomRightRadius:40
+      },
 })

@@ -81,19 +81,18 @@ export default ViewJob;
 
 const styles = StyleSheet.create({ 
     container:{
-        width:150,
-        alignSelf: "center",
-        borderRadius: 40,
-        backgroundColor: "#EBEBEB",
-        marginVertical: 15,
-        marginHorizontal:8
+      width:150,
+      alignSelf: "center",
+      borderRadius: 40,
+      backgroundColor: "#EBEBEB",
+      marginVertical: 15,
+      marginHorizontal:8
     },
     image:{
-        height:150,
-        width: 150,
-        borderTopLeftRadius:40,
-        borderTopRightRadius:40
-
+      height:150,
+      width: 150,
+      borderTopLeftRadius:40,
+      borderTopRightRadius:40
     },
     info:{
       padding: 10,
@@ -101,8 +100,6 @@ const styles = StyleSheet.create({
       backgroundColor:"#EBEBEB",
       borderBottomLeftRadius:40,
       borderBottomRightRadius:40
-
-
     },
     title:{
         fontSize:14,
