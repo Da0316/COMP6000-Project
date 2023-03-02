@@ -15,7 +15,7 @@ const HomeScreen = ({ navigation, route })=> {
     const [userLongAndLat, setUserLongAndLat] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
     const [nearbyJobs, setNearbyJobs] = useState([]);
-    const [radius, setRadius] = useState(1000);
+    const [radius, setRadius] = useState(5000);
     const [modalVisible, setModalVisible] = useState(false);
     const [noNearby, setNoNearby] = useState(null);
 
@@ -233,44 +233,45 @@ const HomeScreen = ({ navigation, route })=> {
     }
 
     return (
-        <ScrollView style={styles.container}>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-            }}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
+      <View style={styles.container}>
+        <Modal 
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setRadius(2000)}>
+                <Text style={styles.textStyle}>2 Km</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setRadius(5000)}>
+                <Text style={styles.textStyle}>5 Km</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setRadius(10000)}>
+                <Text style={styles.textStyle}>10 Km</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setRadius(25000)}>
+                <Text style={styles.textStyle}>25 Km</Text>
+              </Pressable>
                 <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setRadius(2000)}>
-                  <Text style={styles.textStyle}>2 Km</Text>
+                  style={[styles.button, styles.buttonRemove]}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Close</Text>
                 </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setRadius(5000)}>
-                  <Text style={styles.textStyle}>5 Km</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setRadius(10000)}>
-                  <Text style={styles.textStyle}>10 Km</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setRadius(25000)}>
-                  <Text style={styles.textStyle}>25 Km</Text>
-                </Pressable>
-                  <Pressable
-                    style={[styles.button, styles.buttonRemove]}
-                    onPress={() => setModalVisible(!modalVisible)}>
-                    <Text style={styles.textStyle}>Close</Text>
-                  </Pressable>
-              </View>
             </View>
-          </Modal>
+          </View>
+        </Modal>
+        <ScrollView>
           <View style={styles.upperView}>
               <Text style={styles.header}><Text style={{fontWeight:"bold",fontSize:30,paddingHorizontal:5}}>Hi! </Text>
               Search up for tasks that you're good at!</Text>
@@ -307,6 +308,7 @@ const HomeScreen = ({ navigation, route })=> {
               </ScrollView>
             </View>
         </ScrollView>
+      </View>
     );
 }
 
@@ -314,8 +316,8 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
     container:{
-        flex:1,
-        backgroundColor:"#fff",
+      flex: 1,
+      backgroundColor: 'white',
     },
     searchContainer:{
       flexDirection:"row",
