@@ -54,7 +54,7 @@ const SignUp = ({navigation}) =>{
     const checkAddress = async (address) => {
       const formattedAddress = `${address.name}, ${address.road}, ${address.city} ${address.postcode}, ${address.country}`;
       //need to make api key more secure on server
-      const apiKey = 'AIzaSyCM8-6wAN_bMyyyq7Hp_kecmqwX8MbqFKk';
+      
       const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(formattedAddress)}&key=${apiKey}`;
         console.log(url);
         try {
