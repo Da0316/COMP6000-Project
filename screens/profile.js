@@ -282,12 +282,14 @@ const Profile=({navigation}) =>{
           <View style={styles.reviewSection}>
             <Text style={styles.title3}>Reviews</Text>
           <FlatList
+            nestedScrollEnabled
             data={reviews}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
             inverted={true}
             style={{ flex: 1, width: "95%" }}
+            
           />
         </View>
           </ScrollView>

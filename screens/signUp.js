@@ -30,11 +30,31 @@ const SignUp = ({navigation}) =>{
     const [address2,setAddress2] =useState(null); 
     const [addressCity,setAddressCity] =useState(null); 
     const [addressPostCode,setAddressPostCode] =useState(null); 
+    const [apiKey, setApiKey]= useState(null);
+
+    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/api.php', { //needs to be changed to your own ip
+          method: 'post',
+          header: {
+            Accept: 'application/json',
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+          }),
+        })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            setApiKey(responseJson);
+          })
+          .catch((error) => {
+            //console.error(error);
+            alert("incorrect details");
+          });
+
 
     const checkAddress = async (address) => {
       const formattedAddress = `${address.name}, ${address.road}, ${address.city} ${address.postcode}, ${address.country}`;
       //need to make api key more secure on server
-      const apiKey = 'AIzaSyCM8-6wAN_bMyyyq7Hp_kecmqwX8MbqFKk';
+      
       const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(formattedAddress)}&key=${apiKey}`;
         console.log(url);
         try {
