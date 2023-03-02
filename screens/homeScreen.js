@@ -6,10 +6,6 @@ import ViewJob from "../components/ViewJob";
 import * as Location from 'expo-location';
 import {getDistance} from 'geolib';
 import _ from 'lodash';
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 
 const HomeScreen = ({ navigation, route })=> {
     const [recentJobIDs, setRecentJobIDs] = useState([]);
@@ -19,8 +15,9 @@ const HomeScreen = ({ navigation, route })=> {
     const [userLongAndLat, setUserLongAndLat] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
     const [nearbyJobs, setNearbyJobs] = useState([]);
-    const [radius, setRadius] = useState(5000);
+    const [radius, setRadius] = useState(1000);
     const [modalVisible, setModalVisible] = useState(false);
+    const [noNearby, setNoNearby] = useState(null);
 
     const componentDidMount = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -169,6 +166,7 @@ const HomeScreen = ({ navigation, route })=> {
           .then((response) => response.json())
           .then(async (responseJson) => {
             let ids = []
+            let count = 0;
             for (let i = 0; i < responseJson.length; i += 2) {
               try {
                 const location =  await getLocation(responseJson[i + 1]);
@@ -179,6 +177,7 @@ const HomeScreen = ({ navigation, route })=> {
                   }
                   const distance = calculateDistance(object.latitude, object.longitude);
                   if (distance < radius) {
+                    count++
                     ids.push({
                       id: responseJson[i]
                     });
@@ -187,6 +186,11 @@ const HomeScreen = ({ navigation, route })=> {
               } catch {
                 console.log("Lol");
               }
+            }
+            if (count == 0){
+              setNoNearby(true);
+            } else {
+              setNoNearby(false);
             }
             setNearbyJobs(_.shuffle(ids));
           })
@@ -205,6 +209,23 @@ const HomeScreen = ({ navigation, route })=> {
       return radius / 1000;
     }
 
+    const renderNearby = () => {
+      if (noNearby == false){
+        return (
+          <ScrollView horizontal = {true}>
+            {nearbyJobs.map(object => {
+              return <ViewJob key = {object.id} ID={object.id}/>
+            })}
+          </ScrollView>
+        );
+      } else if (noNearby == true){
+        return (
+          <View>
+            <Text style={styles.title}>No Jobs Nearby!</Text>
+          </View>
+        );
+      }
+    }
 
         
     if(loading){
@@ -243,7 +264,7 @@ const HomeScreen = ({ navigation, route })=> {
                   <Text style={styles.textStyle}>25 Km</Text>
                 </Pressable>
                   <Pressable
-                    style={[styles.button, styles.buttonClose]}
+                    style={[styles.button, styles.buttonRemove]}
                     onPress={() => setModalVisible(!modalVisible)}>
                     <Text style={styles.textStyle}>Close</Text>
                   </Pressable>
@@ -275,22 +296,15 @@ const HomeScreen = ({ navigation, route })=> {
                   })}
                 </ScrollView>
                 <View style={styles.nearbyViewContainer}>
-                  <Text style={styles.title}>Nearby Your Stored Address</Text>
+                  <Text style={styles.title}>Nearby Your Stored Address: </Text>
                   <Pressable
-                    style={[styles.button, styles.buttonOpen]}
+                    style={styles.openButton}
                     onPress={() => setModalVisible(true)}>
                     <Text style={styles.textStyle}>{convert()} Km</Text>
                   </Pressable>
                 </View>
-                <ScrollView horizontal = {true}>
-                  {nearbyJobs.map(object => {
-                    return <ViewJob key = {object.id} ID={object.id}/>
-                  })}
-                </ScrollView>
+                <View>{renderNearby()}</View>
               </ScrollView>
-            </View>
-            <View>
-              
             </View>
         </ScrollView>
     );
@@ -302,15 +316,12 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:"#fff",
-
     },
     searchContainer:{
       flexDirection:"row",
       marginVertical:10,
       backgroundColor:"fff",
       elevation:8
-
-
     },
     upperView:{
       width:'100%',
@@ -369,10 +380,6 @@ const styles = StyleSheet.create({
       textAlign:"center",
       elevation:8
 
-    }
-    ,ScrollView:{
-      margin:5,
-      //fadingEdgeLength:10
     },
     buttonsView:{
       width:'90%',
@@ -394,7 +401,7 @@ const styles = StyleSheet.create({
     modalView: {
       margin: 20,
       backgroundColor: 'white',
-      borderRadius: 20,
+      borderRadius: 20, 
       padding: 35,
       alignItems: 'center',
       shadowColor: '#000',
@@ -415,7 +422,10 @@ const styles = StyleSheet.create({
       backgroundColor: '#F194FF',
     },
     buttonClose: {
-      backgroundColor: '#2196F3',
+      backgroundColor: '#f9ce40',
+    },
+    buttonRemove: {
+      backGroundColor: 'black'
     },
     textStyle: {
       color: 'white',
@@ -427,7 +437,15 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     nearbyViewContainer: {
-
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    openButton: {
+      backgroundColor: "#f9ce40",
+      borderRadius: 4,
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+      alignSelf: 'flex-start',
     }
 });
 
