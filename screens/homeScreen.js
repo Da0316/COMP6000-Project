@@ -6,7 +6,10 @@ import ViewJob from "../components/ViewJob";
 import * as Location from 'expo-location';
 import {getDistance} from 'geolib';
 import _ from 'lodash';
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
 const HomeScreen = ({ navigation, route })=> {
     const [recentJobIDs, setRecentJobIDs] = useState([]);
@@ -271,8 +274,8 @@ const HomeScreen = ({ navigation, route })=> {
                     return <ViewJob key = {object.id} ID={object.id}/>
                   })}
                 </ScrollView>
-                <View>
-                  <Text style={styles.title}>Nearby Your Stored Address:</Text>
+                <View style={styles.nearbyViewContainer}>
+                  <Text style={styles.title}>Nearby Your Stored Address</Text>
                   <Pressable
                     style={[styles.button, styles.buttonOpen]}
                     onPress={() => setModalVisible(true)}>
@@ -423,6 +426,9 @@ const styles = StyleSheet.create({
       marginBottom: 15,
       textAlign: 'center',
     },
+    nearbyViewContainer: {
+
+    }
 });
 
 
