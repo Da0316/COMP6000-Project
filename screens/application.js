@@ -194,8 +194,8 @@ function Application({route, navigation}){
 
     const profileView = () => {
         return (
-            <TouchableOpacity onPress = {() => navigation.navigate('ViewProfile', {paramKey: userAppID,jobID: jobID})}>
-                <Text>{usernameApplied}</Text>
+            <TouchableOpacity  onPress = {() => navigation.navigate('ViewProfile', {paramKey: userAppID,jobID: jobID})}>
+                <Text style={styles.btn}>{usernameApplied}</Text>
             </TouchableOpacity>
         );
     }
@@ -248,9 +248,9 @@ function Application({route, navigation}){
                 <View style={styles.mainView}>
                     <View style={styles.infoBox}>
                         <Text style={styles.infoTxt}>Username: {profileView()}</Text>
-                        <Text style={styles.infoTxt}>Application Date: {applicationDate}</Text>
-                        <Text style={styles.infoTxt}>Price Offered: ${priceOffer}</Text>
-                        <Text style={styles.infoTxt}>Accepted</Text>
+                        <Text style={styles.infoTxt}>Application Date: <Text style ={styles.answer}>{applicationDate}</Text></Text>
+                        <Text style={styles.infoTxt}>Price Offered: <Text style ={styles.answer}>${priceOffer}</Text></Text>
+                        <Text style={styles.infoTxt}><Text style ={styles.answer}>Accepted</Text></Text>
                     </View>
                     {/* <View style={styles.buttonContainer}>
                         <Text>Accepted</Text>
@@ -262,9 +262,9 @@ function Application({route, navigation}){
                 <View style={styles.mainView}>
                     <View style={styles.infoBox}>
                         <Text style={styles.infoTxt} >Username: {profileView()}</Text>
-                        <Text style={styles.infoTxt}>Application Date: {applicationDate}</Text>
-                        <Text style={styles.infoTxt}>Price Offered: ${priceOffer}</Text>
-                        <Text style={styles.infoTxt}>Rejected</Text>
+                        <Text style={styles.infoTxt}>Application Date: <Text style ={styles.answer}></Text>{applicationDate}</Text>
+                        <Text style={styles.infoTxt}>Price Offered: <Text style ={styles.answer}></Text>${priceOffer}</Text>
+                        <Text style={styles.infoTxt}><Text style ={styles.answer}>Rejected</Text></Text>
                     </View>
                     {/* <View style={styles.buttonContainer}>
                         <Text>Rejected</Text>
@@ -303,11 +303,13 @@ const styles = StyleSheet.create({
     },
     infoBox:{
         //flex:1,
-        width: '60%',
-        height: '40%',
-        backgroundColor: 'white',
+        width: '80%',
+        height: '50%',
+       // backgroundColor: 'green',
         justifyContent: 'center',
-        paddingHorizontal:10,
+        alignItems:"center",
+
+        paddingHorizontal:20,
         //alignItems: "center",
         backgroundColor:"#f9ce40",
         borderTopEndRadius:70,
@@ -320,7 +322,24 @@ const styles = StyleSheet.create({
     },
     infoTxt:{
         fontSize:16,
-        
-        paddingVertical:5,
-    }
+        paddingVertical:10,
+        fontWeight:"bold",
+
+    },
+    btn:{
+        justifyContent:"center",
+        fontSize:16,
+        //backgroundColor:"green",
+        //marginTop:20,
+        //paddingVertical:10,
+        fontWeight:"bold",
+        alignContent:"center",
+        alignItems:"center",
+        justifyContent:"center",
+        marginTop:5,
+        marginBottom:-5,
+    },
+    // answer:{
+    //     fontWeight:"400"
+    // }
 });

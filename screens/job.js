@@ -74,8 +74,8 @@ function Job({route, navigation}){
     const profileView = () => {
         if (sameUser == false){
             return (
-                <TouchableOpacity styles={styles.applicationButton} onPress = {() => navigation.navigate('ViewProfile', {paramKey: userPostedID,jobID: jobID})}>
-                    <Text style={styles.answer}>{username}</Text>
+                <TouchableOpacity style={styles.row} onPress = {() => navigation.navigate('ViewProfile', {paramKey: userPostedID,jobID: jobID})}>
+                    <Text style={styles.btn}> {username}</Text>
                 </TouchableOpacity>
             )
         }
@@ -100,7 +100,7 @@ function Job({route, navigation}){
                     <Text style={styles.des}>{jobDescription}</Text>
                 </View>
                 <View style={styles.row}>
-                    <Text style={styles.baseText}> Posted by:{profileView()}</Text>
+                    <Text style={styles.baseText}> Posted by: {profileView()}</Text>
                     </View>
                 <View style={styles.row}>
                     <Text style={styles.baseText}>Speciality: <Text style={styles.answer}>{speciality}</Text></Text>
@@ -147,24 +147,13 @@ const styles = StyleSheet.create({
 
     },
     applicationButton: {
-        // borderColor: '#FFF',
-        // borderWidth: 2,
-        // borderRadius: 3,
-        // paddingVertical: 10,
-        // paddingHorizontal: 50,
-        // marginHorizontal: 5,
-        //justifyContent:"center",
-        //alignSelf:"center",
         alignItems:"center",
         width: "90%",
         flex: 1,
-        //flex:1,
-        //color: "#000",
         height: 30,
         backgroundColor: "#1a1918",
         borderRadius: 20,
-        marginVertical: 15,
-       // display: "flex",
+        marginVertical: 10,
         justifyContent: "center",
         //alignItems: "center",
         alignSelf:"center",
@@ -184,25 +173,18 @@ const styles = StyleSheet.create({
         //alignContent:"stretch"
     },
     row: {
-        marginVertical:10,
-        //paddingHorizontal:10,
-        //paddingVertical:20,
-        // alignContent:"stretch",
-        //flexDirection: 'row',
-        //marginBottom: 10,
-        //textAlign: "center",
-        //alignItems: 'center',
-        //justifyContent:"space-between",
-        //marginHorizontal:5
+        marginVertical:12,
     },
     baseText:{
         alignContent:"center",
-        fontWeight:"bold"
+        fontWeight:"bold",
+        //backgroundColor:"blue",
+        paddingVertical:3
 
     },
     des:{
         alignSelf:"center",
-        marginVertical:-3,
+        marginVertical:-5,
         opacity:0.5,
         paddingBottom:20
     },
@@ -216,7 +198,19 @@ const styles = StyleSheet.create({
         fontWeight:"bold"
     },
     answer:{
-        fontWeight:"400"
+        fontWeight:"400",
+        alignContent:"center",
+    },
+    btn:{
+        fontWeight:"400",
+        alignContent:"center",
+        alignItems:"center",
+        justifyContent:"center",
+        marginTop:3,
+        marginBottom:-3,
+        //backgroundColor:"green"
+        //marginBottom:-4,
+
 
     }
 });
