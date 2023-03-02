@@ -6,7 +6,7 @@ import ViewJob from "../components/ViewJob";
 import * as Location from 'expo-location';
 import {getDistance} from 'geolib';
 import _ from 'lodash';
-import { Picker } from '@react-native-picker/picker';
+
 
 const HomeScreen = ({ navigation, route })=> {
     const [recentJobIDs, setRecentJobIDs] = useState([]);
