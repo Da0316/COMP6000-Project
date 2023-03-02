@@ -51,6 +51,7 @@
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-gifted-chat": "^1.0.4",
+    "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-modal-datetime-picker": "^14.0.0",
@@ -67,6 +68,7 @@
     "react-navigation-stack": "^2.10.4",
     "react-password-checklist": "^1.4.3",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "smartystreets-javascript-sdk": "^2.1.1",
     "uuid": "^9.0.0",
     "zlib": "^1.0.5"
   },

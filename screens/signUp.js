@@ -8,8 +8,12 @@ import {getDatabase, get, ref, set, onValue, update, push} from 'firebase/databa
 //package for calander picker 
 //import an images file with pictures in for images
 import DatePicker from 'react-native-modern-datepicker';
-//date field to be changed 
-//export default function App() {
+
+//import smartyStreets API 
+import SmartyStreetsSDK from 'smartystreets-javascript-sdk';
+//imports goolge places for address verification
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+//AIzaSyCz4_Krs6lMNkE0Vwu3YGosiE5x9qQpFNQ //AIzaSyBQYUCrOif7EYND6cWkSYdOt4pg8wcPVww
 const SignUp = ({navigation}) =>{ 
     const [userName,setuserName] =useState('');
     const [firstName,setFirstName] =useState('');
@@ -19,12 +23,53 @@ const SignUp = ({navigation}) =>{
     const [show, setShow] = useState(false);
     const [email,setEmail] =useState('');
     const [pNumber,setPNumber] =useState('');
-    const [address,setAddress] =useState(''); //need to discuss with group what address we are taking
+    
     const [password,setPassword] =useState('');
     const [conPasswrod,setConPassword] =useState('');
-    
-
+    //variables for the DOB picker
     const [showCompleted, setShowCompleted] = useState(false);
+    //variables for address input
+    const [address, setAddress] = useState('');
+    const [address1,setAddress1] =useState(null); 
+    const [address2,setAddress2] =useState(null); 
+    const [addressCity,setAddressCity] =useState(null); 
+    const [addressPostCode,setAddressPostCode] =useState(null); 
+
+    const checkAddress = async (address) => {
+      const formattedAddress = `${address.name}, ${address.road}, ${address.city} ${address.postcode}, ${address.country}`;
+      const apiKey = 'AIzaSyCM8-6wAN_bMyyyq7Hp_kecmqwX8MbqFKk';
+      const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(formattedAddress)}&key=${apiKey}`;
+        console.log(url);
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          console.log(data);
+          if (data.results.length > 0) {
+            return true;
+          } else {
+            return false;
+          }
+        } catch (error) {
+          console.error(error);
+          return false;
+        }
+    }
+
+    const formatAddress = () => {
+      if(address2 != null){
+        setAddress(address1 + ', ' + address2 + ', ' + addressCity + ', ' + addressPostCode);
+      } else{
+        setAddress(address1 + ', ' + addressCity + ', ' + addressPostCode);
+      }
+      
+
+      }
+
+
+      
+
+      //add code to verify the address after formatted using smarty streets API
+    
 
     handelSubmit = () =>{
     //onChangeText={(userName) => setuserName(userName)}
@@ -38,12 +83,41 @@ const SignUp = ({navigation}) =>{
         return false;
     } else if (DOB == ''){
       alert("please select DOB");
+    } else if(address1 == null){
+      alert("please enter address line 1");
+    }else if (addressCity == null){
+      alert("please enter the address city");
+    }else if (addressPostCode == null){
+      alert("please enter the address post code");
     }
+
+
+    const addressToVerify = {
+      name: address1,
+      road: address2,
+      city: addressCity,
+      postcode: addressPostCode,
+      country: 'UK'
+    };
     
+    // if (checkAddress(addressToVerify)){
+    //   console.log("ok");
+    // } else{
+    //   alert("address does not exist");
+    // }
+
     if(password != conPasswrod){
       alert("Passwords must match!");
-    } else{
+    }
 
+    if (checkAddress(addressToVerify)){
+      console.log("ok");
+    } else{
+      alert("address does not exist");
+    }
+    formatAddress();
+    console.log(address);
+    
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/signUp.php', {
         method: 'post',
         header:{
@@ -84,7 +158,7 @@ const SignUp = ({navigation}) =>{
         .catch((error)=>{
           console.error(error);
         });
-    };
+    
 
   }
   
@@ -99,11 +173,11 @@ const SignUp = ({navigation}) =>{
 
   const handleConfirm = (date) => {
     let tempDate = date;
-    let new_str = tempDate.replace("/", "-");
-    let new_str1 = new_str.replace("/", "-");
+    let date1 = tempDate.replace("/", "-");
+    let date2 = date1.replace("/", "-");
     //let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
     //date = fDate;
-    setDOB(new_str1);
+    setDOB(date2);
     showDatepicker();
     //hideDatePicker();
   };
@@ -126,96 +200,109 @@ const SignUp = ({navigation}) =>{
 
     
       <View style={styles.mainView}>
-        <ScrollView style={styles.bottomView}>
-          <Text style={styles.heading}>
-            Create Account
-          </Text>
-          <SafeAreaView style={styles.formView}>
-            <TextInput placeholder={"First name*"}  onChangeText={(firstName) => setFirstName(firstName)} style={styles.TextInput}/>
-            <TextInput placeholder={"Last name*"}  onChangeText={(lastName) => setLastName(lastName)} style={styles.TextInput}/>
-            <TextInput placeholder={"Set Username*"}  onChangeText={(userName) => setuserName(userName)} style={styles.TextInput}/>
+        
+          <ScrollView style={styles.bottomView}
+            keyboardShouldPersistTaps="handled"
             
-            
+            >
+            <Text style={styles.heading}>
+              Create Account
+            </Text>
+            <SafeAreaView style={styles.formView}>
+              <TextInput placeholder={"First name*"}  onChangeText={(firstName) => setFirstName(firstName)} style={styles.TextInput}/>
+              <TextInput placeholder={"Last name*"}  onChangeText={(lastName) => setLastName(lastName)} style={styles.TextInput}/>
+              <TextInput placeholder={"Set Username*"}  onChangeText={(userName) => setuserName(userName)} style={styles.TextInput}/>
               
-              <TouchableOpacity style={styles.LoginBtn} onPress={showDatepicker}>
-                <Text style={styles.LoginText}>Date of birth:{DOB}</Text>
-              </TouchableOpacity>
               
-                {showCompleted && (
-                <DatePicker
-                  options={{
+                
+                <TouchableOpacity style={styles.LoginBtn} onPress={showDatepicker}>
+                  <Text style={styles.LoginText}>Date of birth:{DOB}</Text>
+                </TouchableOpacity>
+                
+                  {showCompleted && (
+                  <DatePicker
+                    options={{
+                      
+                      backgroundColor: '#090C08',
+                      textHeaderColor: '#FFA25B',
+                      textDefaultColor: '#F6E7C1',
+                      selectedTextColor: '#fff',
+                      mainColor: '#F4722B',
+                      textSecondaryColor: '#D6C7A1',
+                      borderColor: 'rgba(122, 146, 165, 0.1)',
+                    }}
+                    onDateChange={handleConfirm}
+                    current="1990-07-23"
+                    selected="1990-07-23"
+                    mode="datepicker"
+                    minuteInterval={30}
+                    style={
+                      { borderRadius: 10 }
                     
-                    backgroundColor: '#090C08',
-                    textHeaderColor: '#FFA25B',
-                    textDefaultColor: '#F6E7C1',
-                    selectedTextColor: '#fff',
-                    mainColor: '#F4722B',
-                    textSecondaryColor: '#D6C7A1',
-                    borderColor: 'rgba(122, 146, 165, 0.1)',
-                  }}
-                  onDateChange={handleConfirm}
-                  current="1990-07-23"
-                  selected="1990-07-23"
-                  mode="datepicker"
-                  minuteInterval={30}
-                  style={
-                    { borderRadius: 10 }
+                    }
+                    containerStyle={{width: '100%'}}
+                  />
+                  )}
                   
-                  }
-                  containerStyle={{width: '100%'}}
-                />
-                )}
                 
+                {/* <DateTimePickerModal
+                    // customStyles={{
+                    //   datePicker: { backgroundColor: "green" },
+                    //   datePickerCon: { backgroundColor: "green" },
+                    //   dateInput: { borderWidth: 0 },
+                    //   dateText: { color: "green" },
+                    //   btnTextConfirm: { color: "green" },
+                    //   btnTextCancel: { color: "green" }
+                    // }}
+                  isVisible={isDatePickerVisible}
+                  //mode="date"
+                  onConfirm={handleConfirm}
+                  onCancel={hideDatePicker}
+
+
+                // pickerContainerStyleIOS={{ backgroundColor: 'green', padding: 16 }}
+                  datePickerModeAndroid="default"
+
+                  //customHeaderIOS={renderCustomHeader}
+                  //style={{ borderRadius: 8 }}
+                  // headerTextIOS="Pick a Date"
+                  // cancelTextIOS="Cancel"
+                  // confirmTextIOS="Confirm"
+                  // datePickerModeAndroid="spinner"
+                  //  style={{ borderRadius: 8 }}
+                  //  customCancelButtonIOS={{ color: "red", fontSize: 20 }}
+                  //  customConfirmButtonIOS={{ color: "green", fontSize: 20 }}
+                  //  customTitleContainerIOS={{ backgroundColor: "pink" }}
+                  // customTitleIOS="Select a Date"
+                  // locale="en_GB"
+                  
+                /> */}
               
-              {/* <DateTimePickerModal
-                  // customStyles={{
-                  //   datePicker: { backgroundColor: "green" },
-                  //   datePickerCon: { backgroundColor: "green" },
-                  //   dateInput: { borderWidth: 0 },
-                  //   dateText: { color: "green" },
-                  //   btnTextConfirm: { color: "green" },
-                  //   btnTextCancel: { color: "green" }
-                  // }}
-                isVisible={isDatePickerVisible}
-                //mode="date"
-                onConfirm={handleConfirm}
-                onCancel={hideDatePicker}
-
-
-               // pickerContainerStyleIOS={{ backgroundColor: 'green', padding: 16 }}
-                datePickerModeAndroid="default"
-
-                //customHeaderIOS={renderCustomHeader}
-                //style={{ borderRadius: 8 }}
-                // headerTextIOS="Pick a Date"
-                // cancelTextIOS="Cancel"
-                // confirmTextIOS="Confirm"
-                // datePickerModeAndroid="spinner"
-                //  style={{ borderRadius: 8 }}
-                //  customCancelButtonIOS={{ color: "red", fontSize: 20 }}
-                //  customConfirmButtonIOS={{ color: "green", fontSize: 20 }}
-                //  customTitleContainerIOS={{ backgroundColor: "pink" }}
-                // customTitleIOS="Select a Date"
-                // locale="en_GB"
+              <TextInput placeholder={"Email address*"}  onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>
+              <TextInput placeholder={"Phone Number*"} keyboardType='numeric'  maxLength={11} onChangeText={(pNumber) => setPNumber(pNumber)}  style={styles.TextInput}/>
+              <Text>Enter your address:</Text>
+              
                 
-              /> */}
+                
             
-            <TextInput placeholder={"Email address*"}  onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>
-            <TextInput placeholder={"Phone Number*"} keyboardType='numeric'  maxLength={11} onChangeText={(pNumber) => setPNumber(pNumber)}  style={styles.TextInput}/>
-            <TextInput placeholder={"address*"}  onChangeText={(address) => setAddress(address)} style={styles.TextInput}/>
-            <Text >Password must containt at least:</Text>
-            <Text >1 UpperCase Character</Text>
-            <Text >1 LowerCase Character</Text>
-            <Text >1 Special Character</Text>
-            <Text >at least 8 characters long</Text>
-            <TextInput placeholder={"Password*"}  onChangeText={(password) => setPassword(password)} secureTextEntry={true} style={styles.TextInput}/>
-            <TextInput placeholder={"Confirm password*"}  onChangeText={(conPasswrod) => setConPassword(conPasswrod)} secureTextEntry={true} style={styles.TextInput}/>
-            <TouchableOpacity style={styles.buttonsView} onPress={()=>handelSubmit()}>
-              <Text style={styles.buttonText}>Sign Up</Text>
-            </TouchableOpacity>
-          </SafeAreaView>
-        </ScrollView>
-
+              
+              <TextInput placeholder={"address Line 1*"}  onChangeText={(address1) => setAddress1(address1)} style={styles.TextInput}/>
+              <TextInput placeholder={"address Line 2"}  onChangeText={(address2) => setAddress2(address2)} style={styles.TextInput}/>
+              <TextInput placeholder={"City*"}  onChangeText={(addressCity) => setAddressCity(addressCity)} style={styles.TextInput}/>
+              <TextInput placeholder={"Post Code*"}  onChangeText={(addressPostCode) => setAddressPostCode(addressPostCode)} style={styles.TextInput}/>
+              <Text >Password must containt at least:</Text>
+              <Text >1 UpperCase Character</Text>
+              <Text >1 LowerCase Character</Text>
+              <Text >1 Special Character</Text>
+              <Text >at least 8 characters long</Text>
+              <TextInput placeholder={"Password*"}  onChangeText={(password) => setPassword(password)} secureTextEntry={true} style={styles.TextInput}/>
+              <TextInput placeholder={"Confirm password*"}  onChangeText={(conPasswrod) => setConPassword(conPasswrod)} secureTextEntry={true} style={styles.TextInput}/>
+              <TouchableOpacity style={styles.buttonsView} onPress={()=>handelSubmit()}>
+                <Text style={styles.buttonText}>Sign Up</Text>
+              </TouchableOpacity>
+            </SafeAreaView>
+          </ScrollView>
+       
 
       </View>
   );
