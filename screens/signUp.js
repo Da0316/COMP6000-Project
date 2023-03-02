@@ -113,8 +113,8 @@ const SignUp = ({navigation}) =>{
       alert("address does not exist");
     }
     formatAddress();
-    console.log(address);
     
+    if(address != ''){
       fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/signUp.php', {
         method: 'post',
         header:{
@@ -156,7 +156,7 @@ const SignUp = ({navigation}) =>{
           console.error(error);
         });
     
-
+      }
   }
   
 

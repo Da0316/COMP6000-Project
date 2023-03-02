@@ -25,7 +25,7 @@ const SearchScreen =({ navigation, route })=> {
         }
         
         
-          sortJobs();
+         // sortJobs();
           
     }, [route, filter]);
 
@@ -36,23 +36,25 @@ const SearchScreen =({ navigation, route })=> {
       switch(filter) {
         case 'Price: Low to High':
           setJobs(jobs.sort((a, b) => a.price - b.price));
-          
+          //console.log(jobs);
           break;
           
         case 'Price: High to Low':
           setJobs(jobs.sort((a, b) => b.price - a.price));
-         
+          //console.log(jobs);
           break;
         case 'Newest':
           setJobs(jobs.sort((a, b) => new Date(b.date) - new Date(a.date)));
-          
+          //console.log(jobs);
           break;
         case 'Oldest':
           setJobs(jobs.sort((a, b) => new Date(a.date) - new Date(b.date)));
-          
+          //console.log(jobs);
           break;
         default:
+          
           setJobs(jobs);
+          sort();
       }
       
       //setFilter(filter);
@@ -60,6 +62,62 @@ const SearchScreen =({ navigation, route })=> {
       
     };
       //setFilter(filter);
+    
+    const sort = () => {
+      //console.log(query);
+      var par = 0;
+      
+      
+      if(filter =='Price: Low to High' ){
+        par = 1;
+      }else if(filter == 'Price: High to Low'){
+        par =2;
+      } else if (filter =='Newest'){
+        par = 3;
+      } else if (filter == 'Oldest'){
+        par = 4;
+      }    
+      console.log(par);    
+      fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php', {
+            method: 'post',
+            header: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              searchInput: query,
+              id: global.userID,
+              filter: par
+
+            })
+          })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            const ids = [];
+            console.log(responseJson);
+            for (let i = 0; i < responseJson.length; i++){
+              const formatDateed = formatDate(responseJson[i].posted_date);
+              let object = {
+                id: responseJson[i].jobID,
+                date: formatDateed,
+                price: responseJson[i].price,
+              }
+              
+              if(responseJson[i].userID != global.userID){
+                ids.push(object);
+              }
+            }
+            setJobs(ids);
+            
+          })
+          .catch((error) => {
+            console.log(error);
+            alert(error)
+          })
+    par = 0;
+    console.log(filter);
+  }
+
     
     useEffect(() => {});
     const initalFetch = () => {
@@ -72,6 +130,7 @@ const SearchScreen =({ navigation, route })=> {
             body: JSON.stringify({
               searchInput: query,
               id: global.userID,
+              filter: 0
 
             })
           })
@@ -120,13 +179,14 @@ const SearchScreen =({ navigation, route })=> {
               <ScrollView>
                 <Text style={styles.title}> Results for: "{query}" </Text>
                 <SelectList
-                  setSelected={(val) => setFilter(val)}
+                  
                   data={filterChoices}
                   save="value"
                   label="Categories"
-                  onSelect={()=> sortJobs()}
+                  onSelect={()=> sort()}
                   style={styles.sortBox}
                   boxStyles={{marginRight:10}}
+                  setSelected={(val) => setFilter(val)}
                   
                   
                 />
