@@ -214,10 +214,10 @@ const SearchScreen =({ navigation, route })=> {
               {/* </ScrollView> */}
 
                   
-                <ScrollView 
+                {/* <ScrollView 
                 style={styles.ScrollView}
                 pagingEnabled={true}
-                >
+                > */}
                   <FlatList
                   data={jobs}
                   numColumns={2}
@@ -230,7 +230,7 @@ const SearchScreen =({ navigation, route })=> {
                   {/* {jobs.map(object => {
                     return <ViewJob key ={object.id} ID={object.id}/>
                   })} */}
-                </ScrollView>
+                {/* </ScrollView> */}
                 
               {/* </ScrollView> */}
             
