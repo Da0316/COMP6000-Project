@@ -108,9 +108,9 @@ function Job({route, navigation}){
                 <View style={styles.row}>
                     <Text style={styles.baseText}>Date Posted: <Text style={styles.answer}>{postedDate}</Text></Text>
                 </View>
-                <View style={styles.row}>
+                {/* <View style={styles.row}>
                     <Text style={styles.baseText}>Location:</Text>
-                </View>
+                </View> */}
                 {/* <View style={styles.row}>
                     <Text style={styles.baseText}>Has the Job Been Accepted: {accepted}</Text>
                 </View>

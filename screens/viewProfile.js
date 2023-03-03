@@ -174,9 +174,9 @@ const ViewProfile=({navigation,route}) =>{
               </View>
 
               <View style={styles.userBtnWrapper}>
-                <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Chat')}>
+                {/* <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Chat')}>
                   <Text style={styles.userBtnTxt}>Message</Text>
-                </TouchableRipple>
+                </TouchableRipple> */}
                 <TouchableRipple style={styles.userBtn} onPress={()=>navigation.navigate('Reviews', { jobId: route?.params?.jobID,userPostedID: route.params.paramKey })}>
                   <Text style={styles.userBtnTxt}>Reviews</Text>
                 </TouchableRipple>
