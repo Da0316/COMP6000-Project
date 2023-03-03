@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {useEffect} from "react";
-import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert} from "react-native";
+import {View,StyleSheet,Text, ScrollView, Button, TouchableOpacity, Alert,FlatList} from "react-native";
 import SearchBar from "../components/SearchBar";
 import ViewJob from "../components/ViewJob";
 import { SelectList } from "react-native-dropdown-select-list";
@@ -63,6 +63,12 @@ const SearchScreen =({ navigation, route })=> {
     };
       //setFilter(filter);
     
+      const renderItem = ({ item }) => (
+        <View style={styles.itemContainer}>
+          <ViewJob key={item.id} ID={item.id} />
+        </View>
+      );
+
     const sort = () => {
       //console.log(query);
       var par = 0;
@@ -176,7 +182,8 @@ const SearchScreen =({ navigation, route })=> {
     
     return (
         <View style={styles.container}>
-              <ScrollView>
+              {/* <ScrollView> */}
+                <View style={{marginVertical:5}}>
                 <Text style={styles.title}> Results for: "{query}" </Text>
                 <SelectList
                   
@@ -185,23 +192,47 @@ const SearchScreen =({ navigation, route })=> {
                   label="Categories"
                   onSelect={()=> sort()}
                   style={styles.sortBox}
-                  boxStyles={{marginRight:10}}
+                  boxStyles={{borderRadius:15,marginHorizontal:5,backgroundColor:"#EBEBEB",borderWidth:1.5}}
+                  dropdownStyles = {{borderRadius:15,marginHorizontal:5}}
                   setSelected={(val) => setFilter(val)}
                   
                   
                 />
+                </View>
+                {/* <FlatList
+                data={jobs}
+                numColumns={2}
+                renderItem={({ item }) => (
+                  <View>
+                    <ViewJob key={item.id} ID={item.id}/>
+                  </View>
+                )}
+                keyExtractor={item => item.id.toString()}
+                
+                
+                /> */}
+              {/* </ScrollView> */}
 
                   
                 <ScrollView 
                 style={styles.ScrollView}
                 pagingEnabled={true}
                 >
-                  {jobs.map(object => {
+                  <FlatList
+                  data={jobs}
+                  numColumns={2}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id.toString()}
+                  contentContainerStyle={styles.gridContainer}
+                  //onRefresh={initialFetch}
+                  //refreshing={false}
+                  />
+                  {/* {jobs.map(object => {
                     return <ViewJob key ={object.id} ID={object.id}/>
-                  })}
+                  })} */}
                 </ScrollView>
                 
-              </ScrollView>
+              {/* </ScrollView> */}
             
         </View>
         
@@ -253,6 +284,8 @@ const styles = StyleSheet.create({
     sortBox:{
       flexGrow :1,
       alignSelf:"flex-end",
+      marginVertical:8,
+      borderColor:"#f9ce40"
     }
 
     ,title:{
@@ -277,7 +310,14 @@ const styles = StyleSheet.create({
       margin:5,
       //fadingEdgeLength:10
 
-    }
+    },
+    gridContainer: {
+      padding: 5,
+    },
+    itemContainer: {
+      flex: 1,
+      margin: 5,
+    },
 });
 
 
