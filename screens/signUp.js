@@ -297,7 +297,7 @@ const SignUp = ({navigation}) =>{
               
               <TextInput placeholder={"Email address*"}  onChangeText={(email) => setEmail(email)} style={styles.TextInput}/>
               <TextInput placeholder={"Phone Number*"} keyboardType='numeric'  maxLength={11} onChangeText={(pNumber) => setPNumber(pNumber)}  style={styles.TextInput}/>
-              <Text>Enter your address:</Text>
+              <Text style={{marginTop:10,marginBottom:-5,fontWeight:"bold"}}>Enter your full address:</Text>
               
                 
                 
@@ -307,11 +307,11 @@ const SignUp = ({navigation}) =>{
               <TextInput placeholder={"address Line 2"}  onChangeText={(address2) => setAddress2(address2)} style={styles.TextInput}/>
               <TextInput placeholder={"City*"}  onChangeText={(addressCity) => setAddressCity(addressCity)} style={styles.TextInput}/>
               <TextInput placeholder={"Post Code*"}  onChangeText={(addressPostCode) => setAddressPostCode(addressPostCode)} style={styles.TextInput}/>
-              <Text >Password must containt at least:</Text>
-              <Text >1 UpperCase Character</Text>
-              <Text >1 LowerCase Character</Text>
-              <Text >1 Special Character</Text>
-              <Text >at least 8 characters long</Text>
+              <Text style={{fontWeight:"bold"}} >Password must containt at least:</Text>
+              <Text >* 1 UpperCase Character</Text>
+              <Text >* 1 LowerCase Character</Text>
+              <Text >* 1 Special Character</Text>
+              <Text >* at least 8 characters long</Text>
               <TextInput placeholder={"Password*"}  onChangeText={(password) => setPassword(password)} secureTextEntry={true} style={styles.TextInput}/>
               <TextInput placeholder={"Confirm password*"}  onChangeText={(conPasswrod) => setConPassword(conPasswrod)} secureTextEntry={true} style={styles.TextInput}/>
               <TouchableOpacity style={styles.buttonsView} onPress={()=>handelSubmit()}>
@@ -411,7 +411,9 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 1,
+    marginTop:10,
+    marginBottom:-5,
+    // marginTop: 1,
     backgroundColor: "#1A1918",
   },
   LoginText:{

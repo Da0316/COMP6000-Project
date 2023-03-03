@@ -11,12 +11,22 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Caption } from "react-native-paper";
 
+// const MyImage = () => {
+//   return (
+//     <View style={styles.container}>
+//       <Image
+//         style={styles.image}
+//         source={{ uri: 'https://raptor.kent.ac.uk/proj/comp6000/project/08/images/O.png' }}
+//       />
+//     </View>
+//   );
 
 const Login = ({navigation}) =>{
   const [userName,setuserName] =useState('');
   const [password,setpassword] =useState('');
-
+  const [image, setImage] = useState('https://raptor.kent.ac.uk/proj/comp6000/project/08/images/O.png');
   const [message, setMessage] =useState('');
   const saveData = async (id) => {
     try {
@@ -78,46 +88,58 @@ const Login = ({navigation}) =>{
     
   return (
     <View style={styles.container}>
-      <View style={styles.circle_2} ></View>
-      <View style={styles.circle_1}>
-        <Text style={styles.welcome}>Welcome</Text>
-      </View>
-      <Text style={styles.title}>Login</Text>
-      <StatusBar style="auto" />
+      <View style={styles.upper}>
+      <Image source={{
+                
+                uri: image
+            }}
+            style={styles.image}
+        />
 
-      <View style={styles.inputView}>
+      </View>
+      <View style={styles.lower}>
+        {/* <View style={styles.circle_2} ></View>
+        <View style={styles.circle_1}> */}
+          <Text style={styles.welcome}>Welcome</Text>
+        {/* </View> */}
+        <Text style={styles.title}>Welcome</Text>
+        <StatusBar style="auto" />
+        <Caption style={{marginBottom:8,}}>Login with your username and password</Caption>
+
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Username"
+            placeholderTextColor={'#3c3744'}
+            onChangeText={(userName) => setuserName(userName)}
+          />
+        </View>
+
+
+        <View style={styles.inputView}>
         <TextInput
-          style={styles.TextInput}
-          placeholder="Username"
-          placeholderTextColor={'#3c3744'}
-          onChangeText={(userName) => setuserName(userName)}
-        />
-      </View>
+            style={styles.TextInput}
+            placeholder="Password"
+            placeholderTextColor={'#3c3744'}
+            onChangeText={(password) => setpassword(password)}
+            secureTextEntry
+          />
+        </View>
+        <TouchableOpacity style={styles.LoginBtn} onPress={()=>signIn()}>
+          <Text style={styles.LoginText}>Login</Text>
+        </TouchableOpacity>
 
-
-      <View style={styles.inputView}>
-      <TextInput
-          style={styles.TextInput}
-          placeholder="Password"
-          placeholderTextColor={'#3c3744'}
-          onChangeText={(password) => setpassword(password)}
-          secureTextEntry
-        />
-      </View>
-      <TouchableOpacity style={styles.LoginBtn} onPress={()=>signIn()}>
-        <Text style={styles.LoginText}>Login</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={onForgetPassword}>
-        <Text style={styles.forgotPassBtn}>Forgot Password?</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={onForgetPassword}>
+          <Text style={styles.forgotPassBtn}>Forgot Password?</Text>
+        </TouchableOpacity>
 
 
 
-    <Text>Don't have an account?</Text>
-      <TouchableOpacity style={styles.LoginBtn} onPress={()=>navigation.navigate('SignUp')}>
-        <Text style={styles.LoginText}>signUp</Text>
-      </TouchableOpacity>
+      <Text>Don't have an account?</Text>
+        <TouchableOpacity style={styles.SignUpBtn} onPress={()=>navigation.navigate('SignUp')}>
+          <Text style={styles.LoginText}>Signup</Text>
+        </TouchableOpacity>
+        </View>
     </View>
   );
 }
@@ -149,41 +171,48 @@ const styles = StyleSheet.create({
       {rotate: "0deg"},
     ],
     
-
-    //ios
-    // shadowColor:"#000000",
-    // shadowOffset:{
-    //   width:0,
-    //   height:4
-    // },
-    // shadowOpacity:0.25,
-    // shadowRadius:4
-    
   },
-  container: {
+  upper:{
+    flex:2,
+    width:"100%",
+    height:"100%",
+    backgroundColor:"#000000",
+    justifyContent:"center"
+
+  }
+  ,lower:{
+    flex:6,
+    width:"100%",
+    borderTopRightRadius:80,
+    borderTopLeftRadius:80,
+    backgroundColor:"#fff",
+    alignItems:"center",
+
+  },container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
   },
   title:{
-    padding:30,
+    padding:20,
     fontSize: 25,
-    //fontFamily:"Cochin",
-    marginBottom:50,
+    letterSpacing:7,
+    marginBottom:10,
     color:"FFFFFF"
   },
   welcome:{
     position:"absolute",
     fontSize: 25,
     color:"#EBEBEB",
+    letterSpacing:7
   },
   inputView:{
     backgroundColor: '#EBEBEB',
     borderRadius:30,
     width:"70%",
     height:45,
-    marginBottom:20,
+    marginBottom:10,
     alignItems:"center"
   },
   TextInput:{
@@ -209,6 +238,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#1A1918",
   },
   LoginText:{
-    color: "#C2C3C4",
+    color: "#fff",
+    fontWeight:"bold",
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    position: "absolute",
+    width: "40%",
+    height: "80%",
+    justifyContent: "flex-end",
+    alignSelf:"center",
+
+  },
+  SignUpBtn:{
+    backgroundColor:"#f9ce40",
+    width: "70%",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 1,
   }
 });
