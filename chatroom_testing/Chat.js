@@ -1,9 +1,18 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {GiftedChat} from 'react-native-gifted-chat';
-import {Image, TouchableOpacity, StyleSheet, Text, View, Alert, Modal, Pressable} from 'react-native';
-import {getDatabase, get, ref, onValue, off, update, remove, child, set} from 'firebase/database'
+import React, { useCallback, useEffect, useState } from "react";
+import { GiftedChat } from "react-native-gifted-chat";
+import {
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  Modal,
+  Pressable,
+} from "react-native";
+import { getDatabase, get, ref, onValue, off, update } from "firebase/database";
 
-function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
+function Chat({ onBack, myData, selectedUser, viewUser, leaveReview }) {
   const [messages, setMessages] = useState([]);
   const [hostUser, setHostUser] = useState(null);
   const [jobCompleted, setJobCompleted] = useState(null);
@@ -20,17 +29,17 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
     const chatroomRef = ref(database, `chatrooms/${selectedUser.chatroomId}`);
     const loadData = async () => {
       const myChatroom = await fetchMessages();
-      
-      setJobID(myChatroom.jobID)
+
+      setJobID(myChatroom.jobID);
       setFirstUser(myChatroom.firstUser);
       setSecondUser(myChatroom.secondUser);
       setMessages(renderMessages(myChatroom.messages));
     };
-    
+
     loadData();
 
     // set chatroom change listener
-    onValue(chatroomRef, snapshot => {
+    onValue(chatroomRef, (snapshot) => {
       const data = snapshot.val();
       setMessages(renderMessages(data.messages));
     });
@@ -42,7 +51,7 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
   }, [fetchMessages, renderMessages, selectedUser.chatroomId]);
 
   const renderMessages = useCallback(
-    msgs => {
+    (msgs) => {
       return msgs
         ? msgs.reverse().map((msg, index) => ({
             ...msg,
@@ -64,19 +73,14 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
           }))
         : [];
     },
-    [
-      myData.avatar,
-      myData.username,
-      selectedUser.avatar,
-      selectedUser.username,
-    ],
+    [myData.avatar, myData.username, selectedUser.avatar, selectedUser.username]
   );
 
   const fetchMessages = useCallback(async () => {
     const database = getDatabase();
 
     const snapshot = await get(
-      ref(database, `chatrooms/` + selectedUser.chatroomId),
+      ref(database, `chatrooms/` + selectedUser.chatroomId)
     );
 
     return snapshot.val();
@@ -103,35 +107,38 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
         ],
       });
 
-      setMessages(prevMessages => GiftedChat.append(prevMessages, msg));
+      setMessages((prevMessages) => GiftedChat.append(prevMessages, msg));
     },
-    [fetchMessages, myData.username, selectedUser.chatroomId],
+    [fetchMessages, myData.username, selectedUser.chatroomId]
   );
 
   useEffect(() => {
-     fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/checkReject.php', {
-      method: 'post',
-      header: {
-        Accept: 'application/json',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        jobID: jobID,
-        userIDLoggedIn: global.userID,
-        userNameOtherUser: selectedUser.username,
-      }),
-    })    
-    .then((response) => response.json())
-    .then((responseJson) => {
-      if (responseJson == 1){
-        setJobRejected(false);
-      } else if (responseJson == -1){
-        setJobRejected(true);
+    fetch(
+      "https://raptor.kent.ac.uk/proj/comp6000/project/08/checkReject.php",
+      {
+        method: "post",
+        header: {
+          Accept: "application/json",
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          jobID: jobID,
+          userIDLoggedIn: global.userID,
+          userNameOtherUser: selectedUser.username,
+        }),
       }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    )
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson == 1) {
+          setJobRejected(false);
+        } else if (responseJson == -1) {
+          setJobRejected(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [messages]);
 
   const showConfirmationPopup = () => {
@@ -170,236 +177,262 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
         },
       ]
     );
-  }
+  };
 
   const checkPriorReview = async () => {
-    await fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/checkPriorReview.php', {
-      method: 'post',
-      header: {
-        Accept: 'application/json',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        jobID: jobID,
-        user
-      }),
-    })    
-    .then((response) => response.json())
-    .then((responseJson) => {
-      if (responseJson == true){
-        setReviewLeft(true);
-      } else if (responseJson == false){
-        setReviewLeft(false);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-
-  const review = () => {
-    checkPriorReview();
-    if (reviewLeft) {
-      return ([<Text key="1" style={styles.text}>Review Left</Text>]);
-    } else {
-      return ([
-        <TouchableOpacity key="1" onPress={() => leaveReview(jobID, userPostingReview)}>
-          <Text style={styles.text}>Leave a Review?</Text>
-        </TouchableOpacity>
-      ]);
-    }
-  };
-  
-
-  const handleJobCompleted = async () => {
-
-      const database = getDatabase();
-      const chatroomRef = await get(ref(database, `chatrooms/` + selectedUser.chatroomId));
-      const jobID = chatroomRef.val().jobID;
-
-      const currentChatroom = await fetchMessages();
-
-      const lastMessages = currentChatroom.messages || [];
-
-      update(ref(database, `chatrooms/` + selectedUser.chatroomId), {
-        messages: [
-          ...lastMessages,
-          {
-            text: "Job has been complete. Thank you!",
-            sender: myData.username,
-            createdAt: new Date(),
-          },
-        ],
-      });
-      try {
-        await fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/jobComplete.php', {
-          method: 'post',
-          header: {
-            Accept: 'application/json',
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify({
-            jobID: jobID,
-          }),
-        })    
-        .then((response) => response.json())
-        .then((responseJson) => {
-          if (responseJson == -1){
-            console.log("error");
-          }
-        })
-        .catch((error) => {
-              console.log(error);
-        });
-    } catch {
-      console.log(error);
-    }
-  }
-
-  const removeUser = async () => {
-    const database = getDatabase();
-      const chatroomRef = await get(ref(database, `chatrooms/` + selectedUser.chatroomId));
-      const jobID = chatroomRef.val().jobID;
-
-      const currentChatroom = await fetchMessages();
-
-      const lastMessages = currentChatroom.messages || [];
-
-      update(ref(database, `chatrooms/` + selectedUser.chatroomId), {
-        messages: [
-          ...lastMessages,
-          {
-            text: selectedUser.username + " has been removed from the job, applications have reopened.",
-            sender: myData.username,
-            createdAt: new Date(),
-          },
-        ],
-      });
-      try {
-        await fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/removeUser.php', {
-        method: 'post',
+    await fetch(
+      "https://raptor.kent.ac.uk/proj/comp6000/project/08/checkPriorReview.php",
+      {
+        method: "post",
         header: {
-          Accept: 'application/json',
-          'Content-type': 'application/json',
+          Accept: "application/json",
+          "Content-type": "application/json",
         },
         body: JSON.stringify({
           jobID: jobID,
+          user,
         }),
-      })    
+      }
+    )
       .then((response) => response.json())
       .then((responseJson) => {
-        if (responseJson == "error"){
-          console.log("error");
-        } else {
-          Alert("User removed successfully!");
+        if (responseJson == true) {
+          setReviewLeft(true);
+        } else if (responseJson == false) {
+          setReviewLeft(false);
         }
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const review = () => {
+    checkPriorReview();
+    if (reviewLeft) {
+      return [
+        <Text key="1" style={styles.text}>
+          Review Left
+        </Text>,
+      ];
+    } else {
+      return [
+        <TouchableOpacity
+          key="1"
+          onPress={() => leaveReview(jobID, userPostingReview)}
+        >
+          <Text style={styles.text}>Leave a Review?</Text>
+        </TouchableOpacity>,
+      ];
+    }
+  };
+
+  const handleJobCompleted = async () => {
+    const database = getDatabase();
+    const chatroomRef = await get(
+      ref(database, `chatrooms/` + selectedUser.chatroomId)
+    );
+    const jobID = chatroomRef.val().jobID;
+
+    const currentChatroom = await fetchMessages();
+
+    const lastMessages = currentChatroom.messages || [];
+
+    update(ref(database, `chatrooms/` + selectedUser.chatroomId), {
+      messages: [
+        ...lastMessages,
+        {
+          text: "Job has been complete. Thank you!",
+          sender: myData.username,
+          createdAt: new Date(),
+        },
+      ],
+    });
+    try {
+      await fetch(
+        "https://raptor.kent.ac.uk/proj/comp6000/project/08/jobComplete.php",
+        {
+          method: "post",
+          header: {
+            Accept: "application/json",
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            jobID: jobID,
+          }),
+        }
+      )
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson == -1) {
+            console.log("error");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch {
       console.log(error);
     }
-  }
+  };
+
+  const removeUser = async () => {
+    const database = getDatabase();
+    const chatroomRef = await get(
+      ref(database, `chatrooms/` + selectedUser.chatroomId)
+    );
+    const jobID = chatroomRef.val().jobID;
+
+    const currentChatroom = await fetchMessages();
+
+    const lastMessages = currentChatroom.messages || [];
+
+    update(ref(database, `chatrooms/` + selectedUser.chatroomId), {
+      messages: [
+        ...lastMessages,
+        {
+          text:
+            selectedUser.username +
+            " has been removed from the job, applications have reopened.",
+          sender: myData.username,
+          createdAt: new Date(),
+        },
+      ],
+    });
+    try {
+      await fetch(
+        "https://raptor.kent.ac.uk/proj/comp6000/project/08/removeUser.php",
+        {
+          method: "post",
+          header: {
+            Accept: "application/json",
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            jobID: jobID,
+          }),
+        }
+      )
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson == "error") {
+            console.log("error");
+          } else {
+            Alert("User removed successfully!");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch {
+      console.log(error);
+    }
+  };
 
   const findUserID = (uname) => {
-    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/chatViewUser.php', {
-      method: 'post',
-      header : {
-        Accept: 'application/json',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: uname,
+    fetch(
+      "https://raptor.kent.ac.uk/proj/comp6000/project/08/chatViewUser.php",
+      {
+        method: "post",
+        header: {
+          Accept: "application/json",
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          username: uname,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setUserPostingReview(responseJson);
       })
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      setUserPostingReview(responseJson);
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-  fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php', {
-    method: 'post',
+  fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php", {
+    method: "post",
     header: {
-      Accept: 'application/json',
-      'Content-type': 'application/json',
+      Accept: "application/json",
+      "Content-type": "application/json",
     },
     body: JSON.stringify({
-      userID: global.userID
+      userID: global.userID,
     }),
   })
-  .then((response) => response.json())
-  .then((responseJson) => {
-    if (responseJson[1] == firstUser){
-      setHostUser(true);
-      findUserID(secondUser);
-    } else {
-      setHostUser(false);
-      findUserID(firstUser);
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-  })  
-
-
-  if (jobID != null){
-    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php', {
-      method: 'post',
-      header: {
-        Accept: 'application/json',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        jobID: jobID
-      }),
-    })
     .then((response) => response.json())
     .then((responseJson) => {
-      if (responseJson[6] == 1){
-        setJobCompleted(true);
-      } else if (responseJson[6] == 0){
-        setJobCompleted(false);
+      if (responseJson[1] == firstUser) {
+        setHostUser(true);
+        findUserID(secondUser);
+      } else {
+        setHostUser(false);
+        findUserID(firstUser);
       }
     })
     .catch((error) => {
       console.log(error);
     });
+
+  if (jobID != null) {
+    fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php", {
+      method: "post",
+      header: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        jobID: jobID,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson[6] == 1) {
+          setJobCompleted(true);
+        } else if (responseJson[6] == 0) {
+          setJobCompleted(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   console.log(jobRejected);
-  if (jobRejected == false){
-    if (jobCompleted != null){
-      if (hostUser == true){ 
-        if (jobCompleted == false){
+  if (jobRejected == false) {
+    if (jobCompleted != null) {
+      if (hostUser == true) {
+        if (jobCompleted == false) {
           return (
             <>
-              <Modal 
-              animationType='slide'
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                setModalVisible(!modalVisible);
-              }}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
                     <Pressable
                       style={[styles.button, styles.buttonClose]}
-                      onPress={showConfirmationPopup}>
+                      onPress={showConfirmationPopup}
+                    >
                       <Text style={styles.textStyle}>Job Completed?</Text>
                     </Pressable>
                     <Pressable
                       style={[styles.button, styles.buttonClose]}
-                      onPress={showDeleteConfirmationPopup}>
+                      onPress={showDeleteConfirmationPopup}
+                    >
                       <Text style={styles.textStyle}>Remove User From Job</Text>
                     </Pressable>
                     <Pressable
                       style={[styles.button, styles.buttonClose]}
-                      onPress={() => setModalVisible(!modalVisible)}>
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
                       <Text style={styles.textStyle}>Hide Modal</Text>
                     </Pressable>
                   </View>
@@ -407,39 +440,42 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
               </Modal>
               <View style={styles.actionBar}>
                 <TouchableOpacity onPress={onBack}>
-                  <Image source={require('./assets/back.png')}/>
+                  <Image source={require("./assets/back.png")} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={viewUser}>
-                    <Text style={styles.text}>{selectedUser.username}</Text>
+                  <Text style={styles.text}>{selectedUser.username}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
-                      <Image source={require('./assets/options.png')} style={{ width: 30, height: 30 }}/>
+                  <Image
+                    source={require("./assets/options.png")}
+                    style={{ width: 30, height: 30 }}
+                  />
                 </TouchableOpacity>
               </View>
               <GiftedChat
                 messages={messages}
-                onSend={newMessage => onSend(newMessage)}
+                onSend={(newMessage) => onSend(newMessage)}
                 user={{
                   _id: myData.username,
                 }}
               />
             </>
           );
-        } else if (jobCompleted == true){
+        } else if (jobCompleted == true) {
           return (
             <>
               <View style={styles.actionBar}>
                 <TouchableOpacity onPress={onBack}>
-                  <Image source={require('./assets/back.png')}/>
+                  <Image source={require("./assets/back.png")} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={viewUser}>
-                    <Text style={styles.text}>{selectedUser.username}</Text>
+                  <Text style={styles.text}>{selectedUser.username}</Text>
                 </TouchableOpacity>
                 <View>{review()}</View>
               </View>
               <GiftedChat
                 messages={messages}
-                onSend={newMessage => onSend(newMessage)}
+                onSend={(newMessage) => onSend(newMessage)}
                 user={{
                   _id: myData.username,
                 }}
@@ -447,42 +483,42 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
             </>
           );
         }
-      } else if (hostUser == false){
-        if (jobCompleted == false){
+      } else if (hostUser == false) {
+        if (jobCompleted == false) {
           return (
             <>
               <View style={styles.actionBar}>
                 <TouchableOpacity onPress={onBack}>
-                  <Image source={require('./assets/back.png')}/>
+                  <Image source={require("./assets/back.png")} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={viewUser}>
-                    <Text style={styles.text}>{selectedUser.username}</Text>
+                  <Text style={styles.text}>{selectedUser.username}</Text>
                 </TouchableOpacity>
               </View>
               <GiftedChat
                 messages={messages}
-                onSend={newMessage => onSend(newMessage)}
+                onSend={(newMessage) => onSend(newMessage)}
                 user={{
                   _id: myData.username,
                 }}
               />
             </>
           );
-        } else if (jobCompleted == true){
+        } else if (jobCompleted == true) {
           return (
             <>
               <View style={styles.actionBar}>
                 <TouchableOpacity onPress={onBack}>
-                  <Image source={require('./assets/back.png')}/>
+                  <Image source={require("./assets/back.png")} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={viewUser}>
-                    <Text style={styles.text}>{selectedUser.username}</Text>
+                  <Text style={styles.text}>{selectedUser.username}</Text>
                 </TouchableOpacity>
                 <View>{review()}</View>
               </View>
               <GiftedChat
                 messages={messages}
-                onSend={newMessage => onSend(newMessage)}
+                onSend={(newMessage) => onSend(newMessage)}
                 user={{
                   _id: myData.username,
                 }}
@@ -492,12 +528,12 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
         }
       }
     }
-  } else if (jobRejected == true){
+  } else if (jobRejected == true) {
     return (
       <>
         <View style={styles.actionBar}>
           <TouchableOpacity onPress={onBack}>
-            <Image source={require('./assets/back.png')}/>
+            <Image source={require("./assets/back.png")} />
           </TouchableOpacity>
           <TouchableOpacity onPress={viewUser}>
             <Text style={styles.text}>{selectedUser.username}</Text>
@@ -505,7 +541,7 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
         </View>
         <GiftedChat
           messages={messages}
-          onSend={newMessage => onSend(newMessage)}
+          onSend={(newMessage) => onSend(newMessage)}
           user={{
             _id: myData.username,
           }}
@@ -513,35 +549,35 @@ function Chat({onBack, myData, selectedUser, viewUser, leaveReview}) {
       </>
     );
   }
-};
+}
 
 export default Chat;
 
 const styles = StyleSheet.create({
   actionBar: {
-    backgroundColor: '#cacaca',
+    backgroundColor: "#cacaca",
     height: 41,
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   text: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 22,
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -556,14 +592,14 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
   },
   textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

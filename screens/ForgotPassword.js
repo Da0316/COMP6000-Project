@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View
-} from 'react-native';
+  View,
+} from "react-native";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleResetPassword = () => {
     if (!email) {
-      setMessage('Please enter your email address.');
+      setMessage("Please enter your email address.");
       return;
     }
 
@@ -26,7 +26,9 @@ const ForgotPassword = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Forgot Password</Text>
-      <Text style={styles.subtitle}>Enter your email address to reset your password.</Text>
+      <Text style={styles.subtitle}>
+        Enter your email address to reset your password.
+      </Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -47,47 +49,47 @@ const ForgotPassword = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16
+    fontWeight: "bold",
+    marginBottom: 16,
   },
   subtitle: {
     fontSize: 16,
-    marginBottom: 32
+    marginBottom: 32,
   },
   inputContainer: {
-    width: '80%',
+    width: "80%",
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#CCCCCC',
+    borderColor: "#CCCCCC",
     borderRadius: 8,
     paddingLeft: 8,
-    paddingRight: 8
+    paddingRight: 8,
   },
   input: {
-    height: 40
+    height: 40,
   },
   message: {
     marginTop: 16,
-    marginBottom: 16
+    marginBottom: 16,
   },
   button: {
-    backgroundColor: '#1A1918',
+    backgroundColor: "#1A1918",
     borderRadius: 8,
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 8,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16
-  }
+    color: "#FFFFFF",
+    fontSize: 16,
+  },
 });
 
 export default ForgotPassword;

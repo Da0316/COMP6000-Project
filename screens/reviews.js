@@ -2,17 +2,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useSyncExternalStore } from "react";
 import {
   View,
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   TextInput,
   Image,
   FlatList,
 } from "react-native";
-import LinearGradient from 'react-native-linear-gradient';
 import {
   Avatar,
   Title,
@@ -21,27 +18,16 @@ import {
   TouchableRipple,
 } from "react-native-paper";
 
-// const MyScreen = () => {
-//   return (
-//     <LinearGradient colors={['#ff7f50', '#ff6b98']} style={styles.container}>
-//       {/* Add your screen content here */}
-//     </LinearGradient>
-//   );
-// };
-
 const Reviews = ({ navigation, route }) => {
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [reviews, setReview] = useState([]);
   const [write, setWrite] = useState([]);
   const [userID, setUserID] = useState("");
-  const [userPostedID,setUserPostedID]=useState(route?.params?.userPostedID)
+  const [userPostedID, setUserPostedID] = useState(route?.params?.userPostedID);
   const isFocused = useIsFocused();
-
   const [jobid, setJobId] = useState(route?.params?.jobId);
-  const handleSubmit = () => {
-    // Submit the review to the database
-  };
+
   const readData = async () => {
     try {
       const value = await AsyncStorage.getItem("user_id");
@@ -57,24 +43,21 @@ const Reviews = ({ navigation, route }) => {
     const params = new FormData();
     params.append("jobid", jobid);
     params.append("type", "post");
-    params.append("userposted",jobid)
-    //console.log("params", params);
+    params.append("userposted", jobid);
     const res = await axios.post(
       `https://raptor.kent.ac.uk/proj/comp6000/project/08/reviews.php`,
       params
     );
     setReview(res?.data);
-    //console.log("res", res.data);
   };
   const writeReview = async (jobid, userid, rating, reviewtxt) => {
     const params = new FormData();
     params.append("jobid", jobid);
     params.append("userID", userid);
     params.append("review_text", reviewtxt);
-    params.append("userposted",userPostedID)
+    params.append("userposted", userPostedID);
     params.append("rating", rating);
 
-    //console.log("params", params);
     const res = await axios.post(
       `https://raptor.kent.ac.uk/proj/comp6000/project/08/writereviews.php`,
       params
@@ -85,7 +68,6 @@ const Reviews = ({ navigation, route }) => {
     } else {
       alert("something went wrong");
     }
-    //console.log("res", res.data);
   };
   useEffect(() => {
     readData();
@@ -93,26 +75,23 @@ const Reviews = ({ navigation, route }) => {
   }, [write, isFocused]);
   const renderItem = ({ item }) => {
     return (
-      <View style={{
-        width: "90%",
-        //justifyContent:"center",
-        //alignItems:"center",
-        //alignContent:"center",
-        alignSelf:"center",
-        marginVertical: 10,
-        elevation: 10,
-        padding: 10,
-        backgroundColor: "#EBEBEB",
-        //flex: 1,
-        borderBottomLeftRadius:20,
-        borderBottomRightRadius:20,
-        borderTopLeftRadius:20,
-        borderTopRightRadius:20
-          }}>
+      <View
+        style={{
+          width: "90%",
+          alignSelf: "center",
+          marginVertical: 10,
+          elevation: 10,
+          padding: 10,
+          backgroundColor: "#EBEBEB",
+          borderBottomLeftRadius: 20,
+          borderBottomRightRadius: 20,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
-            //justifyContent:"flex-start"
           }}
         >
           <Image
@@ -136,7 +115,7 @@ const Reviews = ({ navigation, route }) => {
                 width: "45%",
                 marginLeft: 15,
                 fontSize: 16,
-                fontWeight:"bold"
+                fontWeight: "bold",
               }}
             >
               {item?.username}
@@ -146,8 +125,8 @@ const Reviews = ({ navigation, route }) => {
                 width: "100%",
                 marginLeft: 15,
                 fontSize: 12,
-                marginBottom:3,
-                marginTop:-1
+                marginBottom: 3,
+                marginTop: -1,
               }}
             >
               {item?.timestamp}
@@ -156,7 +135,7 @@ const Reviews = ({ navigation, route }) => {
               style={{
                 width: "90%",
                 marginLeft: 15,
-                marginBottom:5,
+                marginBottom: 5,
                 fontSize: 16,
               }}
             >
@@ -167,14 +146,21 @@ const Reviews = ({ navigation, route }) => {
         <View
           style={{
             backgroundColor: "#fff",
-                elevation:4,
-                borderBottomLeftRadius:10,
-                borderBottomRightRadius:10,
-                borderTopLeftRadius:10,
-                borderTopRightRadius:10
+            elevation: 4,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
           }}
         >
-          <Text style={{ width: "80%", textAlign:"auto", paddingVertical: 20, paddingHorizontal:8 }}>
+          <Text
+            style={{
+              width: "80%",
+              textAlign: "auto",
+              paddingVertical: 20,
+              paddingHorizontal: 8,
+            }}
+          >
             {item?.review_text}
           </Text>
         </View>
@@ -184,100 +170,107 @@ const Reviews = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Title style={{ fontWeight: "bold", marginLeft: 25 }}>
-                Write a Review
-           </Title>
-        <View style={{ alignItems: "center",marginBottom:50,backgroundColor:"#f9ce40"}}>
-            <View style={styles.reviewSection}>
-              <Text style={{marginBottom:5}}>Your Rating:</Text>
-              <View style={styles.ratingSection}>
-                <TouchableRipple onPress={() => setRating(1)}>
-                  <Avatar.Icon
-                    style={
-                      rating >= 1
-                        ? { backgroundColor: "#ffa534" }
-                        : { backgroundColor: "#939394" }
-                    }
-                    icon="star"
-                  />
-                </TouchableRipple>
-                <TouchableRipple onPress={() => setRating(2)}>
-                  <Avatar.Icon
-                    style={
-                      rating >= 2
-                        ? { backgroundColor: "#ffa534" }
-                        : { backgroundColor: "#939394" }
-                    }
-                    icon="star"
-                  />
-                </TouchableRipple>
-                <TouchableRipple onPress={() => setRating(3)}>
-                  <Avatar.Icon
-                    style={
-                      rating >= 3
-                        ? { backgroundColor: "#ffa534" }
-                        : { backgroundColor: "#939394" }
-                    }
-                    icon="star"
-                  />
-                </TouchableRipple>
-                <TouchableRipple onPress={() => setRating(4)}>
-                  <Avatar.Icon
-                    style={
-                      rating >= 4
-                        ? { backgroundColor: "#ffa534" }
-                        : { backgroundColor: "#939394" }
-                    }
-                    icon="star"
-                  />
-                </TouchableRipple>
-                <TouchableRipple onPress={() => setRating(5)}>
-                  <Avatar.Icon
-                    style={
-                      rating >= 5
-                        ? { backgroundColor: "#ffa534" }
-                        : { backgroundColor: "#939394" }
-                    }
-                    icon="star"
-                  />
-                </TouchableRipple>
-              </View>
-              <Text>Write review:</Text>
-              <TextInput
-                style={styles.reviewForm}
-                placeholder="Your Thoughts"
-                placeholderTextColor={"#777777"}
-                value={reviewText}
-                onChangeText={(text) => setReviewText(text)}
-                //style={{backgroundColor:"#EBEBEB"}}
+        Write a Review
+      </Title>
+      <View
+        style={{
+          alignItems: "center",
+          marginBottom: 50,
+          backgroundColor: "#f9ce40",
+        }}
+      >
+        <View style={styles.reviewSection}>
+          <Text style={{ marginBottom: 5 }}>Your Rating:</Text>
+          <View style={styles.ratingSection}>
+            <TouchableRipple onPress={() => setRating(1)}>
+              <Avatar.Icon
+                style={
+                  rating >= 1
+                    ? { backgroundColor: "#ffa534" }
+                    : { backgroundColor: "#939394" }
+                }
+                icon="star"
               />
-              <TouchableRipple
-                style={styles.submitButton}
-                onPress={() => {
-                  readData();
-                  writeReview(jobid, userID, rating, reviewText);
-                }}
-              >
-                <Text style={{color:"#fff", fontWeight:"bold"}}>Submit</Text>
-              </TouchableRipple>
-            </View>
+            </TouchableRipple>
+            <TouchableRipple onPress={() => setRating(2)}>
+              <Avatar.Icon
+                style={
+                  rating >= 2
+                    ? { backgroundColor: "#ffa534" }
+                    : { backgroundColor: "#939394" }
+                }
+                icon="star"
+              />
+            </TouchableRipple>
+            <TouchableRipple onPress={() => setRating(3)}>
+              <Avatar.Icon
+                style={
+                  rating >= 3
+                    ? { backgroundColor: "#ffa534" }
+                    : { backgroundColor: "#939394" }
+                }
+                icon="star"
+              />
+            </TouchableRipple>
+            <TouchableRipple onPress={() => setRating(4)}>
+              <Avatar.Icon
+                style={
+                  rating >= 4
+                    ? { backgroundColor: "#ffa534" }
+                    : { backgroundColor: "#939394" }
+                }
+                icon="star"
+              />
+            </TouchableRipple>
+            <TouchableRipple onPress={() => setRating(5)}>
+              <Avatar.Icon
+                style={
+                  rating >= 5
+                    ? { backgroundColor: "#ffa534" }
+                    : { backgroundColor: "#939394" }
+                }
+                icon="star"
+              />
+            </TouchableRipple>
           </View>
-          <View style={styles.pastReviews}>
-            <Text style={{fontSize:20,fontWeight:"bold", marginLeft:20}}>Reviews:</Text>
-            {reviews.length === 0 ? (
-              <Text style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}>
-                  No reviews available
-              </Text>
-              ) : (
-              <FlatList
-                data={reviews}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                showsVerticalScrollIndicator={false}
-                inverted={true}
-                style={styles.reviewList}
-              />
-              )}
-            </View>
+          <Text>Write review:</Text>
+          <TextInput
+            style={styles.reviewForm}
+            placeholder="Your Thoughts"
+            placeholderTextColor={"#777777"}
+            value={reviewText}
+            onChangeText={(text) => setReviewText(text)}
+          />
+          <TouchableRipple
+            style={styles.submitButton}
+            onPress={() => {
+              readData();
+              writeReview(jobid, userID, rating, reviewText);
+            }}
+          >
+            <Text style={{ color: "#fff", fontWeight: "bold" }}>Submit</Text>
+          </TouchableRipple>
+        </View>
+      </View>
+      <View style={styles.pastReviews}>
+        <Text style={{ fontSize: 20, fontWeight: "bold", marginLeft: 20 }}>
+          Reviews:
+        </Text>
+        {reviews.length === 0 ? (
+          <Text style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}>
+            No reviews available
+          </Text>
+        ) : (
+          <FlatList
+            data={reviews}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            inverted={true}
+            style={styles.reviewList}
+          />
+        )}
+      </View>
     </SafeAreaView>
   );
 };
@@ -285,57 +278,37 @@ const Reviews = ({ navigation, route }) => {
 export default Reviews;
 
 const styles = StyleSheet.create({
-  // main:{
-  //   //flex:1,
-  //   //height:"50%",
-  //   //position:"absolute",
-  //   //justifyContent:"flex-start",
-  //   backgroundColor:"green",
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   margin:5,
-
-  // }
   container: {
     flex: 1,
-    //justifyContent: "space-between",
     backgroundColor: "#f9ce40",
-    //paddingVertical:20
-    //justifyContent:"center",
-    //justifyContent:"space-evenly",
-    //alignItems: "center",
-    //margin:5,
   },
   reviewForm: {
     backgroundColor: "#EBEBEB",
     paddingTop: 5,
     marginTop: 10,
-    elevation:5,
-    //marginLeft:10,
-    paddingLeft:10,
+    elevation: 5,
+    paddingLeft: 10,
     paddingBottom: 40,
-    borderBottomLeftRadius:20,
-    borderBottomRightRadius:20,
-    borderTopLeftRadius:20,
-    borderTopRightRadius:20
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   ratingSection: {
     flexDirection: "row",
     justifyContent: "center",
-    marginVertical:5
+    marginVertical: 5,
   },
   reviewSection: {
-    //position: "absolute",
-    //bottom: 10,
     width: "90%",
     backgroundColor: "white",
     padding: 10,
-    elevation:10,
-    marginVertical:10,
+    elevation: 10,
+    marginVertical: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    borderBottomRightRadius:20,
-    borderBottomLeftRadius:20
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
   },
   submitButton: {
     width: "100%",
@@ -349,14 +322,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     elevation: 5,
   },
-  pastReviews:{
-    //height:"100%",
-    marginTop:-50,
-    height:"auto",
-    
-    backgroundColor:"#f9ce40"
+  pastReviews: {
+    marginTop: -50,
+    height: "auto",
+
+    backgroundColor: "#f9ce40",
   },
-  reviewList:{
-    
-  }
+  reviewList: {},
 });

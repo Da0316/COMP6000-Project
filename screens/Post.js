@@ -2,25 +2,21 @@ import { useState, useEffect } from "react";
 import React from "react";
 import {
   SelectList,
-  MultipleSelectList,
 } from "react-native-dropdown-select-list";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import {
   StyleSheet,
   Text,
   View,
-  Image,
   TextInput,
-  Button,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from "react-native";
 
 const Post = ({ navigation }) => {
-  const [taskDetails, setTaskDetails] = useState('');
-  const [price, setPrice] = useState('');
-  const [taskTitle, setTaskTitle] = useState('');
+  const [taskDetails, setTaskDetails] = useState("");
+  const [price, setPrice] = useState("");
+  const [taskTitle, setTaskTitle] = useState("");
   const [specialities, setSpecialities] = useState([]);
   const [selected, setSelected] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -29,13 +25,16 @@ const Post = ({ navigation }) => {
   const [selectedSpecialties, setSelectedSpecialties] = useState([]);
 
   useEffect(() => {
-    fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php', {
-      method: 'post',
-      header: {
-        Accept: 'application/json',
-        'Content-type': 'application/json',
-      },
-    })
+    fetch(
+      "https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php",
+      {
+        method: "post",
+        header: {
+          Accept: "application/json",
+          "Content-type": "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((responseJson) => {
         let counter = 0;
@@ -53,21 +52,18 @@ const Post = ({ navigation }) => {
       .catch((error) => {
         alert(error);
       });
-      
-    }, []);
+  }, []);
 
-    
   handleSubmit = () => {
-    
     if (price == 0) {
       alert("You have to set a price");
-    }else if(taskTitle ==''){
+    } else if (taskTitle == "") {
       alert("You need to add a title");
-    }else if(taskDetails == ''){
+    } else if (taskDetails == "") {
       alert("You need to add Job details");
-    }else if (setSelected == false){
+    } else if (setSelected == false) {
       alert("You need to add an image");
-    }else {
+    } else {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/post.php", {
         method: "post",
         header: {
@@ -75,63 +71,51 @@ const Post = ({ navigation }) => {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-            taskT: taskTitle,
-            taskD: taskDetails,
-            p: price,
-            ID: global.userID,
-            speciality: selectedSpecialties,
-            image: selectedImageName,
+          taskT: taskTitle,
+          taskD: taskDetails,
+          p: price,
+          ID: global.userID,
+          speciality: selectedSpecialties,
+          image: selectedImageName,
         }),
       })
         .then((response) => response.text())
         .then((responseJson) => {
-          
-          if (responseJson == 1){
-            
-            
-            setTaskDetails('');
-            setPrice('');
+          if (responseJson == 1) {
+            setTaskDetails("");
+            setPrice("");
             setSelected(null);
-            setTaskTitle('');
+            setTaskTitle("");
             navigation.navigate("Home");
             alert("Job Added Successfully");
-          } else if (responseJson == -1){
-            alert("An error has occured")
+          } else if (responseJson == -1) {
+            alert("An error has occured");
           }
         })
         .catch((error) => {
           console.error(error);
         });
-        
-        
-        const formData = new FormData();
-        formData.append('name', {
-          name: selectedImageName, 
-          type: selectedImageType, 
-          uri: selectedImage });
-          
-          fetch('https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php',{
-            method: 'POST',
-            
-            // body: JSON.stringify({
-            //   name: filename, 
-            //   type: type, 
-            //   uri: localUri
-            // }),
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            body: formData
-        }).then((response) => response.text())
-          .then((responseJson) => {
-            
-          
-        }).catch((error) => {
+
+      const formData = new FormData();
+      formData.append("name", {
+        name: selectedImageName,
+        type: selectedImageType,
+        uri: selectedImage,
+      });
+
+      fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        body: formData,
+      })
+        .then((response) => response.text())
+        .then((responseJson) => {})
+        .catch((error) => {
           console.error(error);
         });
-      }
-
-
+    }
   };
 
   const showDatePicker = () => {
@@ -141,9 +125,7 @@ const Post = ({ navigation }) => {
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
-  
 
-  //image picker added 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -151,35 +133,25 @@ const Post = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      
-
-
-
-
-      //
-      //handleSubmit();
       let localUri = result.assets[0].uri;
-      let filename = localUri.split('/').pop();
+      let filename = localUri.split("/").pop();
 
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
-      
+
       setSelectedImage(localUri);
       setSelectedImageName(filename);
       setSelectedImageType(type);
       setSelected(true);
       const formData = new FormData();
-      formData.append('name', {
-          name: filename, 
-          type: type, 
-          uri: localUri });
-      
-
-      
+      formData.append("name", {
+        name: filename,
+        type: type,
+        uri: localUri,
+      });
     } else {
-      alert('You did not select any image.');
+      alert("You did not select any image.");
     }
-  
   };
 
   return (
@@ -193,13 +165,14 @@ const Post = ({ navigation }) => {
             onChangeText={(taskTitle) => setTaskTitle(taskTitle)}
           />
           <View style={styles.detailsContainer}>
-          <Text style={styles.baseText}>Tell us more about what are you looking for.</Text>
-          <TextInput
-            style={styles.taskDetails}
-            placeholder="task details"
-            //placeholderTextColor={"#3c3744"}
-            onChangeText={(taskDetails) => setTaskDetails(taskDetails)}
-          />
+            <Text style={styles.baseText}>
+              Tell us more about what are you looking for.
+            </Text>
+            <TextInput
+              style={styles.taskDetails}
+              placeholder="task details"
+              onChangeText={(taskDetails) => setTaskDetails(taskDetails)}
+            />
           </View>
           <View style={styles.specialityContainer}>
             <Text style={styles.baseText}>Task speciality:</Text>
@@ -208,7 +181,11 @@ const Post = ({ navigation }) => {
               data={specialities}
               save="value"
               label="Categories"
-              boxStyles={{marginVertical:5,backgroundColor:"#EBEBEB",borderColor:"#939394"}}
+              boxStyles={{
+                marginVertical: 5,
+                backgroundColor: "#EBEBEB",
+                borderColor: "#939394",
+              }}
             />
           </View>
 
@@ -217,26 +194,23 @@ const Post = ({ navigation }) => {
             <TextInput
               style={styles.priceBox}
               placeholder="£"
-              //placeholderTextColor={"#3c3744"}
               onChangeText={(price) => setPrice(price)}
             />
           </View>
           <View style={styles.ButtonsContainer}>
-          <TouchableOpacity
-            style={styles.pickImgBtn}
-            onPress={() => pickImageAsync()}
-          >
-            <Text style={styles.buttonText}>Upload Image</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.postBtn}
-            onPress={() => handleSubmit()}
-          >
-            <Text style={styles.buttonText}>Post</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.pickImgBtn}
+              onPress={() => pickImageAsync()}
+            >
+              <Text style={styles.buttonText}>Upload Image</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.postBtn}
+              onPress={() => handleSubmit()}
+            >
+              <Text style={styles.buttonText}>Post</Text>
+            </TouchableOpacity>
           </View>
-          
-          
         </View>
       </View>
     </ScrollView>
@@ -256,44 +230,36 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 20,
   },
-  taskContainer: {
-    
+  taskContainer: {},
+  detailsContainer: {
   },
-  detailsContainer:{
-    //flex:5
-
-  },specialityContainer :{
-
-  },PriceContainer:{
-    
-
-  },ButtonsContainer:{
+  specialityContainer: {},
+  PriceContainer: {},
+  ButtonsContainer: {
     justifyContent: "center",
-    alignContent:"center",
-
-  },taskDetails: {
+    alignContent: "center",
+  },
+  taskDetails: {
     backgroundColor: "#EBEBEB",
     paddingBottom: 60,
-    borderRadius:20,
+    borderRadius: 20,
     marginVertical: 10,
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
   },
-  priceBox:{
+  priceBox: {
     backgroundColor: "#EBEBEB",
-    borderRadius:15,
+    borderRadius: 15,
     marginVertical: 10,
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
   },
-  SelectList: {
+  SelectList: {},
 
-  },
-  
   tasktitleBox: {
     backgroundColor: "#EBEBEB",
-    marginHorizontal:5,
-    paddingHorizontal:10,
+    marginHorizontal: 5,
+    paddingHorizontal: 10,
     marginVertical: 10,
-    borderRadius:20
+    borderRadius: 20,
   },
   postBtn: {
     width: "90%",
@@ -306,9 +272,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
-    alignSelf:"center",
+    alignSelf: "center",
   },
-  pickImgBtn:{
+  pickImgBtn: {
     width: "90%",
     color: "#000",
     height: 50,
@@ -319,20 +285,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 5,
-    alignSelf:"center",
-
-  },buttonText: {
+    alignSelf: "center",
+  },
+  buttonText: {
     fontWeight: "bold",
     fontSize: 15,
     padding: 10,
   },
-  baseText:{
+  baseText: {
     fontSize: 15,
-    marginHorizontal:1,
-    paddingVertical:1,
-    paddingHorizontal:1,
+    marginHorizontal: 1,
+    paddingVertical: 1,
+    paddingHorizontal: 1,
     marginVertical: 1,
-    fontFamily:"sans-serif-medium"
-
-  }
+    fontFamily: "sans-serif-medium",
+  },
 });

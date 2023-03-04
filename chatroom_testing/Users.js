@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Button,
   FlatList,
@@ -8,33 +8,31 @@ import {
   TextInput,
   View,
   Text,
-} from 'react-native';
+} from "react-native";
 
-export default function Users({
-  users,
-  onClickUser,
-}) {
-  const renderUser = ({item}) => {
+export default function Users({ users, onClickUser }) {
+  const renderUser = ({ item }) => {
     return (
       <Pressable onPress={() => onClickUser(item)} style={styles.row}>
-        <Image style={styles.avatar} source={{uri: item.avatar}} />
+        <Image style={styles.avatar} source={{ uri: item.avatar }} />
         <Text>{item.username}</Text>
       </Pressable>
     );
   };
-  if (users == null){
+
+  if (users == null) {
     return (
       <View>
         <Text>No Chats Active</Text>
       </View>
     );
   } else {
-    return (  
+    return (
       <>
         <FlatList
           data={users}
           renderItem={renderUser}
-          keyExtractor={item => item.username.toString()}
+          keyExtractor={(item) => item.username.toString()}
         />
       </>
     );
@@ -48,18 +46,18 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 10,
-    alignItems: 'center',
-    borderBottomColor: '#cacaca',
+    alignItems: "center",
+    borderBottomColor: "#cacaca",
     borderBottomWidth: 1,
   },
   addUser: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 10,
   },
   input: {
-    backgroundColor: '#cacaca',
+    backgroundColor: "#cacaca",
     flex: 1,
     marginRight: 10,
     padding: 10,
