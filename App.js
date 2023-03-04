@@ -4,7 +4,7 @@ import SignUp from "./screens/signUp";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./screens/homeScreen";
 import Login from "./screens/login";
-import ChatApp from "./chatroom_testing/ChatApp";
+import ChatApp from "./chat_system/ChatApp";
 import Post from "./screens/Post";
 import Profile from "./screens/profile";
 import EditProfile from "./screens/editProfile";
