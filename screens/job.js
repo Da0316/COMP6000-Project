@@ -35,14 +35,14 @@ function Job({ route, navigation }) {
         setJobDescription(responseJson[3]);
         setPostedDate(responseJson[4]);
         if (responseJson[5] == "0") {
-          setAccepted("No");
+          ("No");
         } else {
-          setAccepted("Yes");
+          ("Yes");
         }
         if (responseJson[6] == "0") {
-          setCompleted("No");
+          ("No");
         } else {
-          setCompleted("Yes");
+          ("Yes");
         }
         setPrice(responseJson[7]);
         setUsername(responseJson[8]);
