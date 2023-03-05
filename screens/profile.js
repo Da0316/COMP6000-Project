@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  Alert,
 } from "react-native";
 import {
   Avatar,
@@ -18,6 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import { FlatList } from "react-native-gesture-handler";
+import { lastIndexOf } from "lodash";
 
 const Profile = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -48,7 +50,7 @@ const Profile = ({ navigation }) => {
       alert("Failed to fetch the input from storage");
     }
   };
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item,index }) => {
     return (
       <View
         style={{
@@ -70,6 +72,7 @@ const Profile = ({ navigation }) => {
           }}
         >
           <Image
+          key={index+1}
             source={{
               uri: item?.image
                 ? "https://raptor.kent.ac.uk/proj/comp6000/project/08/" +
@@ -86,6 +89,7 @@ const Profile = ({ navigation }) => {
           />
           <View>
             <Text
+            key={index+2}
               style={{
                 width: "40%",
                 marginLeft: 15,
@@ -96,6 +100,7 @@ const Profile = ({ navigation }) => {
               {item?.username}
             </Text>
             <Caption
+            key={index+3}
               style={{
                 width: "100%",
                 marginLeft: 15,
@@ -107,6 +112,7 @@ const Profile = ({ navigation }) => {
               {item?.timestamp}
             </Caption>
             <Text
+            key={index+4}
               style={{
                 width: "90%",
                 marginLeft: 15,
@@ -128,7 +134,7 @@ const Profile = ({ navigation }) => {
             borderTopRightRadius: 10,
           }}
         >
-          <Text style={{ width: "80%", textAlign: "justify", padding: 10 }}>
+          <Text key={index+5} style={{ width: "80%", textAlign: "justify", padding: 10 }}>
             {item?.review_text}
           </Text>
         </View>
@@ -229,10 +235,19 @@ const Profile = ({ navigation }) => {
     .catch((error) => {
       alert(error);
     });
-
+  const logoutUser=async(key)=> {
+      try {
+          await AsyncStorage.removeItem(key);
+          navigation.navigate("Login")
+          return true;
+      }
+      catch(exception) {
+          return false;
+      }
+  }
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      {/* <ScrollView style={styles.scrollView}> */}
         <View style={styles.userInfoSection}>
           <View style={{ flexDirection: "row", marginTop: 15 }}>
             <Avatar.Image
@@ -287,7 +302,20 @@ const Profile = ({ navigation }) => {
           <View style={styles.userBtnWrapper}>
             <TouchableRipple
               style={styles.logoutBtn}
-              onPress={() => navigation.navigate("Login")}
+              onPress={() => {
+
+                Alert.alert( 'Logout ',
+                'Do you really want to logout?', [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {text: 'OK', onPress: () => {logoutUser("user_id")}},
+                ]);
+              }
+                
+            }
             >
               <Text style={styles.userBtnTxt}> Logout</Text>
             </TouchableRipple>
@@ -320,16 +348,17 @@ const Profile = ({ navigation }) => {
         <View style={styles.reviewSection}>
           <Text style={styles.title3}>Reviews</Text>
           <FlatList
+          key={11}
             nestedScrollEnabled
             data={reviews}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item?.id}
             showsVerticalScrollIndicator={false}
             inverted={true}
             style={{ flex: 1, width: "95%" }}
           />
         </View>
-      </ScrollView>
+      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };

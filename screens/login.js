@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,13 +11,16 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Caption } from "react-native-paper";
-
+import { useIsFocused } from "@react-navigation/native";
 const Login = ({ navigation }) => {
+
   const [userName, setuserName] = useState("");
   const [password, setpassword] = useState("");
+  const isFocused=useIsFocused();
   const [image, setImage] = useState(
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/O.png"
   );
+  useEffect(()=>{setuserName(""),setpassword("")},[isFocused])
   const [message, setMessage] = useState("");
   const saveData = async (id) => {
     try {
@@ -88,6 +91,7 @@ const Login = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
+            value={userName}
             placeholder="Username"
             placeholderTextColor={"#3c3744"}
             onChangeText={(userName) => setuserName(userName)}
@@ -98,6 +102,7 @@ const Login = ({ navigation }) => {
           <TextInput
             style={styles.TextInput}
             placeholder="Password"
+            value={password}
             placeholderTextColor={"#3c3744"}
             onChangeText={(password) => setpassword(password)}
             secureTextEntry

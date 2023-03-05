@@ -108,7 +108,7 @@ const EditProfile = ({ navigation }) => {
       allowsEditing: true,
       quality: 1,
     });
-    setImage(result.uri);
+    setImage(result.assets[0].uri);
     if (!result.canceled) {
       let localUri = result.assets[0].uri;
       let filename = localUri.split("/").pop();

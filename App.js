@@ -19,7 +19,8 @@ import Reviews from "./screens/reviews";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SearchScreen from "./screens/SearchScreen";
 import ForgotPassword from "./screens/ForgotPassword";
-
+console.disableYellowBox=true;
+console.reportErrorsAsExceptions=false
 //will need to import any new screens
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
