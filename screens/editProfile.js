@@ -71,7 +71,6 @@ const EditProfile = ({ navigation }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
       });
   }, [userID]);
 
@@ -90,7 +89,6 @@ const EditProfile = ({ navigation }) => {
         type: "image/jpeg",
         name: Math.floor(Math.random() * 100) + 1 + "photo.jpg",
       });
-    console.log("params", params);
     const res = await axios.post(
       `https://raptor.kent.ac.uk/proj/comp6000/project/08/edit.php`,
       params
@@ -100,7 +98,6 @@ const EditProfile = ({ navigation }) => {
     } else {
       alert("something went wrong");
     }
-    console.log("res", res.data);
   };
 
   const pickImageAsync = async () => {

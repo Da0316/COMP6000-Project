@@ -53,6 +53,7 @@ const Profile = ({ navigation }) => {
   const renderItem = ({ item,index }) => {
     return (
       <View
+      key={item?.id}
         style={{
           marginBottom: 20,
           elevation: 1,
@@ -66,6 +67,7 @@ const Profile = ({ navigation }) => {
         }}
       >
         <View
+              key={item?.id}
           style={{
             flexDirection: "row",
             justifyContent: "flex-start",
@@ -87,7 +89,8 @@ const Profile = ({ navigation }) => {
               borderWidth: 1,
             }}
           />
-          <View>
+          <View       key={item?.id}
+>
             <Text
             key={index+2}
               style={{
@@ -155,6 +158,7 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     readData();
+    console.disableYellowBox = true;
   }, [isFocused]);
 
   useEffect(() => {
@@ -188,9 +192,10 @@ const Profile = ({ navigation }) => {
           }
         }
         fetchReview();
+        console.disableYellowBox = true;
+
       })
       .catch((error) => {
-        console.log(error);
       });
   }, [userID, isFocused]);
 
@@ -348,11 +353,11 @@ const Profile = ({ navigation }) => {
         <View style={styles.reviewSection}>
           <Text style={styles.title3}>Reviews</Text>
           <FlatList
-          key={11}
+           key={11}
             nestedScrollEnabled
             data={reviews}
             renderItem={renderItem}
-            keyExtractor={(item) => item?.id}
+            keyExtractor={(item) => item?.timestamp}
             showsVerticalScrollIndicator={false}
             inverted={true}
             style={{ flex: 1, width: "95%" }}
