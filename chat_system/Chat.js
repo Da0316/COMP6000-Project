@@ -23,7 +23,6 @@ function Chat({ onBack, myData, selectedUser, viewUser, leaveReview }) {
   const [reviewLeft, setReviewLeft] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [jobRejected, setJobRejected] = useState(null);
-
   useEffect(() => {
     const database = getDatabase();
     const chatroomRef = ref(database, `chatrooms/${selectedUser.chatroomId}`);
@@ -190,7 +189,6 @@ function Chat({ onBack, myData, selectedUser, viewUser, leaveReview }) {
         },
         body: JSON.stringify({
           jobID: jobID,
-          user,
         }),
       }
     )
@@ -442,7 +440,8 @@ function Chat({ onBack, myData, selectedUser, viewUser, leaveReview }) {
                 <TouchableOpacity onPress={onBack}>
                   <Image source={require("./assets/back.png")} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={viewUser}>
+                <TouchableOpacity style={styles.username} onPress={viewUser}>
+                  <Image style={styles.avatar} source={{ uri: selectedUser.avatar }} />
                   <Text style={styles.text}>{selectedUser.username}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -468,7 +467,8 @@ function Chat({ onBack, myData, selectedUser, viewUser, leaveReview }) {
                 <TouchableOpacity onPress={onBack}>
                   <Image source={require("./assets/back.png")} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={viewUser}>
+                <TouchableOpacity style={styles.username} onPress={viewUser}>
+                  <Image style={styles.avatar} source={{ uri: selectedUser.avatar }} />
                   <Text style={styles.text}>{selectedUser.username}</Text>
                 </TouchableOpacity>
                 <View>{review()}</View>
@@ -491,7 +491,8 @@ function Chat({ onBack, myData, selectedUser, viewUser, leaveReview }) {
                 <TouchableOpacity onPress={onBack}>
                   <Image source={require("./assets/back.png")} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={viewUser}>
+                <TouchableOpacity style={styles.username} onPress={viewUser}>
+                  <Image style={styles.avatar} source={{ uri: selectedUser.avatar }} />
                   <Text style={styles.text}>{selectedUser.username}</Text>
                 </TouchableOpacity>
               </View>
@@ -511,7 +512,8 @@ function Chat({ onBack, myData, selectedUser, viewUser, leaveReview }) {
                 <TouchableOpacity onPress={onBack}>
                   <Image source={require("./assets/back.png")} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={viewUser}>
+                <TouchableOpacity style={styles.username} onPress={viewUser}>
+                  <Image style={styles.avatar} source={{ uri: selectedUser.avatar }} />
                   <Text style={styles.text}>{selectedUser.username}</Text>
                 </TouchableOpacity>
                 <View>{review()}</View>
@@ -535,7 +537,8 @@ function Chat({ onBack, myData, selectedUser, viewUser, leaveReview }) {
           <TouchableOpacity onPress={onBack}>
             <Image source={require("./assets/back.png")} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={viewUser}>
+          <TouchableOpacity style={styles.username} onPress={viewUser}>
+            <Image style={styles.avatar} source={{ uri: selectedUser.avatar }} />
             <Text style={styles.text}>{selectedUser.username}</Text>
           </TouchableOpacity>
         </View>
@@ -561,6 +564,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  username: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   text: {
     fontWeight: "bold",
@@ -601,5 +608,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  avatar: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
   },
 });
