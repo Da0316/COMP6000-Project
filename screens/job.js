@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import e from "cors";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
+  Image,
 } from "react-native";
 
 function Job({ route, navigation }) {
@@ -16,48 +18,59 @@ function Job({ route, navigation }) {
   const [price, setPrice] = useState(null);
   const [username, setUsername] = useState(null);
   const [sameUser, setSameUser] = useState(null);
-  try {
-    fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php", {
-      method: "post",
-      header: {
-        Accept: "application/json",
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        jobID: jobID,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setUserPostedID(responseJson[0]);
-        setSpeciality(responseJson[1]);
-        setJobTitle(responseJson[2]);
-        setJobDescription(responseJson[3]);
-        setPostedDate(responseJson[4]);
-        if (responseJson[5] == "0") {
-          ("No");
-        } else {
-          ("Yes");
-        }
-        if (responseJson[6] == "0") {
-          ("No");
-        } else {
-          ("Yes");
-        }
-        setPrice(responseJson[7]);
-        setUsername(responseJson[8]);
-        if (userPostedID == global.userID) {
-          setSameUser(true);
-        } else {
-          setSameUser(false);
-        }
+  const [image, setImage] = useState("https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg");
+
+ // useEffect(() = {})
+    try {
+      fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php", {
+        method: "post",
+        header: {
+          Accept: "application/json",
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          jobID: jobID,
+        }),
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  } catch (error) {
-    console.log(error);
-  }
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setUserPostedID(responseJson[0]);
+          setSpeciality(responseJson[1]);
+          setJobTitle(responseJson[2]);
+          setJobDescription(responseJson[3]);
+          setPostedDate(responseJson[4]);
+          if (responseJson[5] == "0") {
+            ("No");
+          } else {
+            ("Yes");
+          }
+          if (responseJson[6] == "0") {
+            ("No");
+          } else {
+            ("Yes");
+          }
+          setPrice(responseJson[7]);
+          setUsername(responseJson[8]);
+          if (userPostedID == global.userID) {
+            setSameUser(true);
+          } else {
+            setSameUser(false);
+          }
+
+          if (responseJson[9] == null){
+            setImage("https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/1.jpeg");
+          }else{
+            setImage("https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/" + responseJson[9]);
+          }
+
+          
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
 
   const renderButton = () => {
     if (sameUser == false) {
@@ -128,6 +141,14 @@ function Job({ route, navigation }) {
           <Text style={styles.baseText}>
             Hourly rate: <Text style={styles.answer}> £{price}</Text>
           </Text>
+        </View>
+        <View>
+          <Image
+            source={{
+              uri: image,
+            }}
+            style={styles.image}
+          />
         </View>
       </View>
       <View style={styles.lower}>
@@ -205,5 +226,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 3,
     marginBottom: -3,
+  },
+  image: {
+    height: '60%',
+    width: '100%',
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius:10,
+    borderBottomRightRadius:10,
   },
 });
