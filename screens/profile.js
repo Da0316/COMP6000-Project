@@ -50,10 +50,10 @@ const Profile = ({ navigation }) => {
       alert("Failed to fetch the input from storage");
     }
   };
-  const renderItem = ({ item,index }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <View
-      key={item?.id}
+        key={item?.id}
         style={{
           marginBottom: 20,
           elevation: 1,
@@ -67,14 +67,14 @@ const Profile = ({ navigation }) => {
         }}
       >
         <View
-              key={item?.id}
+          key={item?.id}
           style={{
             flexDirection: "row",
             justifyContent: "flex-start",
           }}
         >
           <Image
-          key={index+1}
+            key={index + 1}
             source={{
               uri: item?.image
                 ? "https://raptor.kent.ac.uk/proj/comp6000/project/08/" +
@@ -89,10 +89,9 @@ const Profile = ({ navigation }) => {
               borderWidth: 1,
             }}
           />
-          <View       key={item?.id}
->
+          <View key={item?.id}>
             <Text
-            key={index+2}
+              key={index + 2}
               style={{
                 width: "40%",
                 marginLeft: 15,
@@ -103,7 +102,7 @@ const Profile = ({ navigation }) => {
               {item?.username}
             </Text>
             <Caption
-            key={index+3}
+              key={index + 3}
               style={{
                 width: "100%",
                 marginLeft: 15,
@@ -115,7 +114,7 @@ const Profile = ({ navigation }) => {
               {item?.timestamp}
             </Caption>
             <Text
-            key={index+4}
+              key={index + 4}
               style={{
                 width: "90%",
                 marginLeft: 15,
@@ -137,7 +136,10 @@ const Profile = ({ navigation }) => {
             borderTopRightRadius: 10,
           }}
         >
-          <Text key={index+5} style={{ width: "80%", textAlign: "justify", padding: 10 }}>
+          <Text
+            key={index + 5}
+            style={{ width: "80%", textAlign: "justify", padding: 10 }}
+          >
             {item?.review_text}
           </Text>
         </View>
@@ -193,10 +195,8 @@ const Profile = ({ navigation }) => {
         }
         fetchReview();
         console.disableYellowBox = true;
-
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   }, [userID, isFocused]);
 
   fetch(
@@ -240,129 +240,129 @@ const Profile = ({ navigation }) => {
     .catch((error) => {
       alert(error);
     });
-  const logoutUser=async(key)=> {
-      try {
-          await AsyncStorage.removeItem(key);
-          navigation.navigate("Login")
-          return true;
-      }
-      catch(exception) {
-          return false;
-      }
-  }
+  const logoutUser = async (key) => {
+    try {
+      await AsyncStorage.removeItem(key);
+      navigation.navigate("Login");
+      return true;
+    } catch (exception) {
+      return false;
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       {/* <ScrollView style={styles.scrollView}> */}
-        <View style={styles.userInfoSection}>
-          <View style={{ flexDirection: "row", marginTop: 15 }}>
-            <Avatar.Image
-              source={{
-                uri: placeholder
-                  ? "https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/" +
-                    selectedImageName
-                  : "https://raptor.kent.ac.uk/proj/comp6000/project/08/" +
-                    selectedImageName,
-              }}
-              size={90}
-            />
-            <View style={{ marginLeft: 20 }}>
-              <Title
-                style={[
-                  styles.title,
-                  {
-                    marginTop: 15,
-                    marginBottom: 5,
-                  },
-                ]}
-              >
-                {firstname} {lastname}
-              </Title>
-              <Caption style={styles.caption}>{username}</Caption>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.userInfoSection}>
-          <View style={styles.row}>
-            <Icon name="map-marker-radius" color="#1A1918" size={20} />
-            <Text style={{ color: "#1A1918", marginLeft: 20 }}>{address}</Text>
-          </View>
-          <View style={styles.row}>
-            <Icon name="phone" color="#1A1918" size={20} />
-            <Text style={{ color: "#1A1918", marginLeft: 20 }}>
-              {phone_number}
-            </Text>
-          </View>
-          <View style={styles.row}>
-            <Icon name="email" color="#1A1918" size={20} />
-            <Text style={{ color: "#1A1918", marginLeft: 20 }}>{email}</Text>
-          </View>
-          <View style={styles.row}>
-            <Icon name="calendar" color="#1A1918" size={20} />
-            <Text style={{ color: "#1A1918", marginLeft: 20 }}>
-              {date_of_birth}
-            </Text>
-          </View>
-
-          <View style={styles.userBtnWrapper}>
-            <TouchableRipple
-              style={styles.logoutBtn}
-              onPress={() => {
-
-                Alert.alert( 'Logout ',
-                'Do you really want to logout?', [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {text: 'OK', onPress: () => {logoutUser("user_id")}},
-                ]);
-              }
-                
-            }
-            >
-              <Text style={styles.userBtnTxt}> Logout</Text>
-            </TouchableRipple>
-            <TouchableRipple
-              style={styles.userBtn}
-              onPress={() => navigation.navigate("EditProfile")}
-            >
-              <Text style={styles.userBtnTxt}> Edit Profile</Text>
-            </TouchableRipple>
-            <TouchableRipple
-              style={styles.userBtn}
-              onPress={() => navigation.navigate("ViewJobsAndApps")}
-            >
-              <Text style={styles.userBtnTxt}>View Jobs/Applications</Text>
-            </TouchableRipple>
-          </View>
-
-          <View style={styles.infoBoxWrapper}>
-            <View style={styles.infoBox}>
-              <Text style={styles.title2}>Ratings Level</Text>
-              <Caption style={styles.titlenum}>{score}</Caption>
-            </View>
-            <View style={styles.infoBox}>
-              <Text style={styles.title2}>Jobs Completed</Text>
-              <Caption style={styles.titlenum}>{jobsCompleted}</Caption>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.reviewSection}>
-          <Text style={styles.title3}>Reviews</Text>
-          <FlatList
-           key={11}
-            nestedScrollEnabled
-            data={reviews}
-            renderItem={renderItem}
-            keyExtractor={(item) => item?.timestamp}
-            showsVerticalScrollIndicator={false}
-            inverted={true}
-            style={{ flex: 1, width: "95%" }}
+      <View style={styles.userInfoSection}>
+        <View style={{ flexDirection: "row", marginTop: 15 }}>
+          <Avatar.Image
+            source={{
+              uri: placeholder
+                ? "https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/" +
+                  selectedImageName
+                : "https://raptor.kent.ac.uk/proj/comp6000/project/08/" +
+                  selectedImageName,
+            }}
+            size={90}
           />
+          <View style={{ marginLeft: 20 }}>
+            <Title
+              style={[
+                styles.title,
+                {
+                  marginTop: 15,
+                  marginBottom: 5,
+                },
+              ]}
+            >
+              {firstname} {lastname}
+            </Title>
+            <Caption style={styles.caption}>{username}</Caption>
+          </View>
         </View>
+      </View>
+
+      <View style={styles.userInfoSection}>
+        <View style={styles.row}>
+          <Icon name="map-marker-radius" color="#1A1918" size={20} />
+          <Text style={{ color: "#1A1918", marginLeft: 20 }}>{address}</Text>
+        </View>
+        <View style={styles.row}>
+          <Icon name="phone" color="#1A1918" size={20} />
+          <Text style={{ color: "#1A1918", marginLeft: 20 }}>
+            {phone_number}
+          </Text>
+        </View>
+        <View style={styles.row}>
+          <Icon name="email" color="#1A1918" size={20} />
+          <Text style={{ color: "#1A1918", marginLeft: 20 }}>{email}</Text>
+        </View>
+        <View style={styles.row}>
+          <Icon name="calendar" color="#1A1918" size={20} />
+          <Text style={{ color: "#1A1918", marginLeft: 20 }}>
+            {date_of_birth}
+          </Text>
+        </View>
+
+        <View style={styles.userBtnWrapper}>
+          <TouchableRipple
+            style={styles.logoutBtn}
+            onPress={() => {
+              Alert.alert("Logout ", "Do you really want to logout?", [
+                {
+                  text: "Cancel",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel",
+                },
+                {
+                  text: "OK",
+                  onPress: () => {
+                    logoutUser("user_id");
+                  },
+                },
+              ]);
+            }}
+          >
+            <Text style={styles.userBtnTxt}> Logout</Text>
+          </TouchableRipple>
+          <TouchableRipple
+            style={styles.userBtn}
+            onPress={() => navigation.navigate("EditProfile")}
+          >
+            <Text style={styles.userBtnTxt}> Edit Profile</Text>
+          </TouchableRipple>
+          <TouchableRipple
+            style={styles.userBtn}
+            onPress={() => navigation.navigate("ViewJobsAndApps")}
+          >
+            <Text style={styles.userBtnTxt}>View Jobs/Applications</Text>
+          </TouchableRipple>
+        </View>
+
+        <View style={styles.infoBoxWrapper}>
+          <View style={styles.infoBox}>
+            <Text style={styles.title2}>Ratings Level</Text>
+            <Caption style={styles.titlenum}>{score}</Caption>
+          </View>
+          <View style={styles.infoBox}>
+            <Text style={styles.title2}>Jobs Completed</Text>
+            <Caption style={styles.titlenum}>{jobsCompleted}</Caption>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.reviewSection}>
+        <Text style={styles.title3}>Reviews</Text>
+        <FlatList
+          key={11}
+          nestedScrollEnabled
+          data={reviews}
+          renderItem={renderItem}
+          keyExtractor={(item) => item?.timestamp}
+          showsVerticalScrollIndicator={false}
+          inverted={true}
+          style={{ flex: 1, width: "95%" }}
+        />
+      </View>
       {/* </ScrollView> */}
     </SafeAreaView>
   );

@@ -77,7 +77,6 @@ function StackScreen() {
     </Tab.Navigator>
   );
 }
-
 const Stack = createStackNavigator();
 
 export default function App(navigation) {
