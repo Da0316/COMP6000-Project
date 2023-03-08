@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+//import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import {
   StyleSheet,
@@ -83,7 +83,7 @@ const Login = ({ navigation }) => {
       <View style={styles.lower}>
         <Text style={styles.welcome}>Welcome</Text>
         <Text style={styles.title}>Welcome</Text>
-        <StatusBar style="auto" />
+        {/* <StatusBar style="auto" /> */}
         <Caption style={{ marginBottom: 8 }}>
           Login with your username and password
         </Caption>

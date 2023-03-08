@@ -41,5 +41,5 @@ if (isset($_POST['submit'])) {
   
     // redirect to the profile page
     header('location: profile.php');
-  
+}
 ?>
