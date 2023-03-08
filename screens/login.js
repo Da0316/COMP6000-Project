@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import {
   StyleSheet,
@@ -6,22 +5,23 @@ import {
   View,
   Image,
   TextInput,
-  Button,
   TouchableOpacity,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Caption } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
-const Login = ({ navigation }) => {
+
+const Login = ({navigation}) => {
 
   const [userName, setuserName] = useState("");
   const [password, setpassword] = useState("");
-  const isFocused=useIsFocused();
+  const isFocused = useIsFocused();
   const [image, setImage] = useState(
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/O.png"
   );
   useEffect(()=>{setuserName(""),setpassword("")},[isFocused])
   const [message, setMessage] = useState("");
+
   const saveData = async (id) => {
     try {
       await AsyncStorage.setItem("user_id", id);
@@ -34,7 +34,8 @@ const Login = ({ navigation }) => {
     // Navigate to the ForgotPassword screen/modal
     navigation.navigate("ForgotPassword");
   };
-  signIn = () => {
+
+  const signIn = () => {
     if (userName == "") {
       alert("Please enter username");
     } else if (password == "") {
@@ -83,7 +84,6 @@ const Login = ({ navigation }) => {
       <View style={styles.lower}>
         <Text style={styles.welcome}>Welcome</Text>
         <Text style={styles.title}>Welcome</Text>
-        <StatusBar style="auto" />
         <Caption style={{ marginBottom: 8 }}>
           Login with your username and password
         </Caption>
