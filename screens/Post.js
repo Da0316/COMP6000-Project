@@ -162,15 +162,18 @@ const Post = ({ navigation }) => {
           <TextInput
             style={styles.tasktitleBox}
             placeholder="task Title"
+            maxLength={20}
             onChangeText={(taskTitle) => setTaskTitle(taskTitle)}
           />
           <View style={styles.detailsContainer}>
             <Text style={styles.baseText}>
-              Tell us more about what are you looking for.
+              Tell us more about your job:
             </Text>
             <TextInput
               style={styles.taskDetails}
               placeholder="task details"
+              maxLength={300}
+              multiline={true}
               onChangeText={(taskDetails) => setTaskDetails(taskDetails)}
             />
           </View>
@@ -193,6 +196,8 @@ const Post = ({ navigation }) => {
             <Text style={styles.baseText}>Price(per hour):</Text>
             <TextInput
               style={styles.priceBox}
+              maxLength={10}
+              keyboardType= "phone-pad" //phone pad becuase we only need to enter numbers here
               placeholder="£"
               onChangeText={(price) => setPrice(price)}
             />
@@ -225,12 +230,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     alignContent: "center",
+    
   },
   title: {
     flex: 1,
     fontSize: 20,
   },
-  taskContainer: {},
+  taskContainer: {
+    maxWidth: '60%',
+  },
   detailsContainer: {
   },
   specialityContainer: {},
@@ -245,6 +253,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginVertical: 10,
     paddingHorizontal: 10,
+    
   },
   priceBox: {
     backgroundColor: "#EBEBEB",
@@ -260,6 +269,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 10,
     borderRadius: 20,
+    
+    
   },
   postBtn: {
     width: "90%",
