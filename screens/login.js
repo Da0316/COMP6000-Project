@@ -95,6 +95,7 @@ const Login = ({ navigation }) => {
             placeholder="Username"
             placeholderTextColor={"#3c3744"}
             onChangeText={(userName) => setuserName(userName)}
+            testID="usernameTest"
           />
         </View>
 
@@ -106,9 +107,10 @@ const Login = ({ navigation }) => {
             placeholderTextColor={"#3c3744"}
             onChangeText={(password) => setpassword(password)}
             secureTextEntry
+            testID="passwordTest"
           />
         </View>
-        <TouchableOpacity style={styles.LoginBtn} onPress={() => signIn()}>
+        <TouchableOpacity testID="loginButton" style={styles.LoginBtn} onPress={() => signIn()}>
           <Text style={styles.LoginText}>Login</Text>
         </TouchableOpacity>
 

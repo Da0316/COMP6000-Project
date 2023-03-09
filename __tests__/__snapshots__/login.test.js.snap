@@ -272,3 +272,276 @@ exports[`<Login /> renders correctly 1`] = `
   </View>
 </View>
 `;
+
+exports[`snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#000000",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      {
+        "backgroundColor": "#000000",
+        "flex": 2,
+        "height": "100%",
+        "justifyContent": "center",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "uri": "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/O.png",
+        }
+      }
+      style={
+        {
+          "alignSelf": "center",
+          "flex": 1,
+          "height": "80%",
+          "justifyContent": "flex-end",
+          "position": "absolute",
+          "resizeMode": "cover",
+          "width": "40%",
+        }
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#fff",
+        "borderTopLeftRadius": 80,
+        "borderTopRightRadius": 80,
+        "flex": 6,
+        "width": "100%",
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#EBEBEB",
+          "fontSize": 25,
+          "letterSpacing": 7,
+          "position": "absolute",
+        }
+      }
+    >
+      Welcome
+    </Text>
+    <Text
+      style={
+        {
+          "color": "FFFFFF",
+          "fontSize": 25,
+          "letterSpacing": 7,
+          "marginBottom": 10,
+          "padding": 20,
+        }
+      }
+    >
+      Welcome
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "rgba(28, 27, 31, 1)",
+          },
+          {
+            "textAlign": "left",
+          },
+          [
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "rgba(28, 27, 31, 0.54)",
+              "writingDirection": "ltr",
+            },
+            [
+              {
+                "fontSize": 12,
+                "letterSpacing": 0.4,
+                "lineHeight": 20,
+                "marginVertical": 2,
+              },
+              {
+                "marginBottom": 8,
+              },
+            ],
+          ],
+        ]
+      }
+    >
+      Login with your username and password
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#EBEBEB",
+          "borderRadius": 30,
+          "height": 45,
+          "marginBottom": 10,
+          "width": "70%",
+        }
+      }
+    >
+      <TextInput
+        onChangeText={[Function]}
+        placeholder="Username"
+        placeholderTextColor="#3c3744"
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "height": 50,
+            "padding": 10,
+          }
+        }
+        value=""
+      />
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#EBEBEB",
+          "borderRadius": 30,
+          "height": 45,
+          "marginBottom": 10,
+          "width": "70%",
+        }
+      }
+    >
+      <TextInput
+        onChangeText={[Function]}
+        placeholder="Password"
+        placeholderTextColor="#3c3744"
+        secureTextEntry={true}
+        style={
+          {
+            "alignItems": "center",
+            "flex": 1,
+            "height": 50,
+            "padding": 10,
+          }
+        }
+        value=""
+      />
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#1A1918",
+          "borderRadius": 25,
+          "height": 50,
+          "justifyContent": "center",
+          "marginTop": 1,
+          "opacity": 1,
+          "width": "70%",
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#fff",
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Login
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "opacity": 1,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "height": 30,
+            "marginBottom": 10,
+            "marginTop": 5,
+          }
+        }
+      >
+        Forgot Password?
+      </Text>
+    </View>
+    <Text>
+      Don't have an account?
+    </Text>
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#f9ce40",
+          "borderRadius": 25,
+          "height": 50,
+          "justifyContent": "center",
+          "marginTop": 1,
+          "opacity": 1,
+          "width": "70%",
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#fff",
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Signup
+      </Text>
+    </View>
+  </View>
+</View>
+`;
