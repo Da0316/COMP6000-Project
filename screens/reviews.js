@@ -264,7 +264,7 @@ const Reviews = ({ navigation, route }) => {
           <FlatList
             data={reviews}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item?.timestamp}
             showsVerticalScrollIndicator={false}
             inverted={true}
             style={styles.reviewList}

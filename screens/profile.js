@@ -1,3 +1,4 @@
+// Import necessary dependencies
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -19,9 +20,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import { FlatList } from "react-native-gesture-handler";
-import { lastIndexOf } from "lodash";
 
+// Define the Profile component
 const Profile = ({ navigation }) => {
+// Declare and initialize all the state variables that will be used
   const [username, setUsername] = useState("");
   const [userID, setUserID] = useState("");
   const isFocused = useIsFocused();
@@ -39,6 +41,7 @@ const Profile = ({ navigation }) => {
   const [placeholder, setImagePlaceholder] = useState(false);
   const [score, setScore] = useState(false);
 
+  // Function to read data from AsyncStorage
   const readData = async () => {
     try {
       const value = await AsyncStorage.getItem("user_id");
@@ -50,10 +53,11 @@ const Profile = ({ navigation }) => {
       alert("Failed to fetch the input from storage");
     }
   };
+  // Function to render each item
   const renderItem = ({ item,index }) => {
     return (
       <View
-      key={item?.id}
+      key={item?.id} // unique key for each item
         style={{
           marginBottom: 20,
           elevation: 1,
@@ -67,14 +71,14 @@ const Profile = ({ navigation }) => {
         }}
       >
         <View
-              key={item?.id}
+              key={item?.id} 
           style={{
             flexDirection: "row",
             justifyContent: "flex-start",
           }}
         >
           <Image
-          key={index+1}
+          key={index+1} // unique key for each image
             source={{
               uri: item?.image
                 ? "https://raptor.kent.ac.uk/proj/comp6000/project/08/" +
@@ -89,10 +93,10 @@ const Profile = ({ navigation }) => {
               borderWidth: 1,
             }}
           />
-          <View       key={item?.id}
+          <View       key={item?.id} 
 >
             <Text
-            key={index+2}
+            key={index+2} // unique key for each text element
               style={{
                 width: "40%",
                 marginLeft: 15,
@@ -103,7 +107,7 @@ const Profile = ({ navigation }) => {
               {item?.username}
             </Text>
             <Caption
-            key={index+3}
+            key={index+3} // unique key for each caption element
               style={{
                 width: "100%",
                 marginLeft: 15,
@@ -144,6 +148,7 @@ const Profile = ({ navigation }) => {
       </View>
     );
   };
+  // function to fetch review data from API
   const fetchReview = async () => {
     const params = new FormData();
     params.append("jobid", userID);
@@ -153,14 +158,16 @@ const Profile = ({ navigation }) => {
       `https://raptor.kent.ac.uk/proj/comp6000/project/08/reviews.php`,
       params
     );
+     // update review state with fetched data
     setReview(res?.data);
   };
-
+    // call readData function to disable yellow box warnings
   useEffect(() => {
     readData();
     console.disableYellowBox = true;
   }, [isFocused]);
 
+   //
   useEffect(() => {
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php", {
       method: "post",
