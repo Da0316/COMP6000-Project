@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+//import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import {
   StyleSheet,
@@ -83,7 +83,7 @@ const Login = ({ navigation }) => {
       <View style={styles.lower}>
         <Text style={styles.welcome}>Welcome</Text>
         <Text style={styles.title}>Welcome</Text>
-        <StatusBar style="auto" />
+        {/* <StatusBar style="auto" /> */}
         <Caption style={{ marginBottom: 8 }}>
           Login with your username and password
         </Caption>
@@ -95,6 +95,7 @@ const Login = ({ navigation }) => {
             placeholder="Username"
             placeholderTextColor={"#3c3744"}
             onChangeText={(userName) => setuserName(userName)}
+            testID="usernameTest"
           />
         </View>
 
@@ -106,9 +107,10 @@ const Login = ({ navigation }) => {
             placeholderTextColor={"#3c3744"}
             onChangeText={(password) => setpassword(password)}
             secureTextEntry
+            testID="passwordTest"
           />
         </View>
-        <TouchableOpacity style={styles.LoginBtn} onPress={() => signIn()}>
+        <TouchableOpacity testID="loginButton" style={styles.LoginBtn} onPress={() => signIn()}>
           <Text style={styles.LoginText}>Login</Text>
         </TouchableOpacity>
 

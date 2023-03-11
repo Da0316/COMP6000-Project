@@ -71,6 +71,7 @@
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
     "react-password-checklist": "^1.4.3",
+    "react-test-renderer": "^18.2.0",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "smartystreets-javascript-sdk": "^2.1.1",
     "uuid": "^9.0.0",
@@ -78,8 +79,17 @@
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
+    "@testing-library/jest-native": "^5.4.2",
+    "@testing-library/react-native": "^11.5.4",
+    "@types/jest": "^29.4.0",
     "detox": "^20.5.0",
     "jest": "^29.5.0"
+  },
+  "jest": {
+    "preset": "react-native",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
   },
   "private": true
 }
