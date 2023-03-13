@@ -73,7 +73,7 @@ test("incorrect details", async () => {
   window.alert.mockRestore();
 });
 
-test ("correct details", async () => {
+test ("correct details & async storage", async () => {
   const { getByTestId } = render(<Login />);
   const alertMock = jest.fn();
   window.alert = alertMock;
