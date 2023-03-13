@@ -1,103 +1,101 @@
 import React from "react";
-import renderer from "react-test-renderer";
+// import renderer from "react-test-renderer";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+} from "@testing-library/react-native";
 
 // Import the component to be tested
 import Login from "../screens/login";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Mock the AsyncStorage module
 jest.mock("@react-native-async-storage/async-storage", () => ({
-  getItem: jest.fn(),
-  setItem: jest.fn(),
+  setItem: jest.fn(() => Promise.resolve()),
 }));
+
+
 
 // Mock the useIsFocused hook
 jest.mock("@react-navigation/native", () => ({
   useIsFocused: jest.fn(),
-}));  
+}));
 
-const tree = renderer.create(<Login />);
+test("render default elements", () => {
+  const { getAllByText, getByPlaceholderText } = render(<Login />);
 
-test("snapshot", () => {
-  expect(tree).toMatchSnapshot();
+  expect(getAllByText("Login").length).toBe(1);
+  expect(getAllByText("Signup").length).toBe(1);
+  expect(getAllByText("Forgot Password?").length).toBe(1);
+
+  getByPlaceholderText("Username");
+  getByPlaceholderText("Password");
 });
 
-it("Successfully logs in", () => {
-  const username = tree.root.findByProps({testID: 'usernameTest'}).props;
-  const password = tree.root.findByProps({testID: 'passwordTest'}).props
-  const loginButton = tree.root.findByProps({testID: 'loginButton'});
+test("username blank", () => {
+  const { getByTestId } = render(<Login />);
+  const alertMock = jest.fn();
+  window.alert = alertMock;
 
-  username.setItem("lkaasan");
-  password.setItem("hello");
-  act(() => loginButton.onPress());
+  fireEvent.press(getByTestId("loginButton"));
 
-  expect(window.alert("Successfully Login")).toBeCalled();
+  expect(alertMock).toHaveBeenCalledWith("Please enter username");
+
+  window.alert.mockRestore();
+});
+
+test("password blank", () => {
+  const { getByTestId } = render(<Login />);
+  const alertMock = jest.fn();
+  window.alert = alertMock;
+
+  fireEvent.changeText(getByTestId("usernameTest"), "test");
+  fireEvent.press(getByTestId("loginButton"));
+
+  expect(alertMock).toHaveBeenCalledWith("Please enter a password");
+
+  window.alert.mockRestore();
+});
+
+test("incorrect details", async () => {
+  const { getByTestId } = render(<Login />);
+  const alertMock = jest.fn();
+  window.alert = alertMock;
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve(-1),
+    })
+  );
+  fireEvent.changeText(getByTestId("usernameTest"), "testuser");
+  fireEvent.changeText(getByTestId("passwordTest"), "testpassword");
+  fireEvent.press(getByTestId("loginButton"));
+  await waitFor(() =>
+    expect(alertMock).toHaveBeenCalledWith("Wrong Login Details")
+  );
+  window.alert.mockRestore();
+});
+
+test ("correct details", async () => {
+  const { getByTestId } = render(<Login />);
+  const alertMock = jest.fn();
+  window.alert = alertMock;
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve("1"),
+    })
+  );
+  fireEvent.changeText(getByTestId("usernameTest"), "lkaasan");
+  fireEvent.changeText(getByTestId("passwordTest"), "hello");
+  fireEvent.press(getByTestId("loginButton"));
+  await waitFor(() =>
+    expect(alertMock).toHaveBeenCalledWith("Successfully Login"),
+  );
+
+  expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+    "user_id",
+    JSON.stringify(1)
+  );
+
+  window.alert.mockRestore();
 })
-
-// describe('<Login />', () => {
-//   // Declare variables needed for the tests
-//   let component;
-//   let instance;
-
-//   beforeEach(() => {
-//     // Set the default mocked values for AsyncStorage and useIsFocused
-//     AsyncStorage.getItem.mockResolvedValue(null);
-//     useIsFocused.mockReturnValue(true);
-
-//     // Render the component
-//     component = renderer.create(<Login />);
-//     instance = component.getInstance();
-//   });
-
-//   afterEach(() => {
-//     // Clear the mocked values after each test
-//     jest.clearAllMocks();
-//   });
-
-//   it('renders correctly', () => {
-//     expect(component.toJSON()).toMatchSnapshot();
-//   });
-
-//   it('resets the inputs when the screen is focused', () => {
-//     instance.setState({ userName: 'test', password: '1234' });
-//     useIsFocused.mockReturnValueOnce(false);
-//     useIsFocused.mockReturnValueOnce(true);
-//     instance.componentDidUpdate();
-//     expect(instance.state.userName).toEqual('');
-//     expect(instance.state.password).toEqual('');
-//   });
-
-//   it('saves the user id to AsyncStorage after successful login', async () => {
-//     const mockResponseJson = '1';
-//     fetch.mockResolvedValueOnce({ json: () => mockResponseJson });
-//     await instance.signIn();
-//     expect(AsyncStorage.setItem).toHaveBeenCalledWith('user_id', mockResponseJson);
-//   });
-
-//   it('navigates to HomeScreen after successful login', async () => {
-//     const mockResponseJson = '1';
-//     fetch.mockResolvedValueOnce({ json: () => mockResponseJson });
-//     const navigate = jest.fn();
-//     instance.props.navigation.navigate = navigate;
-//     await instance.signIn();
-//     expect(navigate).toHaveBeenCalledWith('HomeScreen');
-//   });
-
-//   it('shows an error message if username is not entered', () => {
-//     instance.setState({ userName: '', password: '1234' });
-//     instance.signIn();
-//     expect(alert).toHaveBeenCalledWith('Please enter username');
-//   });
-
-//   it('shows an error message if password is not entered', () => {
-//     instance.setState({ userName: 'test', password: '' });
-//     instance.signIn();
-//     expect(alert).toHaveBeenCalledWith('Please enter a password');
-//   });
-
-//   it('shows an error message if login details are incorrect', async () => {
-//     instance.setState({ userName: 'test', password: '1234' });
-//     await instance.signIn();
-//     expect(alert).toHaveBeenCalledWith('Wrong Login Details');
-//   });
-
-// });

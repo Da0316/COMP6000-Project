@@ -26,7 +26,7 @@ const Login = ({ navigation }) => {
     try {
       await AsyncStorage.setItem("user_id", id);
     } catch (e) {
-      alert("Failed to save the data to the storage");
+        ("Failed to save the data to the storage");
     }
   };
 
@@ -42,7 +42,7 @@ const Login = ({ navigation }) => {
     } else {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/login.php", {
         method: "post",
-        header: {
+        headers: {
           Accept: "application/json",
           "Content-type": "application/json",
         },
@@ -106,8 +106,8 @@ const Login = ({ navigation }) => {
             value={password}
             placeholderTextColor={"#3c3744"}
             onChangeText={(password) => setpassword(password)}
-            secureTextEntry
             testID="passwordTest"
+            secureTextEntry
           />
         </View>
         <TouchableOpacity testID="loginButton" style={styles.LoginBtn} onPress={() => signIn()}>
