@@ -91,12 +91,19 @@ const SignUp = ({ navigation }) => {
       return false;
     } else if (DOB == "") {
       alert("please select DOB");
+      return false;
     } else if (address1 == null) {
       alert("please enter address line 1");
+      return false;
     } else if (addressCity == null) {
       alert("please enter the address city");
+      return false;
     } else if (addressPostCode == null) {
       alert("please enter the address post code");
+      return false;
+    } else if (password != conPasswrod) {
+      alert("Passwords must match!")
+      return false;
     }
 
     const addressToVerify = {
@@ -107,14 +114,11 @@ const SignUp = ({ navigation }) => {
       country: "UK",
     };
 
-    if (password != conPasswrod) {
-      alert("Passwords must match!");
-    }
-
     if (checkAddress(addressToVerify)) {
       console.log("ok");
     } else {
       alert("address does not exist");
+      return false;
     }
     formatAddress();
 
@@ -304,6 +308,7 @@ const SignUp = ({ navigation }) => {
           <TouchableOpacity
             style={styles.buttonsView}
             onPress={() => handelSubmit()}
+            testID="signUpButton"
           >
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>

@@ -74,6 +74,7 @@
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
     "react-password-checklist": "^1.4.3",
+    "react-test-renderer": "^18.2.0",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "smartystreets-javascript-sdk": "^2.1.1",
     "uuid": "^9.0.0",

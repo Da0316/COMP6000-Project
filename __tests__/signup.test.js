@@ -6,11 +6,15 @@ import {
   waitFor,
 } from "@testing-library/react-native";
 import Signup from "../screens/signUp";
-import DatePicker from 'react-native-modern-datepicker';
-import mockRNComponents from 'react-native-mock';
-mockRNComponents.mockDatePicker();
 
-jest.mock("react-native-modern-datepicker");
+jest.mock("react-native-modern-datepicker", () => ({
+  DatePicker: jest.fn(),
+}));
+jest.mock("firebase/database", () => ({
+  getDatabase: jest.fn(),
+  ref: jest.fn(),
+  set: jest.fn(),
+}));
 
 test("render default elements", () => {
     const { getAllByText, getByPlaceholderText } = render(<Signup />);
@@ -19,9 +23,9 @@ test("render default elements", () => {
     getByPlaceholderText("Last name*");
     getByPlaceholderText("Set Username*");
     expect(getAllByText("Date of birth:").length).toBe(1); 
-    getByPlaceholderText("Email address");
+    getByPlaceholderText("Email address*");
     getByPlaceholderText("Phone Number*");
-    expect(getAllByText("Enter your full address").length).toBe(1); 
+    expect(getAllByText("Enter your full address:").length).toBe(1); 
     getByPlaceholderText("address Line 1*");
     getByPlaceholderText("address Line 2");
     getByPlaceholderText("City*");
@@ -34,3 +38,31 @@ test("render default elements", () => {
     getByPlaceholderText("Password*");
     getByPlaceholderText("Confirm password*");
 })
+
+test("email not valid" , () => {
+  const { getByPlaceholderText, getByTestId } = render(<Signup />);
+  const alertMock = jest.fn();
+  window.alert = alertMock;
+
+  fireEvent.changeText(getByPlaceholderText("Email address*"), "test")
+  fireEvent.press(getByTestId("signUpButton"));
+
+  expect(alertMock).toHaveBeenCalledWith("email is not valid");
+
+  window.alert.mockRestore();
+})
+
+test("password length not valid", () => {
+  const { getByPlaceholderText, getByTestId } = render(<Signup />);
+  const alertMock = jest.fn();
+  window.alert = alertMock;
+
+  fireEvent.changeText(getByPlaceholderText("Email address*"), "lukas@lukas.com")
+  fireEvent.changeText(getByPlaceholderText("Password*"), "1")
+  fireEvent.press(getByTestId("signUpButton"));
+
+  expect(alertMock).toHaveBeenCalledWith("password is not of valid form, must containt at least 1 upper 1 lowercase 1 special and 8 characters long");
+
+  window.alert.mockRestore();
+})
+
