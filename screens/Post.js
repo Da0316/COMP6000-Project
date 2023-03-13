@@ -155,7 +155,7 @@ const Post = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.ScrollView} >
       <View style={styles.container}>
         <View style={styles.taskContainer}>
           <Text style={styles.baseText}>Task title:</Text>
@@ -226,10 +226,12 @@ export default Post;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: "#FFFFFF",
     alignItems: "center",
-    alignContent: "center",
+    //alignContent: "center",
+    //alignSelf:"auto",
+    flexGrow:1
     
   },
   title: {
@@ -237,7 +239,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   taskContainer: {
-    maxWidth: '60%',
+    //alignItems:"stretch",
+    //height:"100%",
+    width:"80%",
+    maxWidth: '80%',
+    //maxHeight:"20%"
   },
   detailsContainer: {
   },
@@ -311,4 +317,13 @@ const styles = StyleSheet.create({
     marginVertical: 1,
     fontFamily: "sans-serif-medium",
   },
+  ScrollView:{
+    flex:1,
+    alignContent:"center",
+    backgroundColor:"#fff"
+    
+
+    //backgroundColor:"#fff"
+  }
+  
 });

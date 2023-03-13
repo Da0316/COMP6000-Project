@@ -158,12 +158,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   lower: {
-    flex: 6,
+    flex: 5,
     width: "100%",
     borderTopRightRadius: 80,
     borderTopLeftRadius: 80,
     backgroundColor: "#fff",
     alignItems: "center",
+    //alignContent:"center",
+    //alignSelf:"stretch",
+    flexGrow: 4, 
   },
   container: {
     flex: 1,

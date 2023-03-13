@@ -147,6 +147,7 @@ function Job({ route, navigation }) {
             source={{
               uri: image,
             }}
+            opacity={0.7} //change opacity 
             style={styles.image}
           />
         </View>
@@ -233,9 +234,9 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     justifyContent: "center",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomLeftRadius:10,
-    borderBottomRightRadius:10,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    borderBottomLeftRadius:25,
+    borderBottomRightRadius:25,
   },
 });
