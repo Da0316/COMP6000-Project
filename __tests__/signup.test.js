@@ -64,5 +64,17 @@ test("password length not valid", () => {
   expect(alertMock).toHaveBeenCalledWith("password is not of valid form, must containt at least 1 upper 1 lowercase 1 special and 8 characters long");
 
   window.alert.mockRestore();
+});
+
+test("date picker", () => {
+  const { getByPlaceholderText, getByTestId } = render(<Signup />);
+  const alertMock = jest.fn();
+  window.alert = alertMock;
+  fireEvent.changeText(getByPlaceholderText("Email address*"), "lukas@lukas.com")
+  fireEvent.changeText(getByPlaceholderText("Password*"), "Hello123.")
+  const datePicker = getByTestId("datePicker");
+  expect(datePicker).toBeDefined();
+  fireEvent(datePicker, 'dateChange', ''); 
+  expect(alertMock).toHaveBeenCalledWith("please select DOB");
 })
 

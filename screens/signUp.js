@@ -238,6 +238,7 @@ const SignUp = ({ navigation }) => {
                 textSecondaryColor: "#D6C7A1",
                 borderColor: "rgba(122, 146, 165, 0.1)",
               }}
+              testID="datePicker"
               onDateChange={handleConfirm}
               current="1990-07-23"
               selected="1990-07-23"
