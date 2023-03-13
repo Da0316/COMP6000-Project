@@ -248,10 +248,10 @@ function Application({ route, navigation }) {
     if (applicationStatus == 0) {
       return (
         <View style={styles.mainView}>
-          <View>
-            <Text>Username: {profileView()}</Text>
-            <Text>Application Date: {applicationDate}</Text>
-            <Text>Price Offered: ${priceOffer}</Text>
+          <View style={styles.infoBox}>
+            <Text style={styles.infoTxt}>Username: {profileView()}</Text>
+            <Text style={styles.infoTxt}>Application Date: {applicationDate}</Text>
+            <Text style={styles.infoTxt}>Price Offered: ${priceOffer}</Text>
           </View>
           <View style={styles.buttonContainer}>
             <View style={styles.button}>
@@ -324,6 +324,9 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+    margin:50,
+    elevation:10,
+    borderCurve:10,
   },
   mainView: {
     flex: 1,
@@ -344,7 +347,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 70,
     borderBottomLeftRadius: 70,
     borderBottomRightRadius: 70,
-    elevation: 30,
+    elevation: 12,
   },
   infoTxt: {
     fontSize: 16,
