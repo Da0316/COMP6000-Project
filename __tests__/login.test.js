@@ -2,7 +2,6 @@ import React from "react";
 // import renderer from "react-test-renderer";
 import {
   render,
-  screen,
   fireEvent,
   waitFor,
 } from "@testing-library/react-native";
@@ -14,8 +13,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 jest.mock("@react-native-async-storage/async-storage", () => ({
   setItem: jest.fn(() => Promise.resolve()),
 }));
-
-
 
 // Mock the useIsFocused hook
 jest.mock("@react-navigation/native", () => ({
