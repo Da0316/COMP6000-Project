@@ -13,16 +13,16 @@ import { getDatabase, ref, set } from "firebase/database";
 import DatePicker from "react-native-modern-datepicker";
 
 const SignUp = ({ navigation }) => {
-  const [userName, setuserName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [DOB, setDOB] = useState("");
-  const [email, setEmail] = useState("");
-  const [pNumber, setPNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [conPasswrod, setConPassword] = useState("");
+  const [userName, setuserName] = useState(null);
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [DOB, setDOB] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [pNumber, setPNumber] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [conPasswrod, setConPassword] = useState(null);
   const [showCompleted, setShowCompleted] = useState(false);
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(null);
   const [address1, setAddress1] = useState(null);
   const [address2, setAddress2] = useState(null);
   const [addressCity, setAddressCity] = useState(null);
@@ -89,9 +89,6 @@ const SignUp = ({ navigation }) => {
         "password is not of valid form, must containt at least 1 upper 1 lowercase 1 special and 8 characters long"
       );
       return false;
-    } else if (DOB == "") {
-      alert("please select DOB");
-      return false;
     } else if (address1 == null) {
       alert("please enter address line 1");
       return false;
@@ -102,7 +99,7 @@ const SignUp = ({ navigation }) => {
       alert("please enter the address post code");
       return false;
     } else if (password != conPasswrod) {
-      alert("Passwords must match!")
+      alert("Passwords must match!");
       return false;
     }
 
@@ -122,6 +119,11 @@ const SignUp = ({ navigation }) => {
     }
     formatAddress();
 
+    if (userName == null || firstName == null || lastName == null || DOB == null || address == null 
+      ||email == null || pNumber == null || password == null){
+        alert("Please fill out all the fields");
+        return false;
+      }
     if (address != "") {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/signUp.php", {
         method: "post",
@@ -176,6 +178,7 @@ const SignUp = ({ navigation }) => {
     let tempDate = date;
     let date1 = tempDate.replace("/", "-");
     let date2 = date1.replace("/", "-");
+    console.log(date2);
     setDOB(date2);
     showDatepicker();
   };
@@ -224,7 +227,9 @@ const SignUp = ({ navigation }) => {
           />
 
           <TouchableOpacity style={styles.LoginBtn} onPress={showDatepicker}>
-            <Text style={styles.LoginText}>Date of birth:{DOB}</Text>
+            <Text testID="datePicker" style={styles.LoginText}>
+              Date of birth:{DOB}
+            </Text>
           </TouchableOpacity>
 
           {showCompleted && (
@@ -238,7 +243,6 @@ const SignUp = ({ navigation }) => {
                 textSecondaryColor: "#D6C7A1",
                 borderColor: "rgba(122, 146, 165, 0.1)",
               }}
-              testID="datePicker"
               onDateChange={handleConfirm}
               current="1990-07-23"
               selected="1990-07-23"
