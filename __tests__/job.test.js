@@ -1,46 +1,68 @@
-import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import Job from "../screens/Job";
+import React from 'react';
+import { render, waitFor } from '@testing-library/react-native';
+import Job from '../screens/job';
 
-
-describe("Job component", () => {
+describe('Job', () => {
   const mockRoute = {
     params: {
-      jobID: 1,
+      jobID: '1',
     },
   };
-
   const mockNavigation = {
     navigate: jest.fn(),
   };
 
-  const mockResponse = [
-    123,
-    "Engineering",
-    "Job Title",
-    "Job description",
-    "2022-03-13 15:00:00",
-    20,
-    1,
-    "username",
-    "image.png",
-  ];
-
-  beforeEach(() => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve(mockResponse),
-      })
-    );
+  test('renders job title and description', async () => {
+    const { getByTestId } = render(<Job route={mockRoute} navigation={mockNavigation} />);
+    await waitFor(() => {
+      expect(getByTestId('title')).toBeDefined();
+      expect(getByTestId('description')).toBeDefined();
+    });
   });
 
-  afterEach(() => {
-    jest.resetAllMocks();
+  test('renders job speciality', async () => {
+    const { getByTestId } = render(<Job route={mockRoute} navigation={mockNavigation} />);
+    await waitFor(() => {
+      expect(getByTestId('speciality')).toBeDefined();
+    });
   });
 
-  it("renders job details", async () => {
-    const { getByText, getByTestId } = render(
-      <Job route={mockRoute} navigation={mockNavigation} />
-    );
+  test('renders job date', async () => {
+    const { getByTestId } = render(<Job route={mockRoute} navigation={mockNavigation} />);
+    await waitFor(() => {
+      expect(getByTestId('date')).toBeDefined();
+    });
+  });
+
+  test('renders job hourly rate', async () => {
+    const { getByTestId } = render(<Job route={mockRoute} navigation={mockNavigation} />);
+    await waitFor(() => {
+      expect(getByTestId('rate')).toBeDefined();
+    });
+  });
+
+  test('renders job image', async () => {
+    const { getByTestId } = render(<Job route={mockRoute} navigation={mockNavigation} />);
+    await waitFor(() => {
+      expect(getByTestId('job_image')).toBeDefined();
+    });
+  });
+
+  test('navigates to CreateApplication screen when create application button is pressed', async () => {
+    const { getByTestId } = render(<Job route={mockRoute} navigation={mockNavigation} />);
+    const createApplicationButton = getByTestId('create-application-button');
+    createApplicationButton.props.onPress();
+    await waitFor(() => {
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('CreateApplication', { jobID: '1' });
+    });
+  });
+
+  test('navigates to JobApplications screen when view applications button is pressed', async () => {
+    const { getByTestId } = render(<Job route={mockRoute} navigation={mockNavigation} />);
+    const viewApplicationsButton = getByTestId('view-applications-button');
+    viewApplicationsButton.props.onPress();
+    await waitFor(() => {
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('JobApplications', { jobID: '1' });
+    });
   });
 });

@@ -155,7 +155,7 @@ test ("Missing Fields", () => {
   window.alert.mockRestore();
 })
 
-test ("Missing Fields", () => {
+test ("Email exists", () => {
   const { getByPlaceholderText, getByTestId } = render(<Signup />);
   const alertMock = jest.fn();
   window.alert = alertMock;
@@ -164,6 +164,8 @@ test ("Missing Fields", () => {
       json: () => Promise.resolve("email already exists"),
     })
   );
+  const datePicker = getByTestId('datePicker'); 
+  fireEvent.change(datePicker, '1991-01-01');
 
   fireEvent.changeText(getByPlaceholderText("Email address*"), "lukas@lukas.com")
   fireEvent.changeText(getByPlaceholderText("First name*"), "Lukas")
@@ -177,4 +179,3 @@ test ("Missing Fields", () => {
   expect(alertMock).toHaveBeenCalledWith("Please fill out all the fields");
   window.alert.mockRestore();
 })
-

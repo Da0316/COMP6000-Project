@@ -227,13 +227,14 @@ const SignUp = ({ navigation }) => {
           />
 
           <TouchableOpacity style={styles.LoginBtn} onPress={showDatepicker}>
-            <Text testID="datePicker" style={styles.LoginText}>
+            <Text style={styles.LoginText}>
               Date of birth:{DOB}
             </Text>
           </TouchableOpacity>
 
           {showCompleted && (
             <DatePicker
+              testID="datePicker"
               options={{
                 backgroundColor: "#090C08",
                 textHeaderColor: "#FFA25B",

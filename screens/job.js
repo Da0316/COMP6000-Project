@@ -23,7 +23,7 @@ function Job({ route, navigation }) {
     try {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php", {
         method: "post",
-        header: {
+        headers: {
           Accept: "application/json",
           "Content-type": "application/json",
         },
@@ -38,16 +38,6 @@ function Job({ route, navigation }) {
           setJobTitle(responseJson[2]);
           setJobDescription(responseJson[3]);
           setPostedDate(responseJson[4]);
-          if (responseJson[5] == "0") {
-            ("No");
-          } else {
-            ("Yes");
-          }
-          if (responseJson[6] == "0") {
-            ("No");
-          } else {
-            ("Yes");
-          }
           setPrice(responseJson[7]);
           setUsername(responseJson[8]);
           if (userPostedID == global.userID) {
@@ -75,6 +65,7 @@ function Job({ route, navigation }) {
     if (sameUser == false) {
       return (
         <TouchableOpacity
+          testID="create-application-button"
           styles={styles.applicationButton}
           onPress={() => navigation.navigate("CreateApplication", { jobID })}
         >
@@ -119,26 +110,26 @@ function Job({ route, navigation }) {
     <View style={styles.container}>
       <View style={styles.information}>
 
-        <Text style={styles.title}>{jobTitle}</Text>
+        <Text testID="title" style={styles.title}>{jobTitle}</Text>
         <View style={styles.row}>
-          <Text style={styles.des}>{jobDescription}</Text>
+          <Text testID='description' style={styles.des}>{jobDescription}</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.baseText}> Posted by: {profileView()}</Text>
+          <Text testID='user' style={styles.baseText}> Posted by: {profileView()}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.baseText}>
-            Speciality: <Text style={styles.answer}>{speciality}</Text>
+            <Text testID='speciality' style={styles.answer}>Speciality: {speciality}</Text>
           </Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.baseText}>
-            Date Posted: <Text style={styles.answer}>{postedDate}</Text>
+            <Text testID='date' style={styles.answer}>Date Posted: {postedDate}</Text>
           </Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.baseText}>
-            Hourly rate: <Text style={styles.answer}> £{price}</Text>
+            <Text testID='rate' style={styles.answer}>Hourly rate: £{price}</Text>
           </Text>
         </View>
         <View>
@@ -148,6 +139,7 @@ function Job({ route, navigation }) {
             }}
             opacity={0.7} //change opacity 
             style={styles.image}
+            testID="job_image"
           />
         </View>
       </View>
