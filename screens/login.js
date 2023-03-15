@@ -1,4 +1,4 @@
-//import { StatusBar } from "expo-status-bar";
+//login.js - the page for the login screen of the app
 import { useEffect, useState } from "react";
 import {
   StyleSheet,
@@ -12,11 +12,14 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Caption } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
-const Login = ({ navigation }) => {
 
+//@param "navigation" - passes the naviagtion stack to the login page
+const Login = ({ navigation }) => {
+  //variables to store the details that the user enters when trying to login to the app
   const [userName, setuserName] = useState("");
   const [password, setpassword] = useState("");
   const isFocused=useIsFocused();
+  //variable to store the logo for the app
   const [image, setImage] = useState(
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/O.png"
   );
@@ -30,29 +33,33 @@ const Login = ({ navigation }) => {
     }
   };
 
+  // Navigate to the ForgotPassword screen/modal
   const onForgetPassword = () => {
-    // Navigate to the ForgotPassword screen/modal
     navigation.navigate("ForgotPassword");
   };
+
+  //when the "signIn" button is pressed, this function will make a call to the backend of the app and check if a user with these details exists
   signIn = () => {
+    //checks if the input boxes have any data in
     if (userName == "") {
       alert("Please enter username");
     } else if (password == "") {
       alert("Please enter a password");
-    } else {
+    } else { //else - if the input boxes have data in, the backend call is made
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/login.php", {
         method: "post",
         headers: {
           Accept: "application/json",
           "Content-type": "application/json",
         },
-        body: JSON.stringify({
+        body: JSON.stringify({ //passes the inputted username and password to the backend
           username: userName,
           password: password,
         }),
       })
         .then((response) => response.json())
         .then((responseJson) => {
+          //depending on the response from the backend, the app will either display an incorrect details alert or log the user in
           if (responseJson == -1) {
             alert("Wrong Login Details");
           } else {
@@ -61,6 +68,7 @@ const Login = ({ navigation }) => {
             if (responseJson != null) {
               global.userID = responseJson;
             }
+            //once the user has entered correct details, navigation takes place to get to the home screen of the app.
             navigation.navigate("HomeScreen");
           }
         })

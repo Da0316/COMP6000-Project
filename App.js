@@ -1,3 +1,6 @@
+//App.js - main functionailty of the app, runs all the navigation
+//@authors - everyone in the group
+
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import SignUp from "./screens/signUp";
