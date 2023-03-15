@@ -263,6 +263,7 @@ const Profile = ({ navigation }) => {
       <View style={styles.userInfoSection}>
         <View style={{ flexDirection: "row", marginTop: 15 }}>
           <Avatar.Image
+          testID="profile_pic"
             source={{
               uri: placeholder
                 ? "https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/" +
@@ -274,6 +275,7 @@ const Profile = ({ navigation }) => {
           />
           <View style={{ marginLeft: 20 }}>
             <Title
+            testID="fname_lname"
               style={[
                 styles.title,
                 {
@@ -284,7 +286,7 @@ const Profile = ({ navigation }) => {
             >
               {firstname} {lastname}
             </Title>
-            <Caption style={styles.caption}>{username}</Caption>
+            <Caption testID="uname" style={styles.caption}>{username}</Caption>
           </View>
         </View>
       </View>
@@ -292,27 +294,28 @@ const Profile = ({ navigation }) => {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#1A1918" size={20} />
-          <Text style={{ color: "#1A1918", marginLeft: 20 }}>{address}</Text>
+          <Text testID ="address" style={{ color: "#1A1918", marginLeft: 20 }}>{address}</Text>
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#1A1918" size={20} />
-          <Text style={{ color: "#1A1918", marginLeft: 20 }}>
+          <Text testID="phoneNumber"style={{ color: "#1A1918", marginLeft: 20 }}>
             {phone_number}
           </Text>
         </View>
         <View style={styles.row}>
           <Icon name="email" color="#1A1918" size={20} />
-          <Text style={{ color: "#1A1918", marginLeft: 20 }}>{email}</Text>
+          <Text testID="email" style={{ color: "#1A1918", marginLeft: 20 }}>{email}</Text>
         </View>
         <View style={styles.row}>
           <Icon name="calendar" color="#1A1918" size={20} />
-          <Text style={{ color: "#1A1918", marginLeft: 20 }}>
+          <Text testID="DOB" style={{ color: "#1A1918", marginLeft: 20 }}>
             {date_of_birth}
           </Text>
         </View>
 
         <View style={styles.userBtnWrapper}>
           <TouchableRipple
+            testID="logout"
             style={styles.logoutBtn}
             onPress={() => {
               Alert.alert("Logout ", "Do you really want to logout?", [
@@ -333,12 +336,14 @@ const Profile = ({ navigation }) => {
             <Text style={styles.userBtnTxt}> Logout</Text>
           </TouchableRipple>
           <TouchableRipple
+          testID="editProfile"
             style={styles.userBtn}
             onPress={() => navigation.navigate("EditProfile")}
           >
             <Text style={styles.userBtnTxt}> Edit Profile</Text>
           </TouchableRipple>
           <TouchableRipple
+          testID="JobsandApps"
             style={styles.userBtn}
             onPress={() => navigation.navigate("ViewJobsAndApps")}
           >
@@ -347,18 +352,18 @@ const Profile = ({ navigation }) => {
         </View>
 
         <View style={styles.infoBoxWrapper}>
-          <View style={styles.infoBox}>
+          <View testID="ratings" style={styles.infoBox}>
             <Text style={styles.title2}>Ratings Level</Text>
             <Caption style={styles.titlenum}>{score}</Caption>
           </View>
-          <View style={styles.infoBox}>
+          <View testID="jobsCompleted "style={styles.infoBox}>
             <Text style={styles.title2}>Jobs Completed</Text>
             <Caption style={styles.titlenum}>{jobsCompleted}</Caption>
           </View>
         </View>
       </View>
 
-      <View style={styles.reviewSection}>
+      <View testID="reviews" style={styles.reviewSection}>
         <Text style={styles.title3}>Reviews</Text>
         <FlatList
           key={11}

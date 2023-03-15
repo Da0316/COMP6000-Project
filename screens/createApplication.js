@@ -76,6 +76,7 @@ function CreateApplication({ route, navigation }) {
       <Text style={styles.heading}>Create Application</Text>
       <SafeAreaView style={styles.formView}>
         <TextInput
+          testID="price_input"
           placeholder={"Price Offer*"}
           placeholderTextColor="#fff"
           onChangeText={(price_offer) => setPriceOffer(price_offer)}
@@ -84,6 +85,7 @@ function CreateApplication({ route, navigation }) {
         <TouchableOpacity
           style={styles.buttonsView}
           onPress={() => checkOutstandingJob()}
+          testID="apply_button"
         >
           <Text style={styles.buttonText}>Apply</Text>
         </TouchableOpacity>
