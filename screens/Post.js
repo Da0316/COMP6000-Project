@@ -1,3 +1,5 @@
+//post.js - code to allow users to post jobs to the system.
+
 import { useState, useEffect } from "react";
 import React from "react";
 import {
@@ -13,7 +15,9 @@ import {
   ScrollView,
 } from "react-native";
 
+//function for the main post processing, has navigate to navigate back to the homescreen after a post is made
 const Post = ({ navigation }) => {
+  //variables for the post
   const [taskDetails, setTaskDetails] = useState("");
   const [price, setPrice] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
@@ -24,6 +28,7 @@ const Post = ({ navigation }) => {
   const [selectedImageType, setSelectedImageType] = useState(null);
   const [selectedSpecialties, setSelectedSpecialties] = useState([]);
 
+  //fetch call to retrive the specialities from the database to be displayed in a drop down list
   useEffect(() => {
     fetch(
       "https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php",
@@ -39,6 +44,8 @@ const Post = ({ navigation }) => {
       .then((responseJson) => {
         let counter = 0;
         const newOptions = [];
+        //creates an array of objects with the specilities
+        //each one needs to be an object so they can have their own key to be easily identified 
         for (let i = 0; i < responseJson.length / 2; i++) {
           let object = {
             key: Number(responseJson[counter]),
@@ -47,6 +54,7 @@ const Post = ({ navigation }) => {
           newOptions.push(object);
           counter = counter + 2;
         }
+        //sets this array in the specialities variable
         setSpecialities(newOptions);
       })
       .catch((error) => {
@@ -54,7 +62,9 @@ const Post = ({ navigation }) => {
       });
   }, []);
 
+  //handleSubmit handles when the "post" button is pressed 
   handleSubmit = () => {
+    //makes sure all the fields have been filled in
     if (price == 0) {
       alert("You have to set a price");
     } else if (taskTitle == "") {
@@ -64,6 +74,7 @@ const Post = ({ navigation }) => {
     } else if (setSelected == false) {
       alert("You need to add an image");
     } else {
+      //once all the fields have been filled in a call is made to post the job to the database
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/post.php", {
         method: "post",
         header: {
@@ -81,21 +92,23 @@ const Post = ({ navigation }) => {
       })
         .then((response) => response.text())
         .then((responseJson) => {
-          if (responseJson == 1) {
+          if (responseJson == 1) { //the backend sends the response one if the call is successful
+            //resets the variables
             setTaskDetails("");
             setPrice("");
             setSelected(null);
             setTaskTitle("");
+            //navigates to the home page once the job is added
             navigation.navigate("Home");
             alert("Job Added Successfully");
-          } else if (responseJson == -1) {
+          } else if (responseJson == -1) { //sends -1 if the post is unsuccessful
             alert("An error has occured");
           }
         })
         .catch((error) => {
           console.error(error);
         });
-
+      //creates a form of variables to upload the image to the database
       const formData = new FormData();
       formData.append("name", {
         name: selectedImageName,
@@ -103,6 +116,7 @@ const Post = ({ navigation }) => {
         uri: selectedImage,
       });
 
+      //fetch to save the image to our backend
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/upload.php", {
         method: "POST",
         headers: {
@@ -117,7 +131,7 @@ const Post = ({ navigation }) => {
         });
     }
   };
-
+  //date pickers for post, not currently used
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -125,20 +139,20 @@ const Post = ({ navigation }) => {
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
-
+  //function for image picker
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
     });
-
+    //if image is uploaded then the image is proccessed
     if (!result.canceled) {
-      let localUri = result.assets[0].uri;
-      let filename = localUri.split("/").pop();
+      let localUri = result.assets[0].uri; //sets the uri of the image
+      let filename = localUri.split("/").pop(); //generates a file name for the image
 
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
-
+      //sets the variables for the image to be put into a form and uploaded to the back end
       setSelectedImage(localUri);
       setSelectedImageName(filename);
       setSelectedImageType(type);
@@ -149,7 +163,7 @@ const Post = ({ navigation }) => {
         type: type,
         uri: localUri,
       });
-    } else {
+    } else { //lets the uer no if no image is added
       alert("You did not select any image.");
     }
   };

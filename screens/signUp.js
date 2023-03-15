@@ -1,3 +1,6 @@
+//signUp.js - page for the sign up screen so users can create accounts
+//@author - ajs215
+
 import React from "react";
 import { useState } from "react";
 import {
@@ -10,9 +13,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { getDatabase, ref, set } from "firebase/database";
+//imports for a community date picker
 import DatePicker from "react-native-modern-datepicker";
 
+//main function for sign up, has navigation stack to redirect to specialities screen once sign up is complete
 const SignUp = ({ navigation }) => {
+  //variables for all the data we take on sign up
   const [userName, setuserName] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
@@ -27,8 +33,9 @@ const SignUp = ({ navigation }) => {
   const [address2, setAddress2] = useState(null);
   const [addressCity, setAddressCity] = useState(null);
   const [addressPostCode, setAddressPostCode] = useState(null);
-  const [apiKey, setApiKey] = useState(null);
+  const [apiKey, setApiKey] = useState(null); //variable for the api key to check if the address inputted exists
 
+  //fetches the api key form the backend, so it is stored securely 
   fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/api.php", {
     method: "post",
     header: {
@@ -39,25 +46,31 @@ const SignUp = ({ navigation }) => {
   })
     .then((response) => response.json())
     .then((responseJson) => {
+      //sets the api key
       setApiKey(responseJson);
     })
     .catch((error) => {
       alert("incorrect details");
     });
-
+  
+  //function checkAddress
+  //@param address - an object containg each of the fields we take for address
   const checkAddress = async (address) => {
+    //formatted address, computes the inputted address into a format that the google geocoding api can recognise
     const formattedAddress = `${address.name}, ${address.road}, ${address.city} ${address.postcode}, ${address.country}`;
+    //url is is the url for the api call
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       formattedAddress
     )}&key=${apiKey}`;
     
+    //makes the call to the apir
     try {
       const response = await fetch(url);
+      //sets the returned address to the variable data
       const data = await response.json();
-      // console.log(formattedAddress);
-      // console.log(address.name)
-      // console.log(data.results[0].formatted_address);
+      //if data.results is not null then the address exists
       if (data.results.length > 0) {
+        //sets the address to the correct address retrived fro mapi
         setAddress(data.results[0].formatted_address);
         return true;
         
@@ -81,21 +94,23 @@ const SignUp = ({ navigation }) => {
     }
   };
 
+  //function - handelSubmit handels the button press of the signup
   handelSubmit = () => {
 
-
+    //regular expression of all the characters allowed in password
     const strongRegex = new RegExp(
       "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
     );
-
+    //checks if the email is a vlaid email (contains an @ sign)
     if (!strongRegex.test(email)) {
       alert("email is not valid");
       return false;
-    } else if (password.length < 8) {
+    } else if (password.length < 8) { //checks if the password is above the required length
       alert(
         "password is not of valid form, must containt at least 1 upper 1 lowercase 1 special and 8 characters long"
       );
       return false;
+      //checks if the address fields have been filled in
     } else if (address1 == null) {
       alert("please enter address line 1");
       return false;
@@ -105,11 +120,12 @@ const SignUp = ({ navigation }) => {
     } else if (addressPostCode == null) {
       alert("please enter the address post code");
       return false;
+      //checks password and the confirm password fields match
     } else if (password != conPasswrod) {
       alert("Passwords must match!");
       return false;
     }
-
+    //creates the object of the address to if the address exists
     const addressToVerify = {
       name: address1,
       road: address2,
@@ -117,7 +133,7 @@ const SignUp = ({ navigation }) => {
       postcode: addressPostCode,
       country: "UK",
     };
-
+    //calls the checkAddress function
     if (checkAddress(addressToVerify)) {
       console.log("ok");
       
@@ -126,12 +142,13 @@ const SignUp = ({ navigation }) => {
       return false;
     }
     
-
+    //checks if the fields have been filled out
     if (userName == null || firstName == null || lastName == null || DOB == null || address == null 
       ||email == null || pNumber == null || password == null){
         alert("Please fill out all the fields");
         return false;
       }
+      //if the fields have been filled out correctly a call to save the users inputs in the database is made
     if (address != "") {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/signUp.php", {
         method: "post",
@@ -151,14 +168,14 @@ const SignUp = ({ navigation }) => {
         }),
       })
         .then((response) => response.json())
-        .then((responseJson) => {
+        .then((responseJson) => { //response from php is given - if the username or email is already in the database, it will not allow you to sign up with those details
           if (responseJson === "try again") {
             alert("Please fill in details ");
           } else if (responseJson === "email already exists") {
             alert("Account already signed up with this email");
           } else if (responseJson === "username already exists") {
             alert("Username already exists");
-          } else {
+          } else { //if everything is valid the sign up is accepted
             alert("Signup Successful!");
             const newUserObj = {
               username: String(responseJson[1]),
@@ -166,6 +183,7 @@ const SignUp = ({ navigation }) => {
                 "https://www.google.com/url?sa=i&url=https%3A%2F%2Fnobita.me%2Fresources%2Favatar-from-url.86%2F&psig=AOvVaw1HkgvX6GHC1E4KWum1aYA8&ust=1667929212435000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCJDj19POnPsCFQAAAAAdAAAAABAO",
             };
             const database = getDatabase();
+            //navigates to the specialities after sign up
             set(ref(database, "users/" + responseJson[1]), newUserObj);
             navigation.navigate("SelectSpecialities", {
               userID: responseJson[0],
@@ -178,10 +196,12 @@ const SignUp = ({ navigation }) => {
     }
   };
 
+  //code to hide and show the date picker
   const showDatepicker = () => {
     setShowCompleted(!showCompleted);
   };
 
+  //code to handel the date picker input and save the response from the date picker in a form recognised by our database
   const handleConfirm = (date) => {
     let tempDate = date;
     let date1 = tempDate.replace("/", "-");
