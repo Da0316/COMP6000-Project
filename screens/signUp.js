@@ -50,13 +50,17 @@ const SignUp = ({ navigation }) => {
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       formattedAddress
     )}&key=${apiKey}`;
-    console.log(url);
+    
     try {
       const response = await fetch(url);
       const data = await response.json();
-      console.log(data);
+      // console.log(formattedAddress);
+      // console.log(address.name)
+      // console.log(data.results[0].formatted_address);
       if (data.results.length > 0) {
+        setAddress(data.results[0].formatted_address);
         return true;
+        
       } else {
         return false;
       }
@@ -65,7 +69,8 @@ const SignUp = ({ navigation }) => {
       return false;
     }
   };
-
+  
+  //not currently needed
   const formatAddress = () => {
     if (address2 != null) {
       setAddress(
@@ -77,6 +82,8 @@ const SignUp = ({ navigation }) => {
   };
 
   handelSubmit = () => {
+
+
     const strongRegex = new RegExp(
       "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
     );
@@ -113,11 +120,12 @@ const SignUp = ({ navigation }) => {
 
     if (checkAddress(addressToVerify)) {
       console.log("ok");
+      
     } else {
       alert("address does not exist");
       return false;
     }
-    formatAddress();
+    
 
     if (userName == null || firstName == null || lastName == null || DOB == null || address == null 
       ||email == null || pNumber == null || password == null){
