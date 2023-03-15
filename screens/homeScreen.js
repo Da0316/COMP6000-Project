@@ -1,3 +1,5 @@
+//homeScreen.js - homepage of the app
+//imports
 import React, { useState } from "react";
 import { useEffect } from "react";
 import {
@@ -16,6 +18,7 @@ import { getDistance } from "geolib";
 import _ from "lodash";
 
 const HomeScreen = ({ navigation }) => {
+  //useState variables for all information needed
   const [recentJobIDs, setRecentJobIDs] = useState([]);
   const [recommendedJobs, setRecommendedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +30,8 @@ const HomeScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [noNearby, setNoNearby] = useState(null);
 
-  const componentDidMount = async () => {
+  //function that gets user's permission to use phones location services
+  const permissions = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       console.log("Permission to access location was denied");
@@ -37,17 +41,21 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  //Function that takes in an address as a parameter and returns the longitude and latitude
   const getLocation = async (address) => {
-    if (componentDidMount()) {
+    //checks if location permissions have been granted
+    if (permissions()) {
       let location = await Location.geocodeAsync(address);
       if (location.length > 0) {
         return location[0];
       } else {
-        throw new Error("rip");
+        //throws error if an error occurs
+        throw new Error("error");
       }
     }
   };
 
+  //function that takes in latitude and longitude as parameters and returns the distance from the logged in users address
   const calculateDistance = (lat, long) => {
     const dis = getDistance(
       {
@@ -59,6 +67,7 @@ const HomeScreen = ({ navigation }) => {
     return dis;
   };
 
+  //useEffect hook that gets the logged in user's address
   useEffect(() => {
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php", {
       method: "post",
@@ -66,6 +75,7 @@ const HomeScreen = ({ navigation }) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
+      //userID as parameter for backend
       body: JSON.stringify({
         userID: global.userID,
       }),
@@ -79,6 +89,7 @@ const HomeScreen = ({ navigation }) => {
       });
   }, []);
 
+  //useEffect that sets the latitude and longitude of user's address, refreshes when the address is changed (initially set)
   useEffect(() => {
     if (userAddress != null) {
       getLocation(userAddress)
@@ -95,6 +106,7 @@ const HomeScreen = ({ navigation }) => {
     }
   }, [userAddress]);
 
+  //useEffect that gets recent jobs posted on the app
   useEffect(() => {
     try {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/jobsDate.php", {
@@ -103,22 +115,26 @@ const HomeScreen = ({ navigation }) => {
           Accept: "application/json",
           "Content-type": "application/json",
         },
+        //userID as parameter for backend
         body: JSON.stringify({
           id: global.userID,
         }),
       })
         .then((response) => response.json())
         .then((responseJson) => {
+          //sorts through each job returned
           const ids = [];
 
           for (let i = 0; i < responseJson.length; i++) {
             let object = {
               id: responseJson[i].jobID,
             };
+            //checks if the job hasn't already been completed
             if (responseJson[i].job_completed != 1) {
               ids.push(object);
             }
           }
+          //sets the recent jobs
           setRecentJobIDs(ids);
           setLoading(false);
         });
@@ -127,6 +143,7 @@ const HomeScreen = ({ navigation }) => {
     }
   }, []);
 
+  //useEffect that gets the recommended jobs for the user
   useEffect(() => {
     fetch(
       "https://raptor.kent.ac.uk/proj/comp6000/project/08/recommendedJobs.php",
@@ -136,6 +153,7 @@ const HomeScreen = ({ navigation }) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        //userID as parameter for backend
         body: JSON.stringify({
           id: global.userID,
         }),
@@ -143,25 +161,32 @@ const HomeScreen = ({ navigation }) => {
     )
       .then((response) => response.json())
       .then((responseJson) => {
+        //sorts through jobs returned
         const ids = [];
         for (let i = 0; i < responseJson.length; i++) {
+          //checks if job wasnt posted by the user logged i
           if (responseJson[i + 1] != global.userID) {
             let object = {
               id: responseJson[i],
             };
+            //checks job hasnt been completed
             if (responseJson[i].job_completed != 1) {
               ids.push(object);
             }
           }
         }
+        //sets the recommended jobs
         setRecommendedJobs(ids);
       })
+      //catches errors
       .catch((error) => {
         alert(error);
       });
   }, []);
 
+  //useEffect that gets the nearby jobs for the user, refreshes if the search distance changes
   useEffect(() => {
+    //first checks if the logged in user long and lat are set
     if (userLongAndLat != null) {
       setModalVisible(false);
       fetch(
@@ -172,6 +197,7 @@ const HomeScreen = ({ navigation }) => {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
+          //userID as backend parameter
           body: JSON.stringify({
             userID: global.userID,
           }),
@@ -179,22 +205,29 @@ const HomeScreen = ({ navigation }) => {
       )
         .then((response) => response.json())
         .then(async (responseJson) => {
+          //sorts through returned jobs
           let ids = [];
           let count = 0;
+          //loop through jobs
           for (let i = 0; i < responseJson.length; i += 2) {
             try {
+              //gets the location of the returned job address
               const location = await getLocation(responseJson[i + 1]);
+              //if location is set
               if (location) {
                 let object = {
                   latitude: location.latitude,
                   longitude: location.longitude,
                 };
+                //calculates the distance found job is from logged in user's address
                 const distance = calculateDistance(
                   object.latitude,
                   object.longitude
                 );
+                //checks if the distance is within the search radius
                 if (distance < radius) {
                   count++;
+                  //pushes job to list
                   ids.push({
                     id: responseJson[i],
                   });
@@ -202,29 +235,37 @@ const HomeScreen = ({ navigation }) => {
               }
             } catch {}
           }
+          //checks if no jobs were found, sets variable if true
           if (count == 0) {
             setNoNearby(true);
           } else {
             setNoNearby(false);
           }
+          //sets and shuffles nearby jobs
           setNearbyJobs(_.shuffle(ids));
         })
+        //catches errors
         .catch((error) => {
           alert(error);
           setLoading(false);
         });
     }
+    //refresh variables
   }, [userLongAndLat, radius]);
 
+  //navigates to the search screen with search query when called
   const handelSearch = async () => {
     navigation.navigate("SearchScreen", query);
   };
 
+  //converts the radius into KM
   const convert = () => {
     return radius / 1000;
   };
 
+  //function that renders nearby jobs scroll views
   const renderNearby = () => {
+    //if there are nearby jobs
     if (noNearby == false) {
       return (
         <ScrollView horizontal={true}>
@@ -233,6 +274,7 @@ const HomeScreen = ({ navigation }) => {
           })}
         </ScrollView>
       );
+      //if no nearby jobs
     } else if (noNearby == true) {
       return (
         <View>
@@ -242,12 +284,15 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  //if the page  is loading
   if (loading) {
     return <Text>Loading....</Text>;
   }
 
+  //main return components
   return (
     <View style={styles.container}>
+      {/* Modal that pops up to change search distance */}
       <Modal
         testID="distanceModal"
         animationType="slide"
@@ -257,6 +302,7 @@ const HomeScreen = ({ navigation }) => {
           setModalVisible(!modalVisible);
         }}
       >
+        {/* all different types of distances to select */}
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Pressable
@@ -292,9 +338,11 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </View>
       </Modal>
+      {/* Main scroll view */}
       <ScrollView>
         <View style={styles.upperView}>
           <Text style={styles.header}>
+            {/* Welcome messages */}
             <Text
               testID="welcome_message"
               style={{ fontWeight: "bold", fontSize: 30, paddingHorizontal: 5 }}
@@ -304,12 +352,14 @@ const HomeScreen = ({ navigation }) => {
             Search up for tasks that you're good at!
           </Text>
           <View style={styles.searchContainer}>
+            {/* Search Bar */}
             <SearchBar
               testID="search_bar"
               searchText={query}
               setSearchText={setQuery}
               style={styles.searchBox}
             />
+            {/* Button to search */}
             <TouchableOpacity testID="search_button" onPress={handelSearch}>
               <Text style={styles.searchTxt}>Search</Text>
             </TouchableOpacity>
@@ -317,6 +367,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View style={styles.bottomView}>
           <ScrollView>
+            {/* Text and scroll view for recently posted jobs */}
             <Text style={styles.title}>Recent Tasks</Text>
             <ScrollView
               testID="recent_jobs"
@@ -327,6 +378,7 @@ const HomeScreen = ({ navigation }) => {
                 return <ViewJob key={object.id} ID={object.id} />;
               })}
             </ScrollView>
+            {/* Text and scroll view for recommended jobs */}
             <Text style={styles.title}>Recommended For You</Text>
             <ScrollView testID="recommended_jobs" horizontal={true}>
               {recommendedJobs.map((object) => {
@@ -334,6 +386,7 @@ const HomeScreen = ({ navigation }) => {
               })}
             </ScrollView>
             <View style={styles.nearbyViewContainer}>
+              {/* Text and scroll view for nearby jobs, displaying current distance and button to activate modal to change distance */}
               <Text style={styles.title}>Nearby Your Stored Address: </Text>
               <Pressable
                 testID="modal_button"
@@ -343,6 +396,7 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.textStyle}>{convert()} Km</Text>
               </Pressable>
             </View>
+            {/* calls function to render all nearby jobs */}
             <View testID="nearby_jobs">{renderNearby()}</View>
           </ScrollView>
         </View>
@@ -353,6 +407,7 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen;
 
+// css styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
