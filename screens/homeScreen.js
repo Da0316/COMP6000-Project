@@ -15,7 +15,7 @@ import * as Location from "expo-location";
 import { getDistance } from "geolib";
 import _ from "lodash";
 
-const HomeScreen = ({ navigation, route }) => {
+const HomeScreen = ({ navigation }) => {
   const [recentJobIDs, setRecentJobIDs] = useState([]);
   const [recommendedJobs, setRecommendedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -200,9 +200,7 @@ const HomeScreen = ({ navigation, route }) => {
                   });
                 }
               }
-            } catch {
-              console.log("Lol");
-            }
+            } catch {}
           }
           if (count == 0) {
             setNoNearby(true);
@@ -251,6 +249,7 @@ const HomeScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Modal
+        testID="distanceModal"
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -297,33 +296,39 @@ const HomeScreen = ({ navigation, route }) => {
         <View style={styles.upperView}>
           <Text style={styles.header}>
             <Text
+              testID="welcome_message"
               style={{ fontWeight: "bold", fontSize: 30, paddingHorizontal: 5 }}
             >
-              Hi!{" "}
+              Hi!
             </Text>
             Search up for tasks that you're good at!
           </Text>
           <View style={styles.searchContainer}>
             <SearchBar
+              testID="search_bar"
               searchText={query}
               setSearchText={setQuery}
               style={styles.searchBox}
             />
-            <TouchableOpacity onPress={handelSearch}>
+            <TouchableOpacity testID="search_button" onPress={handelSearch}>
               <Text style={styles.searchTxt}>Search</Text>
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.bottomView}>
           <ScrollView>
-            <Text style={styles.title}> Recent Tasks </Text>
-            <ScrollView horizontal={true} pagingEnabled={true}>
+            <Text style={styles.title}>Recent Tasks</Text>
+            <ScrollView
+              testID="recent_jobs"
+              horizontal={true}
+              pagingEnabled={true}
+            >
               {recentJobIDs.map((object) => {
                 return <ViewJob key={object.id} ID={object.id} />;
               })}
             </ScrollView>
             <Text style={styles.title}>Recommended For You</Text>
-            <ScrollView horizontal={true}>
+            <ScrollView testID="recommended_jobs" horizontal={true}>
               {recommendedJobs.map((object) => {
                 return <ViewJob key={object.id} ID={object.id} />;
               })}
@@ -331,13 +336,14 @@ const HomeScreen = ({ navigation, route }) => {
             <View style={styles.nearbyViewContainer}>
               <Text style={styles.title}>Nearby Your Stored Address: </Text>
               <Pressable
+                testID="modal_button"
                 style={styles.openButton}
                 onPress={() => setModalVisible(true)}
               >
                 <Text style={styles.textStyle}>{convert()} Km</Text>
               </Pressable>
             </View>
-            <View>{renderNearby()}</View>
+            <View testID="nearby_jobs">{renderNearby()}</View>
           </ScrollView>
         </View>
       </ScrollView>

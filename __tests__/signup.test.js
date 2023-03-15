@@ -129,9 +129,9 @@ test ("invalid address", () => {
 
   fireEvent.changeText(getByPlaceholderText("Email address*"), "lukas@lukas.com")
   fireEvent.changeText(getByPlaceholderText("Password*"), "Hello123.")
-  fireEvent.changeText(getByPlaceholderText("address Line 1*"), "23")
-  fireEvent.changeText(getByPlaceholderText("City*"), "Cantebury")
-  fireEvent.changeText(getByPlaceholderText("Post Code*"), "CT2AY")
+  fireEvent.changeText(getByPlaceholderText("address Line 1*"), "2")
+  fireEvent.changeText(getByPlaceholderText("City*"), "ury")
+  fireEvent.changeText(getByPlaceholderText("Post Code*"), "C")
   fireEvent.changeText(getByPlaceholderText("Confirm password*"), "Hello123.")
   fireEvent.press(getByTestId("signUpButton"));
   expect(alertMock).toHaveBeenCalledWith("address does not exist");

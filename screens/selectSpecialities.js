@@ -122,7 +122,10 @@ export default SelectSpecialities = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 4, backgroundColor: "#f9ce40" }}>
+      <View
+        testID="alloptionsList"
+        style={{ flex: 4, backgroundColor: "#f9ce40" }}
+      >
         <Text
           style={{
             fontSize: 18,
@@ -132,7 +135,7 @@ export default SelectSpecialities = ({ route, navigation }) => {
             borderRadius: 20,
           }}
         >
-          Select your specialities from the list below:{" "}
+          Select your specialities from the list below:
         </Text>
         {renderList(options)}
       </View>
@@ -142,6 +145,7 @@ export default SelectSpecialities = ({ route, navigation }) => {
       </View>
       <View style={{ marginBottom: 10 }}>
         <TouchableOpacity
+          testID="submitButton"
           style={styles.buttonsView}
           onPress={() => handleSubmit()}
         >
