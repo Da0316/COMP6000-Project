@@ -7,18 +7,44 @@ import {
   View,
 } from "react-native";
 
-const ForgotPassword = () => {
+const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
   const handleResetPassword = () => {
-    if (!email) {
+    if (email == "") {
       setMessage("Please enter your email address.");
       return;
+    } else if (password == "" || password.length < 8) {
+      setMessage("Please enter valid new password");
     }
 
-    // send password reset email to user's email address
-    // ...
+    fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/forgotPassword.php", {
+      method: "post",
+      header: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson == "success") {
+          alert("Password updates successfully");
+          navigation.navigate("Login")
+        } else if (responseJson == "fail") {
+          alert("update wasnt successful")
+        } else if (responseJson == "email doesn't exist") {
+          alert("email doesn't exist")
+        }
+      })
+      .catch((error) => {
+        alert(error);
+      });
 
     setMessage(`Password reset email has been sent to ${email}`);
   };
@@ -36,6 +62,13 @@ const ForgotPassword = () => {
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="New Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
         />
       </View>
       {message ? <Text style={styles.message}>{message}</Text> : null}
