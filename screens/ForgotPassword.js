@@ -46,7 +46,7 @@ const ForgotPassword = ({navigation}) => {
         alert(error);
       });
 
-    setMessage(`Password reset email has been sent to ${email}`);
+    setMessage(`Password changed successfully`);
   };
 
   return (
