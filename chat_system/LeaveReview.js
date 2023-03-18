@@ -1,9 +1,10 @@
+//leaveReview.js - leaving a review after a job is completed
+//imports
 import React, { useEffect, useState } from "react";
 import {
   View,
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   TextInput,
   Image,
   FlatList,
@@ -12,7 +13,6 @@ import {
 import {
   Avatar,
   Title,
-  Caption,
   Text,
   TouchableRipple,
 } from "react-native-paper";
@@ -20,7 +20,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 
+//main funtion that takes the jobID, userPostedID and onBack as params
 export default function LeaveReview({ jobID, userPostedID, onBack }) {
+  //sets useStates
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [reviews, setReview] = useState([]);
@@ -28,6 +30,7 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
   const [userID, setUserID] = useState("");
   const isFocused = useIsFocused();
 
+  //function that gets the userID
   const readData = async () => {
     try {
       const value = await AsyncStorage.getItem("user_id");
@@ -39,6 +42,8 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
       alert("Failed to fetch the input from storage");
     }
   };
+
+  //function that gets reviews
   const fetchReview = async () => {
     const params = new FormData();
     params.append("jobid", jobID);
@@ -48,8 +53,11 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
       `https://raptor.kent.ac.uk/proj/comp6000/project/08/reviews.php`,
       params
     );
+    //sets the reviews
     setReview(res?.data);
   };
+
+  //funcgion that writes reviews, taking the userID, review rating and review text as params
   const writeReview = async (userid, rating, reviewtxt) => {
     const params = new FormData();
     params.append("jobid", jobID);
@@ -62,23 +70,29 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
       params
     );
     setWrite(res?.data);
+    //if it was posted succesffully
     if (res?.data === 1) {
       alert("Review posted successfully");
+      //goes back to chat page
       onBack();
+    //if review failed
     } else {
       alert("something went wrong");
     }
-    console.log("res", res.data);
   };
+
+  //useEffect that loads initial data when page is called
   useEffect(() => {
     readData();
     fetchReview();
   }, [write, isFocused]);
 
+  //fucntion that renders a review
   const renderItem = ({ item }) => {
     return (
       <View style={{ marginBottom: 20, elevation: 1, padding: 10 }}>
         <View style={{ flexDirection: "row" }}>
+          {/* profile image */}
           <Image
             source={{
               uri: item?.image
@@ -95,12 +109,15 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
             }}
           />
           <View>
+            {/* username */}
             <Text style={{ width: "70%", marginLeft: 10, fontSize: 16 }}>
               {item?.username}
             </Text>
+            {/* rating level */}
             <Text style={{ width: "70%", marginLeft: 10, fontSize: 16 }}>
               Ratings {item?.rating}
             </Text>
+            {/* timestamp */}
             <Text style={{ width: "90%", marginLeft: 10, fontSize: 16 }}>
               {item?.timestamp}
             </Text>
@@ -113,6 +130,7 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
             marginHorizontal: 40,
           }}
         >
+          {/* review text */}
           <Text style={{ width: "70%", textAlign: "center", padding: 10 }}>
             {item?.review_text}
           </Text>
@@ -121,13 +139,16 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
     );
   };
 
+  //main return for the page
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.actionBar}>
+        {/* back button */}
         <TouchableOpacity onPress={onBack}>
           <Image source={require("./assets/back.png")} />
         </TouchableOpacity>
       </View>
+      {/* flatlist of all the reviews */}
       <View style={styles.main}>
         <View style={{ height: "52%", backgroundColor: "lightgray" }}>
           <FlatList
@@ -138,10 +159,12 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
             inverted={true}
           />
         </View>
+        {/* section to write a review */}
         <View style={styles.reviewSection}>
           <Title style={{ fontWeight: "bold", marginLeft: 20 }}>
             Write a Review
           </Title>
+          {/* adding how many stars  */}
           <Text>Your Rating:</Text>
           <View style={styles.ratingSection}>
             <TouchableRipple onPress={() => setRating(1)}>
@@ -195,6 +218,7 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
               />
             </TouchableRipple>
           </View>
+          {/* text for the review */}
           <TextInput
             style={styles.reviewForm}
             placeholder="Write Review"
@@ -202,11 +226,13 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
             value={reviewText}
             onChangeText={(text) => setReviewText(text)}
           />
+          {/* submit buton */}
           <TouchableRipple
             style={styles.submitButton}
             onPress={() => {
               readData();
               writeReview(userID, rating, reviewText);
+              onBack();
             }}
           >
             <Text>Submit</Text>
@@ -217,6 +243,7 @@ export default function LeaveReview({ jobID, userPostedID, onBack }) {
   );
 }
 
+//css styling
 const styles = StyleSheet.create({
   main: {
     flex: 1,

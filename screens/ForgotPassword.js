@@ -14,10 +14,11 @@ const ForgotPassword = ({navigation}) => {
 
   const handleResetPassword = () => {
     if (email == "") {
-      setMessage("Please enter your email address.");
+      alert("Please enter your email address.")
       return;
     } else if (password == "" || password.length < 8) {
-      setMessage("Please enter valid new password");
+      alert("Please enter valid new password.");
+      return;
     }
 
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/forgotPassword.php", {
@@ -34,7 +35,7 @@ const ForgotPassword = ({navigation}) => {
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson == "success") {
-          alert("Password updates successfully");
+          alert("Password updated successfully");
           navigation.navigate("Login")
         } else if (responseJson == "fail") {
           alert("update wasnt successful")
@@ -58,7 +59,7 @@ const ForgotPassword = ({navigation}) => {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Email address"
+          placeholder="Email Address"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -72,7 +73,7 @@ const ForgotPassword = ({navigation}) => {
         />
       </View>
       {message ? <Text style={styles.message}>{message}</Text> : null}
-      <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
+      <TouchableOpacity testID="resetButton" style={styles.button} onPress={handleResetPassword}>
         <Text style={styles.buttonText}>Reset Password</Text>
       </TouchableOpacity>
     </View>

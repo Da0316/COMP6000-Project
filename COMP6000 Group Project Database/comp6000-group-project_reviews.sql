@@ -28,6 +28,7 @@ CREATE TABLE `reviews` (
   `rating` int NOT NULL,
   `review_text` longtext NOT NULL,
   `timestamp` datetime NOT NULL,
+  'userPostedID' int NOT NULL,
   PRIMARY KEY (`reviewID`),
   KEY `userID_idx` (`userID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -32,6 +32,7 @@ CREATE TABLE `jobs` (
   `job_accepted` tinyint NOT NULL,
   `job_completed` tinyint NOT NULL,
   `price` int NOT NULL,
+  'imageName' varchar(1000) NOT NULL,
   PRIMARY KEY (`jobID`),
   KEY `userID_idx` (`userID`),
   KEY `specialityID_idx` (`specialityID`),

@@ -1,23 +1,19 @@
+// ViewUser.js - for viewing user's information from the chat
+// imports
 import React, { useEffect, useState } from "react";
 import {
   View,
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
   Image,
 } from "react-native";
-import {
-  Avatar,
-  Title,
-  Caption,
-  Text,
-  TouchableRipple,
-  TextInput,
-} from "react-native-paper";
+import { Avatar, Title, Caption, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
+//main function, takes the selected user information and onBack function as parameters
 export default function ViewUser({ selectedUser, onBack }) {
+  //sets initial useStates
   const [userID, setUserID] = useState(null);
   const [firstname, setFirstname] = useState(null);
   const [lastname, setLastname] = useState(null);
@@ -29,33 +25,41 @@ export default function ViewUser({ selectedUser, onBack }) {
   const [score, setScore] = useState(null);
   const [placeholder, setImagePlaceholder] = useState(false);
 
+  //fetch to get the userID of selectedUser
   fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/chatViewUser.php", {
     method: "post",
     header: {
       Accept: "application/json",
       "Content-type": "application/json",
     },
+    // backend params
     body: JSON.stringify({
       username: selectedUser.username,
     }),
   })
     .then((response) => response.json())
     .then((responseJson) => {
+      //sets userID
       setUserID(responseJson);
     });
+
+  //checks if the userID has been set
   if (userID != null) {
+    //fetch to get the selectedUser's information from the database
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php", {
       method: "post",
       header: {
         Accept: "application/json",
         "Content-type": "application/json",
       },
+      // backend params
       body: JSON.stringify({
         userID: userID,
       }),
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        //sets all user information
         setFirstname(responseJson[2]);
         setLastname(responseJson[3]);
         setPhone_number(responseJson[7]);
@@ -72,10 +76,12 @@ export default function ViewUser({ selectedUser, onBack }) {
       });
   }
 
+  //more useStates
   const [jobID, setJobID] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isJobEmpty, setIsJobEmpty] = useState(false);
 
+  //useEffect to get the jobs posted from that user
   useEffect(() => {
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/getJobs.php", {
       method: "post",
@@ -108,6 +114,7 @@ export default function ViewUser({ selectedUser, onBack }) {
       });
   }, []);
 
+  //fetch call that calculates their review score
   fetch(
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateReviewScore.php",
     {
@@ -116,6 +123,7 @@ export default function ViewUser({ selectedUser, onBack }) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
+      //backend params
       body: JSON.stringify({
         userID: userID,
       }),
@@ -123,12 +131,15 @@ export default function ViewUser({ selectedUser, onBack }) {
   )
     .then((response) => response.json())
     .then((responseJson) => {
+      //sets the score
       setScore(responseJson);
     })
+    //catches errors
     .catch((error) => {
       alert(error);
     });
 
+  //fetch that calculates how many jobs the selected user has completed
   fetch(
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateJobsCompleted.php",
     {
@@ -137,6 +148,7 @@ export default function ViewUser({ selectedUser, onBack }) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
+      //backend params
       body: JSON.stringify({
         userID: userID,
       }),
@@ -144,21 +156,26 @@ export default function ViewUser({ selectedUser, onBack }) {
   )
     .then((response) => response.json())
     .then((responseJson) => {
+      //sets the variable
       setJobsCompleted(responseJson);
     })
+    //catches errors
     .catch((error) => {
       alert(error);
     });
 
+  //returns components
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.actionBar}>
+        {/* onback button */}
         <TouchableOpacity onPress={onBack}>
           <Image source={require("./assets/back.png")} />
         </TouchableOpacity>
       </View>
       <View style={styles.userInfoSection}>
         <View style={{ flexDirection: "row", marginTop: 15 }}>
+          {/* profile picture */}
           <Avatar.Image
             source={{
               uri: placeholder
@@ -170,6 +187,7 @@ export default function ViewUser({ selectedUser, onBack }) {
             size={90}
           />
           <View style={{ marginLeft: 20 }}>
+            {/* firstname and lastname */}
             <Title
               style={[
                 styles.title,
@@ -181,6 +199,7 @@ export default function ViewUser({ selectedUser, onBack }) {
             >
               {firstname} {lastname}
             </Title>
+            {/* username */}
             <Caption style={styles.caption}>{selectedUser.username}</Caption>
           </View>
         </View>
@@ -188,6 +207,7 @@ export default function ViewUser({ selectedUser, onBack }) {
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
+          {/* phone number with icon */}
           <Icon name="phone" color="#777777" size={20} />
           <Text style={{ color: "#777777", marginLeft: 20 }}>
             {phone_number}
@@ -203,10 +223,12 @@ export default function ViewUser({ selectedUser, onBack }) {
               },
             ]}
           >
+            {/* user review rating */}
             <Title>Ratings Level</Title>
             <Caption>{score}</Caption>
           </View>
           <View style={styles.infoBox}>
+            {/* jobs completed */}
             <Title>Jobs Completed</Title>
             <Caption>{jobsCompleted}</Caption>
           </View>
@@ -216,6 +238,7 @@ export default function ViewUser({ selectedUser, onBack }) {
   );
 }
 
+//css styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,

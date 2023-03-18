@@ -33,6 +33,7 @@ CREATE TABLE `user` (
   `email` varchar(1000) NOT NULL,
   `email_verified` tinyint DEFAULT NULL,
   `phone_number` varchar(45) NOT NULL,
+  'imageName' varchar(1000) NOT NULL,
   PRIMARY KEY (`userID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
