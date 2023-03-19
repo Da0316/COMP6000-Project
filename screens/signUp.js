@@ -15,6 +15,7 @@ import {
 import { getDatabase, ref, set } from "firebase/database";
 //imports for a community date picker
 import DatePicker from "react-native-modern-datepicker";
+import { isValid } from "date-fns";
 
 //main function for sign up, has navigation stack to redirect to specialities screen once sign up is complete
 const SignUp = ({ navigation }) => {
@@ -94,8 +95,24 @@ const SignUp = ({ navigation }) => {
     }
   };
 
+  const calculateAge = (birthday) => {
+    const ageDifMs = Date.now() - new Date(birthday).getTime();
+    const ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  };
+
   //function - handelSubmit handels the button press of the signup
   handelSubmit = () => {
+    if (!DOB || !isValid(new Date(DOB))) {
+      alert("Please enter a valid date of birth");
+      return false;
+    }
+
+    const age = calculateAge(DOB);
+    if (age < 18) {
+      alert("You must be at least 18 years old to sign up");
+      return false;
+    }
 
     //regular expression of all the characters allowed in password
     const strongRegex = new RegExp(
@@ -175,7 +192,11 @@ const SignUp = ({ navigation }) => {
             alert("Account already signed up with this email");
           } else if (responseJson === "username already exists") {
             alert("Username already exists");
-          } else { //if everything is valid the sign up is accepted
+          }
+          // else if (responseJson === "You must be at least 18 years old to sign up"){
+          //   alert("You must be at least 18 years old to sign up");
+          // } 
+          else { //if everything is valid the sign up is accepted
             alert("Signup Successful!");
             const newUserObj = {
               username: String(responseJson[1]),

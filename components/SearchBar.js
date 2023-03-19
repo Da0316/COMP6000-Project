@@ -1,6 +1,8 @@
 import React from "react";
 import { View, TextInput, Text, StyleSheet } from "react-native";
 
+
+// This is a functional component for a search bar
 const SearchBar = (props) => {
   return (
     <View style={styles.container}>
