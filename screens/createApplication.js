@@ -13,6 +13,8 @@ function CreateApplication({ route, navigation }) {
   const [applicationDate, setApplicationDate] = useState(new Date());
   const [priceOffer, setPriceOffer] = useState("");
 
+
+   // Check if the user has an outstanding job with the current job poster
   const checkOutstandingJob = () => {
     fetch(
       "https://raptor.kent.ac.uk/proj/comp6000/project/08/checkOutstandingJob.php",
@@ -30,8 +32,10 @@ function CreateApplication({ route, navigation }) {
     )
       .then((response) => response.text())
       .then((responseJson) => {
+        // If the user has an outstanding job, show an alert
         if (responseJson == "true") {
           alert("You have an outstanding job with this user");
+          // If the user does not have an outstanding job, submit the application
         } else if (responseJson == "false") {
           submit();
         }

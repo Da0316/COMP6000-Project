@@ -8,7 +8,10 @@ import {
 } from "react-native";
 
 function Job({ route, navigation }) {
+  // Get jobID from navigation params
   const { jobID } = route.params;
+
+  // Define state variables to hold job information
   const [userPostedID, setUserPostedID] = useState(null);
   const [speciality, setSpeciality] = useState(null);
   const [jobTitle, setJobTitle] = useState(null);
@@ -19,6 +22,7 @@ function Job({ route, navigation }) {
   const [sameUser, setSameUser] = useState(null);
   const [image, setImage] = useState("https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg");
 
+  //  fetch job data from server
  // useEffect(() = {})
     try {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php", {
@@ -33,6 +37,7 @@ function Job({ route, navigation }) {
       })
         .then((response) => response.json())
         .then((responseJson) => {
+          // Update state variables with job information
           setUserPostedID(responseJson[0]);
           setSpeciality(responseJson[1]);
           setJobTitle(responseJson[2]);
@@ -60,7 +65,8 @@ function Job({ route, navigation }) {
     } catch (error) {
       console.log(error);
     }
-
+  // Render different buttons based on whether the logged in 
+  //user is the same as the user who posted the job
   const renderButton = () => {
     if (sameUser == false) {
       return (
@@ -85,7 +91,8 @@ function Job({ route, navigation }) {
       );
     }
   };
-
+ // Render different views based on whether
+ // the logged in user is the same as the user who posted the job
   const profileView = () => {
     if (sameUser == false) {
       return (
@@ -115,7 +122,9 @@ function Job({ route, navigation }) {
           <Text testID='description' style={styles.des}>{jobDescription}</Text>
         </View>
         <View style={styles.row}>
-          <Text testID='user' style={styles.baseText}> Posted by: {profileView()}</Text>
+          <Text testID='user' style={styles.answer}> 
+          Posted by: {profileView()}
+          </Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.baseText}>

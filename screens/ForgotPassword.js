@@ -7,12 +7,16 @@ import {
   View,
 } from "react-native";
 
+// Creating the ForgotPassword component
 const ForgotPassword = ({navigation}) => {
+   // Initializing state variables using the useState hook
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+   // Defining the handleResetPassword function
   const handleResetPassword = () => {
+    // Checking if email and password fields are not empty
     if (email == "") {
       alert("Please enter your email address.")
       return;
@@ -20,7 +24,7 @@ const ForgotPassword = ({navigation}) => {
       alert("Please enter valid new password.");
       return;
     }
-
+    // Sending a POST request to the server to update password
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/forgotPassword.php", {
       method: "post",
       header: {
@@ -34,9 +38,10 @@ const ForgotPassword = ({navigation}) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        // Checking if password update was successful or not
         if (responseJson == "success") {
           alert("Password updated successfully");
-          navigation.navigate("Login")
+          navigation.navigate("Login") // Navigating back to the Login screen
         } else if (responseJson == "fail") {
           alert("update wasnt successful")
         } else if (responseJson == "email doesn't exist") {
@@ -44,12 +49,13 @@ const ForgotPassword = ({navigation}) => {
         }
       })
       .catch((error) => {
-        alert(error);
+        alert(error); // Displaying any error that occurs during the request
       });
 
-    setMessage(`Password changed successfully`);
+    setMessage(`Password changed successfully`); // Setting the message state variable
   };
 
+   // Rendering the component view
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Forgot Password</Text>
@@ -80,6 +86,7 @@ const ForgotPassword = ({navigation}) => {
   );
 };
 
+// Defining component styles using StyleSheet
 const styles = StyleSheet.create({
   container: {
     flex: 1,

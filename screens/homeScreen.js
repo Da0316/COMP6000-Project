@@ -531,6 +531,7 @@ const styles = StyleSheet.create({
   nearbyViewContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom:20
   },
   openButton: {
     backgroundColor: "#f9ce40",

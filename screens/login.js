@@ -18,13 +18,15 @@ const Login = ({ navigation }) => {
   //variables to store the details that the user enters when trying to login to the app
   const [userName, setuserName] = useState("");
   const [password, setpassword] = useState("");
-  const isFocused=useIsFocused();
+  const isFocused=useIsFocused(); // React Navigation hook to check if screen is focused
   //variable to store the logo for the app
   const [image, setImage] = useState(
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/O.png"
   );
   useEffect(()=>{setuserName(""),setpassword("")},[isFocused])
   const [message, setMessage] = useState("");
+
+   // Function to save the user's ID to the async storage
   const saveData = async (id) => {
     try {
       await AsyncStorage.setItem("user_id", id);
@@ -78,6 +80,7 @@ const Login = ({ navigation }) => {
     }
   };
 
+  // Rendering the UI for the Login component
   return (
     <View style={styles.container}>
       <View style={styles.upper}>
@@ -89,7 +92,7 @@ const Login = ({ navigation }) => {
         />
       </View>
       <View style={styles.lower}>
-        <Text style={styles.welcome}>Welcome</Text>
+        {/* <Text style={styles.welcome}>Welcome</Text> */}
         <Text style={styles.title}>Welcome</Text>
         {/* <StatusBar style="auto" /> */}
         <Caption style={{ marginBottom: 8 }}>
@@ -123,7 +126,7 @@ const Login = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={onForgetPassword}>
-          <Text style={styles.forgotPassBtn}>Forgot Password?</Text>
+          <Text style={styles.forgotPassBtn}>Forgot Password?<Caption style={{fontSize:12}}> Press here</Caption></Text>
         </TouchableOpacity>
 
         <Text>Don't have an account?</Text>
@@ -141,23 +144,6 @@ const Login = ({ navigation }) => {
 export default Login;
 
 const styles = StyleSheet.create({
-  circle_1: {
-    position: "absolute",
-    width: 400,
-    height: 400,
-    borderRadius: 1000,
-    backgroundColor: "#F9CE40",
-    transform: [{ translateX: 0 }, { translateY: -350 }, { rotate: "0deg" }],
-    elevation: 20,
-  },
-  circle_2: {
-    position: "absolute",
-    width: 400,
-    height: 400,
-    borderRadius: 1000,
-    backgroundColor: "#B28B1D",
-    transform: [{ translateX: 0 }, { translateY: -348 }, { rotate: "0deg" }],
-  },
   upper: {
     flex: 2,
     width: "100%",
@@ -167,6 +153,8 @@ const styles = StyleSheet.create({
   },
   lower: {
     flex: 5,
+    flexWrap:"wrap",
+    alignContent:"center",
     width: "100%",
     borderTopRightRadius: 80,
     borderTopLeftRadius: 80,
@@ -183,17 +171,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    padding: 20,
+    padding: 10,
     fontSize: 25,
     letterSpacing: 7,
-    marginBottom: 10,
-    color: "#FFFFFF",
-  },
-  welcome: {
-    position: "absolute",
-    fontSize: 25,
-    color: "#EBEBEB",
-    letterSpacing: 7,
+    color: "#c2c3c4",
   },
   inputView: {
     backgroundColor: "#EBEBEB",
