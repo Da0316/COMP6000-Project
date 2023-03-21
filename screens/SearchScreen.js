@@ -46,6 +46,7 @@ const SearchScreen = ({ navigation, route }) => {
 
     useEffect(() => {
       console.log("Selected speciality:", selectedSpeciality);
+      //console.log(setSelectedSpeciality(selectedSpeciality));
     if (fetched && (specialities.length > 0)) {
       initalFetch();
     }
@@ -74,14 +75,14 @@ const SearchScreen = ({ navigation, route }) => {
         sort();
     }
   };
-  if (!Array.isArray(specialities) || specialities.length === 0) {
-    console.log(specialities)
-    console.log("empty")
-  }else{
-    console.log(specialities)
-    console.log("notempty")
+  // if (!Array.isArray(specialities) || specialities.length === 0) {
+  //   console.log(specialities)
+  //   console.log("empty")
+  // }else{
+  //   console.log(specialities)
+  //   console.log("notempty")
     
-  }
+  // }
 
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
@@ -89,7 +90,58 @@ const SearchScreen = ({ navigation, route }) => {
     </View>
   );
 
+  const sortBySpeciality = () => {
+    //console.log(specialities)
+    console.log(selectedSpeciality)
+    var par = 5;
+
+    fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php", {
+      method: "post",
+      header: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        searchInput: query,
+        id: global.userID,
+        filter: par,
+        specialityID: selectedSpeciality,
+
+        //specialityID: specialityID,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        const ids = [];
+        console.log(responseJson.sep);
+        for (let i = 0; i < responseJson.length; i++) {
+          const formatDateed = formatDate(responseJson[i].posted_date);
+          let object = {
+            id: responseJson[i].jobID,
+            date: formatDateed,
+            price: responseJson[i].price,
+            //specialityID: responseJson[i].specialityID,
+          };
+          
+          // if (responseJson[i].userID != global.userID) {
+          //   ids.push(object);
+          // }
+
+            if (responseJson[i].userID != global.userID && (!selectedSpeciality || responseJson[i].specialityID == selectedSpeciality.key)) {
+                ids.push(object);
+              }
+        }
+        setJobs(ids);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+    par = 0;
+  };
+
   const sort = () => {
+    
     var par = 0;
     //const specialityID = selectedSpeciality && selectedSpeciality.value;
     //let specialityID = selectedSpeciality ? selectedSpeciality.key : null;
@@ -124,7 +176,7 @@ const SearchScreen = ({ navigation, route }) => {
         searchInput: query,
         id: global.userID,
         filter: par,
-        specialityID: selectedSpeciality ? selectedSpeciality.key : null,
+        specialityID: selectedSpeciality,
 
         //specialityID: specialityID,
       }),
@@ -132,7 +184,7 @@ const SearchScreen = ({ navigation, route }) => {
       .then((response) => response.json())
       .then((responseJson) => {
         const ids = [];
-        console.log(responseJson);
+        //console.log(responseJson);
         for (let i = 0; i < responseJson.length; i++) {
           const formatDateed = formatDate(responseJson[i].posted_date);
           let object = {
@@ -157,7 +209,7 @@ const SearchScreen = ({ navigation, route }) => {
         alert(error);
       });
     par = 0;
-    console.log(filter);
+    //console.log(filter);
   };
 
   const initalFetch = () => {
@@ -171,7 +223,7 @@ const SearchScreen = ({ navigation, route }) => {
         searchInput: query,
         id: global.userID,
         filter: 0,
-        //specialityID: specialityID,
+        specialityID: selectedSpeciality,
         // getSpecialities: true,
       }),
     })
@@ -217,7 +269,8 @@ const SearchScreen = ({ navigation, route }) => {
         setJobs(ids);
       })
       .catch((error) => {
-        SystemMessage.out.println(error);
+        //SystemMessage.out.println(error);
+        console.log(error);
         alert(error);
       });
 
@@ -258,7 +311,7 @@ const SearchScreen = ({ navigation, route }) => {
             borderWidth: 1.5,
           }}
           dropdownStyles={{ borderRadius: 15, marginHorizontal: 5 }}
-          setSelected={(val) => setFilter(val)}
+          setSelected={(val) => setSelectedSpeciality(val)}
         />
         
         <SelectList
@@ -267,8 +320,8 @@ const SearchScreen = ({ navigation, route }) => {
           save="key"
           searchPlaceholder="Filter specialities"
           label="specialities"
-          onSelect={(value) => setSelectedSpeciality(value)}
-          //onSelect={() => sort()}
+          //onSelect={(value) => setSelectedSpeciality(value)}
+          onSelect={() => sortBySpeciality()}
           style={styles.sortBox}
           boxStyles={{
             borderRadius: 15,
