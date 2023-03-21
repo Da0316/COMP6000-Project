@@ -261,7 +261,7 @@ const Profile = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       {/* <ScrollView style={styles.scrollView}> */}
       <View style={styles.userInfoSection}>
-        <View style={{ flexDirection: "row", marginTop: 15 }}>
+        <View style={{ flexDirection: "row", marginTop: 2 }}>
           <Avatar.Image
           testID="profile_pic"
             source={{
@@ -271,7 +271,7 @@ const Profile = ({ navigation }) => {
                 : "https://raptor.kent.ac.uk/proj/comp6000/project/08/" +
                   selectedImageName,
             }}
-            size={90}
+            size={60}
           />
           <View style={{ marginLeft: 20 }}>
             <Title
@@ -279,8 +279,8 @@ const Profile = ({ navigation }) => {
               style={[
                 styles.title,
                 {
-                  marginTop: 15,
-                  marginBottom: 5,
+                  marginTop: 5,
+                  marginBottom: 2,
                 },
               ]}
             >
@@ -293,21 +293,21 @@ const Profile = ({ navigation }) => {
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
-          <Icon name="map-marker-radius" color="#1A1918" size={20} />
+          <Icon name="map-marker-radius" color="#1A1918" size={15} />
           <Text testID ="address" style={{ color: "#1A1918", marginLeft: 20 }}>{address}</Text>
         </View>
         <View style={styles.row}>
-          <Icon name="phone" color="#1A1918" size={20} />
+          <Icon name="phone" color="#1A1918" size={15} />
           <Text testID="phoneNumber"style={{ color: "#1A1918", marginLeft: 20 }}>
             {phone_number}
           </Text>
         </View>
         <View style={styles.row}>
-          <Icon name="email" color="#1A1918" size={20} />
+          <Icon name="email" color="#1A1918" size={15} />
           <Text testID="email" style={{ color: "#1A1918", marginLeft: 20 }}>{email}</Text>
         </View>
         <View style={styles.row}>
-          <Icon name="calendar" color="#1A1918" size={20} />
+          <Icon name="calendar" color="#1A1918" size={15} />
           <Text testID="DOB" style={{ color: "#1A1918", marginLeft: 20 }}>
             {date_of_birth}
           </Text>
@@ -371,7 +371,7 @@ const Profile = ({ navigation }) => {
           data={reviews}
           renderItem={renderItem}
           keyExtractor={(item) => item?.timestamp}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={true}
           inverted={true}
           style={{ flex: 1, width: "95%" }}
         />
@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingHorizontal: 30,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   title: {
     fontSize: 24,
@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    marginBottom: 10,
+    marginBottom: 8,
   },
   infoBoxWrapper: {
     flexDirection: "row",
@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     width: "100%",
-    marginBottom: 10,
+    marginBottom: 5,
     marginTop: 3,
   },
   userBtn: {
