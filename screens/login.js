@@ -92,14 +92,14 @@ const Login = ({ navigation }) => {
         />
       </View>
       <View style={styles.lower}>
-        {/* <Text style={styles.welcome}>Welcome</Text> */}
+        {/* Welcome message */}
         <Text style={styles.title}>Welcome</Text>
-        {/* <StatusBar style="auto" /> */}
         <Caption style={{ marginBottom: 8 }}>
           Login with your username and password
         </Caption>
 
         <View style={styles.inputView}>
+          {/* input for username */}
           <TextInput
             style={styles.TextInput}
             value={userName}
@@ -111,6 +111,7 @@ const Login = ({ navigation }) => {
         </View>
 
         <View style={styles.inputView}>
+          {/* input for password */}
           <TextInput
             style={styles.TextInput}
             placeholder="Password"
@@ -121,15 +122,18 @@ const Login = ({ navigation }) => {
             secureTextEntry
           />
         </View>
+        {/* login button */}
         <TouchableOpacity testID="loginButton" style={styles.LoginBtn} onPress={() => signIn()}>
           <Text style={styles.LoginText}>Login</Text>
         </TouchableOpacity>
 
+        {/* forgot password button */}
         <TouchableOpacity onPress={onForgetPassword}>
           <Text style={styles.forgotPassBtn}>Forgot Password?<Caption style={{fontSize:12}}> Press here</Caption></Text>
         </TouchableOpacity>
 
         <Text>Don't have an account?</Text>
+        {/* signup button */}
         <TouchableOpacity
           style={styles.SignUpBtn}
           onPress={() => navigation.navigate("SignUp")}
@@ -143,6 +147,7 @@ const Login = ({ navigation }) => {
 
 export default Login;
 
+// css styling
 const styles = StyleSheet.create({
   upper: {
     flex: 2,

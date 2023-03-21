@@ -24,6 +24,7 @@ function CreateApplication({ route, navigation }) {
           Accept: "application/json",
           "Content-type": "application/json",
         },
+        // backend params
         body: JSON.stringify({
           jobID: jobID,
           applyingID: global.userID,
@@ -40,12 +41,15 @@ function CreateApplication({ route, navigation }) {
           submit();
         }
       })
+      // catches errors
       .catch((error) => {
         console.error(error);
       });
   };
 
+  // function for when submit is pressed
   const submit = () => {
+    // checks if priceOffer is empty
     if (priceOffer != "") {
       fetch(
         "https://raptor.kent.ac.uk/proj/comp6000/project/08/createApplication.php",
@@ -55,6 +59,7 @@ function CreateApplication({ route, navigation }) {
             Accept: "application/json",
             "Content-type": "application/json",
           },
+          // backend params
           body: JSON.stringify({
             jobID: jobID,
             userID: global.userID,
@@ -65,6 +70,7 @@ function CreateApplication({ route, navigation }) {
       )
         .then((response) => response.text())
         .then((responseJson) => {
+          // navigates to homescreen and alerts the user the application was sent
           alert("Application Sent!");
           navigation.navigate("HomeScreen");
         })
@@ -72,13 +78,16 @@ function CreateApplication({ route, navigation }) {
           console.error(error);
         });
     } else {
+      // alerts use to enter a price offer
       Alert("Please enter a price offer");
     }
   };
   return (
     <View style={styles.mainView}>
+      {/* title */}
       <Text style={styles.heading}>Create Application</Text>
       <SafeAreaView style={styles.formView}>
+        {/* text input for price */}
         <TextInput
           testID="price_input"
           placeholder={"Price Offer*"}
@@ -86,6 +95,7 @@ function CreateApplication({ route, navigation }) {
           onChangeText={(price_offer) => setPriceOffer(price_offer)}
           style={styles.TextInput}
         />
+        {/* button to submit */}
         <TouchableOpacity
           style={styles.buttonsView}
           onPress={() => checkOutstandingJob()}
@@ -100,6 +110,7 @@ function CreateApplication({ route, navigation }) {
 
 export default CreateApplication;
 
+// css styling
 const styles = StyleSheet.create({
   mainView: {
     flex: 1,
