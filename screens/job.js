@@ -1,11 +1,7 @@
+//job.js - main job viewing page
+//imports
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 
 function Job({ route, navigation }) {
   // Get jobID from navigation params
@@ -20,68 +16,75 @@ function Job({ route, navigation }) {
   const [price, setPrice] = useState(null);
   const [username, setUsername] = useState(null);
   const [sameUser, setSameUser] = useState(null);
-  const [image, setImage] = useState("https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg");
+  const [image, setImage] = useState(
+    "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg"
+  );
 
-  //  fetch job data from server
- // useEffect(() = {})
-    try {
-      fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php", {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          jobID: jobID,
-        }),
+  try {
+    fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/job.php", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        jobID: jobID,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        // Update state variables with job information
+        setUserPostedID(responseJson[0]);
+        setSpeciality(responseJson[1]);
+        setJobTitle(responseJson[2]);
+        setJobDescription(responseJson[3]);
+        setPostedDate(responseJson[4]);
+        setPrice(responseJson[7]);
+        setUsername(responseJson[8]);
+        if (userPostedID == global.userID) {
+          setSameUser(true);
+        } else {
+          setSameUser(false);
+        }
+
+        if (responseJson[9] == null) {
+          setImage(
+            "https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/1.jpeg"
+          );
+        } else {
+          setImage(
+            "https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/" +
+              responseJson[9]
+          );
+        }
       })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          // Update state variables with job information
-          setUserPostedID(responseJson[0]);
-          setSpeciality(responseJson[1]);
-          setJobTitle(responseJson[2]);
-          setJobDescription(responseJson[3]);
-          setPostedDate(responseJson[4]);
-          setPrice(responseJson[7]);
-          setUsername(responseJson[8]);
-          if (userPostedID == global.userID) {
-            setSameUser(true);
-          } else {
-            setSameUser(false);
-          }
-
-          if (responseJson[9] == null){
-            setImage("https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/1.jpeg");
-          }else{
-            setImage("https://raptor.kent.ac.uk/proj/comp6000/project/08/uploads/" + responseJson[9]);
-          }
-
-          
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  // Render different buttons based on whether the logged in 
+      .catch((error) => {
+        console.log(error);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+  // Render different buttons based on whether the logged in
   //user is the same as the user who posted the job
   const renderButton = () => {
+    // if job is from another user 
     if (sameUser == false) {
       return (
         <TouchableOpacity
           testID="create-application-button"
           styles={styles.applicationButton}
+          // navigation button to creating an applications
           onPress={() => navigation.navigate("CreateApplication", { jobID })}
         >
           <Text style={styles.btnTxt}>Create Application</Text>
         </TouchableOpacity>
       );
+      // if job is posted by logged in user
     } else if (sameUser == true) {
       return (
         <TouchableOpacity
           styles={styles.applicationButton}
+          // navigation button to go view jobApplications
           onPress={() =>
             navigation.navigate("JobApplications", { jobID, jobTitle })
           }
@@ -91,8 +94,8 @@ function Job({ route, navigation }) {
       );
     }
   };
- // Render different views based on whether
- // the logged in user is the same as the user who posted the job
+  // Render different views based on whether
+  // the logged in user is the same as the user who posted the job
   const profileView = () => {
     if (sameUser == false) {
       return (
@@ -116,43 +119,60 @@ function Job({ route, navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.information}>
-
-        <Text testID="title" style={styles.title}>{jobTitle}</Text>
+        {/* job title */}
+        <Text testID="title" style={styles.title}>
+          {jobTitle}
+        </Text>
         <View style={styles.row}>
-          <Text testID='description' style={styles.des}>{jobDescription}</Text>
+          {/* job description */}
+          <Text testID="description" style={styles.des}>
+            {jobDescription}
+          </Text>
         </View>
         <View style={styles.row}>
-          <Text testID='user' style={styles.answer}> 
-          Posted by: {profileView()}
+          {/* username */}
+          <Text testID="user" style={styles.answer}>
+            Posted by: {profileView()}
           </Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.baseText}>
-            <Text testID='speciality' style={styles.answer}>Speciality: {speciality}</Text>
+            {/* speciality */}
+            <Text testID="speciality" style={styles.answer}>
+              Speciality: {speciality}
+            </Text>
           </Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.baseText}>
-            <Text testID='date' style={styles.answer}>Date Posted: {postedDate}</Text>
+            {/* date posted */}
+            <Text testID="date" style={styles.answer}>
+              Date Posted: {postedDate}
+            </Text>
           </Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.baseText}>
-            <Text testID='rate' style={styles.answer}>Hourly rate: £{price}</Text>
+            {/* suggested rate */}
+            <Text testID="rate" style={styles.answer}>
+              Hourly rate: £{price}
+            </Text>
           </Text>
         </View>
         <View>
+          {/* job image */}
           <Image
             source={{
               uri: image,
             }}
-            opacity={0.7} //change opacity 
+            opacity={0.7} //change opacity
             style={styles.image}
             testID="job_image"
           />
         </View>
       </View>
       <View style={styles.lower}>
+        {/* button to view/create applications */}
         <View style={styles.applicationButton}>{renderButton()}</View>
       </View>
     </View>
@@ -161,6 +181,7 @@ function Job({ route, navigation }) {
 
 export default Job;
 
+//CSS styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -229,14 +250,14 @@ const styles = StyleSheet.create({
     marginBottom: -3,
   },
   image: {
-    height: '60%',
-    width: '100%',
+    height: "60%",
+    width: "100%",
     alignContent: "center",
     alignItems: "center",
     justifyContent: "center",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    borderBottomLeftRadius:25,
-    borderBottomRightRadius:25,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
   },
 });
