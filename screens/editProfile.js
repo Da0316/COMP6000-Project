@@ -15,6 +15,7 @@ import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditProfile = ({ navigation }) => {
+  // declare all necessary state variables
   const [username, setUsername] = useState("");
   const [userID, setUserID] = useState("");
   const [firstname, setFirstname] = useState("");
@@ -29,9 +30,13 @@ const EditProfile = ({ navigation }) => {
   const [selectedImageType, setSelectedImageType] = useState("");
   const [selected, setSelected] = useState(false);
 
+  // The 'useIsFocused' hook to detect when the screen has come into focus
   const isFocused = useIsFocused();
 
+  // Define state variable for the selected image
   const [image, setImage] = useState(null);
+
+  // Define function to read data from AsyncStorage
   const readData = async () => {
     try {
       const value = await AsyncStorage.getItem("user_id");
@@ -43,9 +48,13 @@ const EditProfile = ({ navigation }) => {
       alert("Failed to fetch the input from storage");
     }
   };
+
+  // Call 'readData' function on component mount and when the screen comes into focus
   useEffect(() => {
     readData();
   }, [isFocused]);
+
+  // Use effect to fetch user profile data from the server on component mount and when 'userID' state changes
   useEffect(() => {
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php", {
       method: "post",
@@ -54,7 +63,7 @@ const EditProfile = ({ navigation }) => {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-        userID: userID,
+        userID: userID, // pass userID to the server
       }),
     })
       .then((response) => response.json())
@@ -74,7 +83,10 @@ const EditProfile = ({ navigation }) => {
       });
   }, [userID]);
 
+  // Define function to handle the form submission when the user saves changes
   const handelSubmit = async () => {
+
+    // Create a new FormData object to hold the updated profile data
     const params = new FormData();
     params.append("username", username);
     params.append("firstname", firstname);
@@ -83,39 +95,49 @@ const EditProfile = ({ navigation }) => {
     params.append("address", address);
     params.append("phone_number", phone_number);
     params.append("userID", userID);
+    // Add user image to params if it exists
     image &&
       params.append("user_image", {
         uri: image,
         type: "image/jpeg",
         name: Math.floor(Math.random() * 100) + 1 + "photo.jpg",
       });
+
+    // Make a post request to the server to update the user profile
     const res = await axios.post(
       `https://raptor.kent.ac.uk/proj/comp6000/project/08/edit.php`,
       params
     );
+
+    // Show an alert if the update is successful or if something went wrong
     if (res.data === "success") {
       alert("profile updated successfully");
     } else {
       alert("something went wrong");
     }
   };
-
+    // Function to pick an image from the user's gallery
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
     });
+    // Set the user's selected image as the profile picture
     setImage(result.assets[0].uri);
     if (!result.canceled) {
+      // Get the image URI and filename
       let localUri = result.assets[0].uri;
       let filename = localUri.split("/").pop();
 
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
+
+      // Update the state with the selected image data
       setSelectedImage(localUri);
       setSelectedImageName(filename);
       setSelectedImageType(type);
       setSelected(true);
+      // Create a new form data object and append the image data to it
       const formData = new FormData();
       formData.append("name", {
         name: filename,
@@ -123,6 +145,7 @@ const EditProfile = ({ navigation }) => {
         uri: localUri,
       });
     } else {
+      // If no image is selected, display an alert
       alert("You did not select any image.");
     }
   };

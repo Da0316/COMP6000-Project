@@ -170,8 +170,8 @@ const Profile = ({ navigation }) => {
     console.disableYellowBox = true;
   }, [isFocused]);
 
-   //
   useEffect(() => {
+    // Make a POST request to retrieve user profile information
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php", {
       method: "post",
       header: {
@@ -184,6 +184,7 @@ const Profile = ({ navigation }) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        // Update state with user profile information
         setUsername(responseJson[1]);
         setFirstname(responseJson[2]);
         setLastname(responseJson[3]);
@@ -207,6 +208,7 @@ const Profile = ({ navigation }) => {
       .catch((error) => {});
   }, [userID, isFocused]);
 
+  // Make a POST request to calculate the user's review score
   fetch(
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateReviewScore.php",
     {
@@ -222,12 +224,14 @@ const Profile = ({ navigation }) => {
   )
     .then((response) => response.json())
     .then((responseJson) => {
+       // Update state with user review score
       setScore(responseJson);
     })
     .catch((error) => {
       alert(error);
     });
 
+    // Make a POST request to calculate the number of jobs the user has completed
   fetch(
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateJobsCompleted.php",
     {
@@ -243,11 +247,14 @@ const Profile = ({ navigation }) => {
   )
     .then((response) => response.json())
     .then((responseJson) => {
+      // Update state with the number of jobs completed by the user
       setJobsCompleted(responseJson);
     })
     .catch((error) => {
       alert(error);
     });
+
+     // Define function to logout user and navigate to the login screen
   const logoutUser = async (key) => {
     try {
       await AsyncStorage.removeItem(key);
@@ -257,6 +264,7 @@ const Profile = ({ navigation }) => {
       return false;
     }
   };
+  // Render user profile information
   return (
     <SafeAreaView style={styles.container}>
       {/* <ScrollView style={styles.scrollView}> */}

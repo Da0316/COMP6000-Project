@@ -11,6 +11,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import ViewJob from "../components/ViewJob";
 
 const ViewProfile = ({ navigation, route }) => {
+  // Define state variables to store the user information
   const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState(null);
   const [lastname, setLastname] = useState(null);
@@ -22,6 +23,7 @@ const ViewProfile = ({ navigation, route }) => {
   const [jobsCompleted, setJobsCompleted] = useState(null);
   const [score, setScore] = useState(null);
 
+  // Make a request to the backend to fetch the user information
   try {
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/profile.php", {
       method: "post",
@@ -31,7 +33,7 @@ const ViewProfile = ({ navigation, route }) => {
       },
       body: JSON.stringify({
         //userID: 1
-        userID: route.params.paramKey,
+        userID: route.params.paramKey, // Pass the user id obtained from the previous screen
         username: username,
         firstname: firstname,
         lastname: lastname,
@@ -40,10 +42,12 @@ const ViewProfile = ({ navigation, route }) => {
     })
       .then((response) => response.json())
       .then((responseJson) => {
+        // Update the state variables with the fetched user information
         setUsername(responseJson[1]);
         setFirstname(responseJson[2]);
         setLastname(responseJson[3]);
         setPhone_number(responseJson[7]);
+        // Check if the user has uploaded an image or not
         if (responseJson[8] == null) {
           setImagePlaceholder(true);
         } else {
@@ -61,11 +65,12 @@ const ViewProfile = ({ navigation, route }) => {
   } catch (error) {
     console.log(error);
   }
-
+  // Define state variables to store the jobs information
   const [jobID, setJobID] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isJobEmpty, setIsJobEmpty] = useState(false);
 
+  // Make a request to the backend to fetch the jobs information
   useEffect(() => {
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/getJobs.php", {
       method: "post",
@@ -74,14 +79,15 @@ const ViewProfile = ({ navigation, route }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: route.params.paramKey,
+        id: route.params.paramKey, // Pass the user id obtained from the previous screen
       }),
     })
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson == -1) {
-          setIsJobEmpty(true);
+          setIsJobEmpty(true); // Set a state variable to indicate that there are no jobs for the user
         } else {
+          // If job data is found, create an array of job IDs from the response data
           const ids = [];
           for (let i = 0; i < responseJson.length; i++) {
             let object = {
@@ -89,15 +95,16 @@ const ViewProfile = ({ navigation, route }) => {
             };
             ids.push(object);
           }
-          setJobID(ids);
+          setJobID(ids); // Update state with the array of job IDs
         }
         setIsLoading(false);
       })
       .catch((error) => {
-        alert(error);
+        alert(error); // Alert the user if there was an error fetching the job data
       });
   }, []);
 
+  // Fetch the user's review score
   fetch(
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateReviewScore.php",
     {
@@ -116,9 +123,10 @@ const ViewProfile = ({ navigation, route }) => {
       setScore(responseJson);
     })
     .catch((error) => {
-      alert(error);
+      alert(error); // Alert the user if there was an error fetching the review score
     });
 
+    // Fetch the number of jobs the user has completed 
   fetch(
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/calculateJobsCompleted.php",
     {
@@ -134,10 +142,10 @@ const ViewProfile = ({ navigation, route }) => {
   )
     .then((response) => response.json())
     .then((responseJson) => {
-      setJobsCompleted(responseJson);
+      setJobsCompleted(responseJson); // Update state with the number of jobs completed by the user
     })
     .catch((error) => {
-      alert(error);
+      alert(error); // Alert the user if there was an error fetching the number of jobs completed
     });
 
   return (

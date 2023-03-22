@@ -1,3 +1,4 @@
+// Import necessary dependencies
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
@@ -19,6 +20,7 @@ import {
 } from "react-native-paper";
 
 const Reviews = ({ navigation, route }) => {
+  // Declare and initialize the component state
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [reviews, setReview] = useState([]);
@@ -28,6 +30,7 @@ const Reviews = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   const [jobid, setJobId] = useState(route?.params?.jobId);
 
+  // Function to read the user ID from local storage
   const readData = async () => {
     try {
       const value = await AsyncStorage.getItem("user_id");
@@ -39,6 +42,7 @@ const Reviews = ({ navigation, route }) => {
       alert("Failed to fetch the input from storage");
     }
   };
+   // Function to fetch reviews for the job from the server
   const fetchReview = async () => {
     const params = new FormData();
     params.append("jobid", jobid);
@@ -50,6 +54,7 @@ const Reviews = ({ navigation, route }) => {
     );
     setReview(res?.data);
   };
+  // Function to write a review for the job to the server
   const writeReview = async (jobid, userid, rating, reviewtxt) => {
     const params = new FormData();
     params.append("jobid", jobid);
@@ -73,6 +78,7 @@ const Reviews = ({ navigation, route }) => {
     readData();
     fetchReview();
   }, [write, isFocused]);
+   // Function to render an individual review
   const renderItem = ({ item }) => {
     return (
       <View
