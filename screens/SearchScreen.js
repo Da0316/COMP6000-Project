@@ -4,10 +4,15 @@ import { View, StyleSheet, Text, FlatList } from "react-native";
 import ViewJob from "../components/ViewJob";
 import { SelectList } from "react-native-dropdown-select-list";
 
+
 const SearchScreen = ({ navigation, route }) => {
   const query = route.params;
   const [jobs, setJobs] = useState([]);
-  const [filter, setFilter] = useState([]);
+  const [filter, setFilter] = useState([]); 
+
+  const [specialities, setSpecialities] = useState([]); 
+  const [selectedSpeciality, setSelectedSpeciality] =  useState([]); 
+  
   const [filterChoices, setFilterChoices] = useState([
     { key: "1", value: "Most relevant" },
     { key: "2", value: "Price: Low to High" },
@@ -15,13 +20,37 @@ const SearchScreen = ({ navigation, route }) => {
     { key: "4", value: "Newest" },
     { key: "5", value: "Oldest" },
   ]);
-  const [fetched, setFetched] = useState(true);
+
 
   useEffect(() => {
-    if (fetched) {
+    fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php")
+      .then((response) => response.json())
+      .then(data => {
+        const specialities = data.reduce((acc, cur, i) => {
+          if (i % 2 === 0) {
+            acc.push({
+              key: cur,
+              value: data[i + 1],
+            });
+          }
+          return acc;
+        }, []);
+        setSpecialities(specialities);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const [fetched, setFetched] = useState(true);
+
+    useEffect(() => {
+      console.log("Selected speciality:", selectedSpeciality);
+      //console.log(setSelectedSpeciality(selectedSpeciality));
+    if (fetched && (specialities.length > 0)) {
       initalFetch();
     }
-  }, [route, filter]);
+  }, [route, filter, specialities, selectedSpeciality]);
 
   const sortJobs = () => {
     var array = [
@@ -46,6 +75,14 @@ const SearchScreen = ({ navigation, route }) => {
         sort();
     }
   };
+  // if (!Array.isArray(specialities) || specialities.length === 0) {
+  //   console.log(specialities)
+  //   console.log("empty")
+  // }else{
+  //   console.log(specialities)
+  //   console.log("notempty")
+    
+  // }
 
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
@@ -53,19 +90,11 @@ const SearchScreen = ({ navigation, route }) => {
     </View>
   );
 
-  const sort = () => {
-    var par = 0;
+  const sortBySpeciality = () => {
+    //console.log(specialities)
+    console.log(selectedSpeciality)
+    var par = 5;
 
-    if (filter == "Price: Low to High") {
-      par = 1;
-    } else if (filter == "Price: High to Low") {
-      par = 2;
-    } else if (filter == "Newest") {
-      par = 3;
-    } else if (filter == "Oldest") {
-      par = 4;
-    }
-    console.log(par);
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php", {
       method: "post",
       header: {
@@ -76,23 +105,31 @@ const SearchScreen = ({ navigation, route }) => {
         searchInput: query,
         id: global.userID,
         filter: par,
+        specialityID: selectedSpeciality,
+
+        //specialityID: specialityID,
       }),
     })
       .then((response) => response.json())
       .then((responseJson) => {
         const ids = [];
-        console.log(responseJson);
+        console.log(responseJson.sep);
         for (let i = 0; i < responseJson.length; i++) {
           const formatDateed = formatDate(responseJson[i].posted_date);
           let object = {
             id: responseJson[i].jobID,
             date: formatDateed,
             price: responseJson[i].price,
+            //specialityID: responseJson[i].specialityID,
           };
+          
+          // if (responseJson[i].userID != global.userID) {
+          //   ids.push(object);
+          // }
 
-          if (responseJson[i].userID != global.userID) {
-            ids.push(object);
-          }
+            if (responseJson[i].userID != global.userID && (!selectedSpeciality || responseJson[i].specialityID == selectedSpeciality.key)) {
+                ids.push(object);
+              }
         }
         setJobs(ids);
       })
@@ -101,7 +138,78 @@ const SearchScreen = ({ navigation, route }) => {
         alert(error);
       });
     par = 0;
-    console.log(filter);
+  };
+
+  const sort = () => {
+    
+    var par = 0;
+    //const specialityID = selectedSpeciality && selectedSpeciality.value;
+    //let specialityID = selectedSpeciality ? selectedSpeciality.key : null;
+    //console.log(specialityID);
+    //const specialityID = selectedSpeciality ? selectedSpeciality.key : null;
+    //let specialityID = selectedSpeciality;
+
+    if (filter == "Price: Low to High") {
+      par = 1;
+    } else if (filter == "Price: High to Low") {
+      par = 2;
+    } else if (filter == "Newest") {
+      par = 3;
+    } else if (filter == "Oldest") {
+      par = 4;
+    }
+
+    // let specialityID = null;
+    // if (selectedSpeciality !== null) {
+    //   specialityID = selectedSpeciality.value;
+    // }
+    console.log(par);
+
+    
+    fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php", {
+      method: "post",
+      header: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        searchInput: query,
+        id: global.userID,
+        filter: par,
+        specialityID: selectedSpeciality,
+
+        //specialityID: specialityID,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        const ids = [];
+        //console.log(responseJson);
+        for (let i = 0; i < responseJson.length; i++) {
+          const formatDateed = formatDate(responseJson[i].posted_date);
+          let object = {
+            id: responseJson[i].jobID,
+            date: formatDateed,
+            price: responseJson[i].price,
+            //specialityID: responseJson[i].specialityID,
+          };
+          
+          // if (responseJson[i].userID != global.userID) {
+          //   ids.push(object);
+          // }
+
+            if (responseJson[i].userID != global.userID && (!selectedSpeciality || responseJson[i].specialityID == selectedSpeciality.key)) {
+                ids.push(object);
+              }
+        }
+        setJobs(ids);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      });
+    par = 0;
+    //console.log(filter);
   };
 
   const initalFetch = () => {
@@ -115,6 +223,8 @@ const SearchScreen = ({ navigation, route }) => {
         searchInput: query,
         id: global.userID,
         filter: 0,
+        specialityID: selectedSpeciality,
+        // getSpecialities: true,
       }),
     })
       .then((response) => response.json())
@@ -127,16 +237,40 @@ const SearchScreen = ({ navigation, route }) => {
             id: responseJson[i].jobID,
             date: formatDateed,
             price: responseJson[i].price,
+            specialityID: responseJson[i].specialityID,
           };
 
-          if (responseJson[i].userID != global.userID) {
+          // if (responseJson[i].userID != global.userID) {
+          //   ids.push(object);
+          //   console.log(responseJson[i])
+          // }
+
+          if (responseJson[i].userID != global.userID && (!selectedSpeciality || responseJson[i].specialityID == selectedSpeciality.key)) {
             ids.push(object);
           }
+
+
         }
+
+        // if (responseJson[i].userID != global.userID) {
+        //   if (specialityID === null || responseJson[i].specialityID === specialityID){
+        //     ids.push(object);
+        //   }
+        // }
+
+        // if (specialityID !== null) {
+        //   const filteredJobs = ids.filter(job => job.specialityID === specialityID);
+        //   setJobs(filteredJobs);
+        // } else {
+        //   setJobs(ids);
+        // }
+
+
         setJobs(ids);
       })
       .catch((error) => {
-        SystemMessage.out.println(error);
+        //SystemMessage.out.println(error);
+        console.log(error);
         alert(error);
       });
 
@@ -160,11 +294,34 @@ const SearchScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <View style={{ marginVertical: 5 }}>
         <Text style={styles.title}> Results for: "{query}" </Text>
+        <View style={{flexDirection:"row",alignItems:"center",  alignSelf:"center"}}>
         <SelectList
           data={filterChoices}
           save="value"
-          label="Categories"
+          placeholder="Sort"
+          searchPlaceholder="sort by"
+          label="Sort by"
           onSelect={() => sort()}
+          style={styles.sortBox}
+          boxStyles={{
+            alignSelf:"center",
+            borderRadius: 15,
+            marginHorizontal: 5,
+            backgroundColor: "#EBEBEB",
+            borderWidth: 1.5,
+          }}
+          dropdownStyles={{ borderRadius: 15, marginHorizontal: 5 }}
+          setSelected={(val) => setSelectedSpeciality(val)}
+        />
+        
+        <SelectList
+          data={specialities}
+          placeholder="Filter"
+          save="key"
+          searchPlaceholder="Filter specialities"
+          label="specialities"
+          //onSelect={(value) => setSelectedSpeciality(value)}
+          onSelect={() => sortBySpeciality()}
           style={styles.sortBox}
           boxStyles={{
             borderRadius: 15,
@@ -172,9 +329,15 @@ const SearchScreen = ({ navigation, route }) => {
             backgroundColor: "#EBEBEB",
             borderWidth: 1.5,
           }}
-          dropdownStyles={{ borderRadius: 15, marginHorizontal: 5 }}
-          setSelected={(val) => setFilter(val)}
+          dropdownStyles={{ borderRadius: 15, marginHorizontal: 10 }}
+          setSelected={(val) => setSelectedSpeciality(val)}
+          //renderItem={(item, index) => ({ label: item, value: index })}
+        
         />
+        
+        </View>
+
+        
       </View>
       <FlatList
         data={jobs}
@@ -219,8 +382,9 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   sortBox: {
-    flexGrow: 1,
-    alignSelf: "flex-end",
+    //flexGrow: 1,
+    //alignSelf: "flex-end",
+    justifyContent:"space-evenly",
     marginVertical: 8,
     borderColor: "#f9ce40",
   },
