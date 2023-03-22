@@ -24,7 +24,7 @@ test("render default elements", () => {
 
   expect(getAllByText("Login").length).toBe(1);
   expect(getAllByText("Signup").length).toBe(1);
-  expect(getAllByText("Forgot Password?").length).toBe(1);
+  expect(getAllByText("Forgot Password? Press here").length).toBe(1);
 
   getByPlaceholderText("Username");
   getByPlaceholderText("Password");

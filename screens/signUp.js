@@ -36,7 +36,7 @@ const SignUp = ({ navigation }) => {
   const [addressPostCode, setAddressPostCode] = useState(null);
   const [apiKey, setApiKey] = useState(null); //variable for the api key to check if the address inputted exists
 
-  //fetches the api key form the backend, so it is stored securely 
+  //fetches the api key form the backend, so it is stored securely
   fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/api.php", {
     method: "post",
     header: {
@@ -53,7 +53,7 @@ const SignUp = ({ navigation }) => {
     .catch((error) => {
       alert("incorrect details");
     });
-  
+
   //function checkAddress
   //@param address - an object containg each of the fields we take for address
   const checkAddress = async (address) => {
@@ -63,7 +63,7 @@ const SignUp = ({ navigation }) => {
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       formattedAddress
     )}&key=${apiKey}`;
-    
+
     //makes the call to the apir
     try {
       const response = await fetch(url);
@@ -74,7 +74,6 @@ const SignUp = ({ navigation }) => {
         //sets the address to the correct address retrived fro mapi
         setAddress(data.results[0].formatted_address);
         return true;
-        
       } else {
         return false;
       }
@@ -83,7 +82,7 @@ const SignUp = ({ navigation }) => {
       return false;
     }
   };
-  
+
   //not currently needed
   const formatAddress = () => {
     if (address2 != null) {
@@ -103,17 +102,6 @@ const SignUp = ({ navigation }) => {
 
   //function - handelSubmit handels the button press of the signup
   handelSubmit = () => {
-    if (!DOB || !isValid(new Date(DOB))) {
-      alert("Please enter a valid date of birth");
-      return false;
-    }
-
-    const age = calculateAge(DOB);
-    if (age < 18) {
-      alert("You must be at least 18 years old to sign up");
-      return false;
-    }
-
     //regular expression of all the characters allowed in password
     const strongRegex = new RegExp(
       "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
@@ -122,7 +110,8 @@ const SignUp = ({ navigation }) => {
     if (!strongRegex.test(email)) {
       alert("email is not valid");
       return false;
-    } else if (password.length < 8) { //checks if the password is above the required length
+    } else if (password.length < 8) {
+      //checks if the password is above the required length
       alert(
         "password is not of valid form, must containt at least 1 upper 1 lowercase 1 special and 8 characters long"
       );
@@ -153,19 +142,37 @@ const SignUp = ({ navigation }) => {
     //calls the checkAddress function
     if (checkAddress(addressToVerify)) {
       console.log("ok");
-      
     } else {
       alert("address does not exist");
       return false;
     }
-    
+
     //checks if the fields have been filled out
-    if (userName == null || firstName == null || lastName == null || DOB == null || address == null 
-      ||email == null || pNumber == null || password == null){
-        alert("Please fill out all the fields");
-        return false;
-      }
-      //if the fields have been filled out correctly a call to save the users inputs in the database is made
+    if (
+      userName == null ||
+      firstName == null ||
+      lastName == null ||
+      DOB == null ||
+      address == null ||
+      email == null ||
+      pNumber == null ||
+      password == null
+    ) {
+      alert("Please fill out all the fields");
+      return false;
+    }
+
+    if (!DOB || !isValid(new Date(DOB))) {
+      alert("Please enter a valid date of birth");
+      return false;
+    }
+
+    const age = calculateAge(DOB);
+    if (age < 18) {
+      alert("You must be at least 18 years old to sign up");
+      return false;
+    }
+    //if the fields have been filled out correctly a call to save the users inputs in the database is made
     if (address != "") {
       fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/signUp.php", {
         method: "post",
@@ -185,7 +192,8 @@ const SignUp = ({ navigation }) => {
         }),
       })
         .then((response) => response.json())
-        .then((responseJson) => { //response from php is given - if the username or email is already in the database, it will not allow you to sign up with those details
+        .then((responseJson) => {
+          //response from php is given - if the username or email is already in the database, it will not allow you to sign up with those details
           if (responseJson === "try again") {
             alert("Please fill in details ");
           } else if (responseJson === "email already exists") {
@@ -195,8 +203,9 @@ const SignUp = ({ navigation }) => {
           }
           // else if (responseJson === "You must be at least 18 years old to sign up"){
           //   alert("You must be at least 18 years old to sign up");
-          // } 
-          else { //if everything is valid the sign up is accepted
+          // }
+          else {
+            //if everything is valid the sign up is accepted
             alert("Signup Successful!");
             const newUserObj = {
               username: String(responseJson[1]),
@@ -276,9 +285,7 @@ const SignUp = ({ navigation }) => {
           />
 
           <TouchableOpacity style={styles.LoginBtn} onPress={showDatepicker}>
-            <Text style={styles.LoginText}>
-              Date of birth:{DOB}
-            </Text>
+            <Text style={styles.LoginText}>Date of birth:{DOB}</Text>
           </TouchableOpacity>
 
           {showCompleted && (

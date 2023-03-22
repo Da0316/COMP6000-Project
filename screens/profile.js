@@ -341,14 +341,14 @@ const Profile = ({ navigation }) => {
               ]);
             }}
           >
-            <Text style={styles.userBtnTxt}> Logout</Text>
+            <Text style={styles.userBtnTxt}>Logout</Text>
           </TouchableRipple>
           <TouchableRipple
           testID="editProfile"
             style={styles.userBtn}
             onPress={() => navigation.navigate("EditProfile")}
           >
-            <Text style={styles.userBtnTxt}> Edit Profile</Text>
+            <Text style={styles.userBtnTxt}>Edit Profile</Text>
           </TouchableRipple>
           <TouchableRipple
           testID="JobsandApps"
