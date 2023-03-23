@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 100,
   },
   row: {
-    marginVertical: 12,
+    marginVertical: 5,
   },
   baseText: {
     alignContent: "center",

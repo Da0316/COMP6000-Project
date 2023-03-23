@@ -268,7 +268,7 @@ const HomeScreen = ({ navigation }) => {
     //if there are nearby jobs
     if (noNearby == false) {
       return (
-        <ScrollView horizontal={true}>
+        <ScrollView horizontal={true} style={{marginBottom:50}}>
           {nearbyJobs.map((object) => {
             return <ViewJob key={object.id} ID={object.id} />;
           })}
@@ -278,7 +278,7 @@ const HomeScreen = ({ navigation }) => {
     } else if (noNearby == true) {
       return (
         <View>
-          <Text style={styles.title}>No Jobs Nearby!</Text>
+          <Text style={({fontWeight: "bold",fontSize: 20,paddingLeft: 8,paddingBottom:20})}>No Jobs Nearby!</Text>
         </View>
       );
     }

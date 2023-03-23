@@ -201,7 +201,8 @@ const Post = ({ navigation }) => {
               boxStyles={{
                 marginVertical: 5,
                 backgroundColor: "#EBEBEB",
-                borderColor: "#939394",
+                borderColor: "#EBEBEB",
+                
               }}
             />
           </View>
