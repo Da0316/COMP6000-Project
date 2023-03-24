@@ -26,20 +26,19 @@ if (isset($_POST['submit'])) {
   } else if (empty($phone_number)) {
     $error = 'Please enter your phone_number';
   } else {
-    
+
     // update the profile data
     $query = "UPDATE users SET firstname = '$firstname', lastname = '$lastname', username = '$username', email = '$email', address = '$address', phone_number = '$phone_number' WHERE id = $userID";
     $result = $mysqli->query($query);
 
     if ($result) {
-	  echo json_encode('success');
-    }
-    else {
+      echo json_encode('success');
+    } else {
       echo json_encode('error');
     }
   }
-  
-    // redirect to the profile page
-    header('location: profile.php');
+
+  // redirect to the profile page
+  //header('location: profile.php');
 }
 ?>
