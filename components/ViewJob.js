@@ -1,3 +1,4 @@
+//ViewJob.js - view job component
 import React from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import { useEffect } from "react";
 
 //data can be passed between react screens and components using props or routes
 const ViewJob = ({ ID }) => {
+  //useStates for variables
   const [jobID, setjobID] = useState("");
   const [jobTitle, setjobTilte] = useState("");
   const [jobDescription, setjobDescription] = useState("");
@@ -14,18 +16,17 @@ const ViewJob = ({ ID }) => {
     "https://raptor.kent.ac.uk/proj/comp6000/project/08/images/1.jpg"
   );
 
-  //fetch data for the job from the database
-  
+  //useEffect to get job information for the thumbnail
   useEffect(() => {
     fetch(
       "https://raptor.kent.ac.uk/proj/comp6000/project/08/postThumbnail.php",
       {
-        //needs to be changed to your own ip
         method: "post",
         header: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        //backend json variables
         body: JSON.stringify({
           jobID: ID,
           job_Description: "",
@@ -34,6 +35,7 @@ const ViewJob = ({ ID }) => {
     )
       .then((response) => response.json())
       .then((responseJson) => {
+        //setting job information
         setjobID(responseJson[0]);
         setjobTilte(responseJson[1]);
         setjobDescription(responseJson[2]);
@@ -55,6 +57,7 @@ const ViewJob = ({ ID }) => {
   }, []);
 
   const nav = useNavigation();
+  //navigation function
   const showJob = () => nav.navigate("Job", { jobID }); //passes data to the job page using a route
 
   return (
@@ -83,6 +86,7 @@ const ViewJob = ({ ID }) => {
 
 export default ViewJob;
 
+//css styling
 const styles = StyleSheet.create({
   container: {
     width: 150,
@@ -119,7 +123,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     alignSelf: "flex-end",
     fontWeight: "bold",
-    //color:"#0077B6",
     marginBottom: 10,
     marginEnd: 15,
   },
