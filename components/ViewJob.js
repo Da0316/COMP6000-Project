@@ -15,7 +15,7 @@ const ViewJob = ({ ID }) => {
   );
 
   //fetch data for the job from the database
-  //need to create an API for this
+  
   useEffect(() => {
     fetch(
       "https://raptor.kent.ac.uk/proj/comp6000/project/08/postThumbnail.php",

@@ -1,18 +1,22 @@
+//signUp.js - page for the sign up screen so users can create accounts
+//@author - ajs215
+
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
 import ViewJob from "../components/ViewJob";
 import { SelectList } from "react-native-dropdown-select-list";
 
-
+//main function for the search screen, has navigation to navigate back to the homescreen and route to pass the search paramter.
 const SearchScreen = ({ navigation, route }) => {
-  const query = route.params;
+  const query = route.params; //the variable query is set to the route paramters, which is the search input from the user
   const [jobs, setJobs] = useState([]);
   const [filter, setFilter] = useState([]); 
 
   const [specialities, setSpecialities] = useState([]); 
   const [selectedSpeciality, setSelectedSpeciality] =  useState([]); 
-  
+
+  //array for the filter options
   const [filterChoices, setFilterChoices] = useState([
     { key: "1", value: "Most relevant" },
     { key: "2", value: "Price: Low to High" },
@@ -21,7 +25,7 @@ const SearchScreen = ({ navigation, route }) => {
     { key: "5", value: "Oldest" },
   ]);
 
-
+  //fetch to fetch the specialities so that we can sort by specific specialities 
   useEffect(() => {
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/specialities.php")
       .then((response) => response.json())
@@ -35,28 +39,25 @@ const SearchScreen = ({ navigation, route }) => {
           }
           return acc;
         }, []);
-        setSpecialities(specialities);
+        setSpecialities(specialities); //saves the specialities in ann array
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
-  const [fetched, setFetched] = useState(true);
+  const [fetched, setFetched] = useState(true); //sets fetched to true once the sepecialities have been retrived
 
     useEffect(() => {
-      console.log("Selected speciality:", selectedSpeciality);
-      //console.log(setSelectedSpeciality(selectedSpeciality));
     if (fetched && (specialities.length > 0)) {
-      initalFetch();
+      initalFetch(); // if the specialities have been retrived then this fetch is preformed, fetching the jobs reltated to the search query
     }
   }, [route, filter, specialities, selectedSpeciality]);
 
+  //function sortJobs - sorts the jobs based on the filter
   const sortJobs = () => {
-    var array = [
-      { id: "1", date: "2023-02-23" },
-      { id: "2", date: "Mon Feb  6 17:51:00 2023" },
-    ];
+    
+    //switch case to sort the jobs based on which option in the filter is selcted 
     switch (filter) {
       case "Price: Low to High":
         setJobs(jobs.sort((a, b) => a.price - b.price));
@@ -71,30 +72,24 @@ const SearchScreen = ({ navigation, route }) => {
         setJobs(jobs.sort((a, b) => new Date(a.date) - new Date(b.date)));
         break;
       default:
-        setJobs(jobs);
+        setJobs(jobs);  
         sort();
     }
   };
-  // if (!Array.isArray(specialities) || specialities.length === 0) {
-  //   console.log(specialities)
-  //   console.log("empty")
-  // }else{
-  //   console.log(specialities)
-  //   console.log("notempty")
-    
-  // }
-
+  
+  //function renderItem renders the jobs on the page
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
       <ViewJob key={item.id} ID={item.id} />
     </View>
   );
 
+  //function sortBySpeciality sorts the jobs based on the speciality filter
   const sortBySpeciality = () => {
-    //console.log(specialities)
-    console.log(selectedSpeciality)
-    var par = 5;
+    
+    var par = 5; //variable to pass to php script to indicate which case it needs to call
 
+    //below is the fetch call to retrive the jobs sorted by speciality
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php", {
       method: "post",
       header: {
@@ -107,31 +102,27 @@ const SearchScreen = ({ navigation, route }) => {
         filter: par,
         specialityID: selectedSpeciality,
 
-        //specialityID: specialityID,
       }),
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        const ids = [];
-        console.log(responseJson.sep);
+        const ids = [];//array ids delceared to store objects for jobs
+        //console.log(responseJson.sep);
+        //loops through the return array
         for (let i = 0; i < responseJson.length; i++) {
-          const formatDateed = formatDate(responseJson[i].posted_date);
-          let object = {
+          const formatDateed = formatDate(responseJson[i].posted_date);//formates the date for our date sorter 
+          let object = { //creates an object of all the data we return
             id: responseJson[i].jobID,
             date: formatDateed,
             price: responseJson[i].price,
-            //specialityID: responseJson[i].specialityID,
           };
-          
-          // if (responseJson[i].userID != global.userID) {
-          //   ids.push(object);
-          // }
 
+            //if statement to make sure the jobs arent from the user that is logged in
             if (responseJson[i].userID != global.userID && (!selectedSpeciality || responseJson[i].specialityID == selectedSpeciality.key)) {
                 ids.push(object);
               }
         }
-        setJobs(ids);
+        setJobs(ids); //sets the jobs array, with the array of objects we have just created, ids
       })
       .catch((error) => {
         console.log(error);
@@ -140,14 +131,11 @@ const SearchScreen = ({ navigation, route }) => {
     par = 0;
   };
 
+  //function sort to sort the jobs by the filter
   const sort = () => {
     
     var par = 0;
-    //const specialityID = selectedSpeciality && selectedSpeciality.value;
-    //let specialityID = selectedSpeciality ? selectedSpeciality.key : null;
-    //console.log(specialityID);
-    //const specialityID = selectedSpeciality ? selectedSpeciality.key : null;
-    //let specialityID = selectedSpeciality;
+    
 
     if (filter == "Price: Low to High") {
       par = 1;
@@ -159,13 +147,10 @@ const SearchScreen = ({ navigation, route }) => {
       par = 4;
     }
 
-    // let specialityID = null;
-    // if (selectedSpeciality !== null) {
-    //   specialityID = selectedSpeciality.value;
-    // }
+    
     console.log(par);
 
-    
+    //fetch does the same thing as the fetch above, to re fetch the jobs based on the filter
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php", {
       method: "post",
       header: {
@@ -178,25 +163,20 @@ const SearchScreen = ({ navigation, route }) => {
         filter: par,
         specialityID: selectedSpeciality,
 
-        //specialityID: specialityID,
+        
       }),
     })
       .then((response) => response.json())
       .then((responseJson) => {
         const ids = [];
-        //console.log(responseJson);
+        
         for (let i = 0; i < responseJson.length; i++) {
           const formatDateed = formatDate(responseJson[i].posted_date);
           let object = {
             id: responseJson[i].jobID,
             date: formatDateed,
             price: responseJson[i].price,
-            //specialityID: responseJson[i].specialityID,
           };
-          
-          // if (responseJson[i].userID != global.userID) {
-          //   ids.push(object);
-          // }
 
             if (responseJson[i].userID != global.userID && (!selectedSpeciality || responseJson[i].specialityID == selectedSpeciality.key)) {
                 ids.push(object);
@@ -212,7 +192,10 @@ const SearchScreen = ({ navigation, route }) => {
     //console.log(filter);
   };
 
+  //function inital fetch, fetches the jobs to display on the screen when the search is first perfomred, displayed in the deafult filter
   const initalFetch = () => {
+
+    //fetch the same as the one commented above
     fetch("https://raptor.kent.ac.uk/proj/comp6000/project/08/search.php", {
       method: "post",
       header: {
@@ -224,7 +207,7 @@ const SearchScreen = ({ navigation, route }) => {
         id: global.userID,
         filter: 0,
         specialityID: selectedSpeciality,
-        // getSpecialities: true,
+        
       }),
     })
       .then((response) => response.json())
@@ -240,36 +223,16 @@ const SearchScreen = ({ navigation, route }) => {
             specialityID: responseJson[i].specialityID,
           };
 
-          // if (responseJson[i].userID != global.userID) {
-          //   ids.push(object);
-          //   console.log(responseJson[i])
-          // }
-
           if (responseJson[i].userID != global.userID && (!selectedSpeciality || responseJson[i].specialityID == selectedSpeciality.key)) {
             ids.push(object);
           }
 
 
         }
-
-        // if (responseJson[i].userID != global.userID) {
-        //   if (specialityID === null || responseJson[i].specialityID === specialityID){
-        //     ids.push(object);
-        //   }
-        // }
-
-        // if (specialityID !== null) {
-        //   const filteredJobs = ids.filter(job => job.specialityID === specialityID);
-        //   setJobs(filteredJobs);
-        // } else {
-        //   setJobs(ids);
-        // }
-
-
         setJobs(ids);
       })
       .catch((error) => {
-        //SystemMessage.out.println(error);
+        
         console.log(error);
         alert(error);
       });
@@ -277,6 +240,7 @@ const SearchScreen = ({ navigation, route }) => {
     setFetched(false);
   };
 
+  //function formateDate, formats the date in line for our sorting by date filter
   function formatDate(dateString) {
     const date = new Date(dateString.replace(/-/g, "/"));
     const options = {
