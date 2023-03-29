@@ -24,14 +24,10 @@ import SearchScreen from "./screens/SearchScreen";
 import ForgotPassword from "./screens/ForgotPassword";
 console.disableYellowBox = true;
 console.reportErrorsAsExceptions = false;
-
-//will need to import any new screens
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-//import NavContainer from './navigation/NavContainter';
-//import TabNav from './navigation/TabNav';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+//firebase configs
 const firebaseConfig = {
   apiKey: "AIzaSyCZonqQoeCQB8l_Cze3DRmCoZgeKMNvl10",
   authDomain: "chat-screen-aca22.firebaseapp.com",
@@ -48,6 +44,7 @@ initializeApp(firebaseConfig);
 
 const Tab = createBottomTabNavigator();
 
+//tabs for the homepage
 function StackScreen() {
   return (
     <Tab.Navigator
@@ -80,9 +77,11 @@ function StackScreen() {
     </Tab.Navigator>
   );
 }
+
 const Stack = createStackNavigator();
 
 export default function App(navigation) {
+  //Main stack navigation for the app
   return (
     <NavigationContainer>
       <Stack.Navigator>
